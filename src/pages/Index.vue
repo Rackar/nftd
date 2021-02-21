@@ -24,6 +24,8 @@ import { Todo, Meta } from 'components/models';
 import { defineComponent, ref } from 'vue';
 import PieCharts from 'components/PieCharts.vue';
 import KlineCharts from 'components/KlineCharts.vue';
+
+// import { useI18n } from 'vue-i18n';
 export default defineComponent({
   name: 'PageIndex',
   components: {
@@ -31,6 +33,13 @@ export default defineComponent({
     KlineCharts,
   },
   setup() {
+    // const { t } = useI18n({
+    //   locale: 'zh',
+    //   messages: {
+    //     zh: { failed: '失败111' },
+    //     en: { failed: 'failed111' },
+    //   },
+    // });
     const todos = ref<Todo[]>([
       {
         id: 1,

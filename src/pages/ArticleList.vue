@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import PreviewCard from 'components/PreviewCard.vue';
-import { defineComponent, PropType, computed, ref, toRef, Ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'ArticleList',

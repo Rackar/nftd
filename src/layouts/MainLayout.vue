@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title>NFT 筹币多</q-toolbar-title>
+        <q-toolbar-title>Filoli NFT Crowd-Funding Platform</q-toolbar-title>
 
         <div>Language</div>
       </q-toolbar>
@@ -37,19 +37,19 @@ const linksList = [
     title: '首页',
     caption: 'MainPage',
     icon: 'public',
-    link: '/#/',
+    link: '/',
   },
   {
     title: '发起众筹',
     caption: 'Add',
     icon: 'record_voice_over',
-    link: '/#/add',
+    link: '/add',
   },
   {
     title: '众筹列表',
     caption: 'List',
     icon: 'code',
-    link: '/#/list',
+    link: '/list',
   },
   // {
   //   title: 'Discord Chat Channel',

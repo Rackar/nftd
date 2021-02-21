@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, ref, toRef, Ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'PreviewCard',
