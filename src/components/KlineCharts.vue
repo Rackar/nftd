@@ -3,6 +3,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import * as echarts from 'echarts';
 import { defineComponent } from 'vue';
 export default defineComponent({
@@ -117,6 +118,7 @@ export default defineComponent({
     function splitData(rawData) {
       var categoryData = [];
       var values = [];
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       for (var i = 0; i < rawData.length; i++) {
         categoryData.push(rawData[i].splice(0, 1)[0]);
         values.push(rawData[i]);
