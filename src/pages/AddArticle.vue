@@ -1,7 +1,9 @@
 <template>
   <q-page class="column items-center justify-evenly">
     <h1 class="row myh1">发起团购</h1>
-    <div class="row"><q-input outlined v-model="text" label="团购标题" /></div>
+    <div class="row">
+      <q-input outlined v-model="text" label="团购标题" />
+    </div>
     <div class="row">
       <q-editor
         v-model="qeditor"
@@ -118,13 +120,7 @@
 
         <div>
           <q-btn label="Submit" type="submit" color="primary" />
-          <q-btn
-            label="Reset"
-            type="reset"
-            color="primary"
-            flat
-            class="q-ml-sm"
-          />
+          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
         </div>
       </q-form>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <q-page class="column">
     <h3>这里是项目介绍，以及静态图片</h3>
-    <div class="align-center q-m-x">
+    <div>
       <router-link to="/add">
         <q-btn color="white" text-color="black" label="我要发起众筹" />
       </router-link>

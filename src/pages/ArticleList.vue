@@ -1,20 +1,12 @@
 <template>
   <div>
-    
-<PreviewCard v-for="item in 4" :key="item.key" />
+    <PreviewCard v-for="item in 4" :key="item.key" />
   </div>
 </template>
 
 <script lang="ts">
-import PreviewCard from 'components/PreviewCard.vue'
-import {
-  defineComponent,
-  PropType,
-  computed,
-  ref,
-  toRef,
-  Ref,
-} from 'vue';
+import PreviewCard from 'components/PreviewCard.vue';
+import { defineComponent, PropType, computed, ref, toRef, Ref } from 'vue';
 
 export default defineComponent({
   name: 'ArticleList',
@@ -24,20 +16,18 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
     },
-   
+
     active: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   setup() {
-      let list=[{
-            
-        }]
-    return { 
-        list
-     };
+    let list = [{}];
+    return {
+      list,
+    };
   },
 });
 </script>
