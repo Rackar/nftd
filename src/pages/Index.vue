@@ -1,6 +1,6 @@
 <template>
   <q-page class="column">
-    <h3>这里是项目介绍，以及静态图片</h3>
+    <h3>这里是项目介绍，以及静态图片 {{t("index.title")}}</h3>
     <div>
       <router-link to="/add">
         <q-btn color="white" text-color="black" label="我要发起众筹" />
@@ -22,6 +22,7 @@
 <script lang="ts">
 import { Todo, Meta } from 'components/models';
 import { defineComponent, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import PieCharts from 'components/PieCharts.vue';
 import KlineCharts from 'components/KlineCharts.vue';
 
@@ -33,13 +34,8 @@ export default defineComponent({
     KlineCharts,
   },
   setup() {
-    // const { t } = useI18n({
-    //   locale: 'zh',
-    //   messages: {
-    //     zh: { failed: '失败111' },
-    //     en: { failed: 'failed111' },
-    //   },
-    // });
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    const { t } = useI18n();
     const todos = ref<Todo[]>([
       {
         id: 1,
@@ -65,7 +61,7 @@ export default defineComponent({
     const meta = ref<Meta>({
       totalCount: 1200,
     });
-    return { todos, meta };
+    return { todos, meta, t };
   },
 });
 </script>
