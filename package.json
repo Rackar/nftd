@@ -1,8 +1,8 @@
 {
-  "name": "nftg",
+  "name": "filoli",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Filoli nft",
+  "productName": "Filoli",
   "author": "rackar <27681135@qq.com>",
   "private": true,
   "scripts": {

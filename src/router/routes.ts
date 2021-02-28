@@ -8,6 +8,15 @@ const routes: RouteRecordRaw[] = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'add', component: () => import('pages/AddArticle.vue') },
       { path: 'list', component: () => import('pages/ArticleList.vue') },
+      { path: 'water', component: () => import('components/waterfall.vue') },
+    ],
+  },
+  {
+    path: '/static',
+    component: () => import('layouts/StaticLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/statics/StaticIndex.vue') },
+
     ],
   },
 

@@ -1,6 +1,6 @@
 <template>
   <q-page class="column">
-    <h3>这里是项目介绍，以及静态图片 {{t("index.title")}}</h3>
+    <h3>这里是介绍，以及静态图片 {{t("index.title")}}</h3>
     <div>
       <router-link to="/add">
         <q-btn color="white" text-color="black" label="我要发起众筹" />
@@ -9,11 +9,11 @@
 
     <div class="row">
       <div class="col">
-        <div>当前众筹项目</div>
+        <div>当前项目</div>
         <PieCharts />
       </div>
       <div class="col">
-        <div>可交易项目</div>
+        <div>总项目</div>
         <KlineCharts />
       </div>
     </div>

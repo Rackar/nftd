@@ -37,7 +37,7 @@ export default defineComponent({
 <style>
 .my-card {
   width: 100%;
-  max-width: 320px;
-  margin: 20px 12px;
+  /* max-width: 320px; */
+  /* padding: 20px 12px; */
 }
 </style>

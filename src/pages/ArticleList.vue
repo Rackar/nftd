@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <PreviewCard v-for="item in 4" :key="item.key" />
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3">
+      <div style="padding:10px 10px;" v-for="item in 4" :key="item.key">
+        <PreviewCard />
+      </div>
+    </div>
   </div>
 </template>
 

@@ -51,6 +51,19 @@ const linksList = [
     icon: 'code',
     link: '/list',
   },
+
+  {
+    title: '瀑布流',
+    caption: '',
+    icon: 'list',
+    link: '/water',
+  },
+  {
+    title: '静态',
+    caption: '',
+    icon: 'list',
+    link: '/static',
+  },
   // {
   //   title: 'Discord Chat Channel',
   //   caption: 'chat.quasar.dev',
