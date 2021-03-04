@@ -41,7 +41,7 @@
           </template>
         </water-fall>
       </div>
-      <button class="halo-btn halo-btn-primary" @click.stop.prevent="loadMore">加载更多</button>
+      <button class="halo-btn halo-btn-primary" @click.stop.prevent="fetchData">加载更多</button>
     </section>
   </div>
 </template>
@@ -49,10 +49,11 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import { api } from '../../boot/axios';
-import WaterFall from 'kuan-vue-waterfall';
+import WaterFall from '../../libs/water-fall';
 
 export default {
   components: {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     WaterFall,
   },
   setup() {
@@ -193,8 +194,7 @@ export default {
           price: 12000,
         },
       ];
-
-      data.value.push(...initdata);
+      data.value = [...data.value, ...newdata];
       console.log(data);
     }
     function loadMore() {
@@ -209,6 +209,7 @@ export default {
       dense: ref(false),
       data: data,
       loadMore,
+      fetchData,
     };
   },
 };
