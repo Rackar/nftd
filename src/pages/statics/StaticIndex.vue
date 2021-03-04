@@ -2,7 +2,7 @@
   <div>
     <section class="row top">
       <div class="col-2 offset-1 text-h5" offset-2>Filoli</div>
-      <div class="col-2 offset-7">Connect Wallet About</div>
+      <div class="right-toolbar" style>Connect Wallet About</div>
     </section>
     <section class="row" style=" justify-content:center;padding-top:20px;">
       <div class="col" style="max-width: 220px;  ">
@@ -35,13 +35,13 @@
                 <!-- <p>{{ item.src }}</p> -->
                 <div class="artist">{{item.artist}}</div>
                 <div class="info">{{item.info}}</div>
-                <!-- <div>{{item.v}}</div> -->
+                <div class="price">{{item.price}} ETH</div>
               </div>
             </router-link>
           </template>
         </water-fall>
       </div>
-      <button class="halo-btn halo-btn-primary" @click.stop.prevent="fetchData">加载更多</button>
+      <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn>
     </section>
   </div>
 </template>
@@ -194,7 +194,7 @@ export default {
           price: 12000,
         },
       ];
-      data.value = [...data.value, ...newdata];
+      data.value = [...data.value, ...initdata];
       console.log(data);
     }
     function loadMore() {
@@ -221,6 +221,11 @@ export default {
   padding-top: 30px;
   /* padding-bottom: 4px; */
   border-bottom: rgb(219, 219, 219) 1px solid;
+}
+.right-toolbar {
+  min-width: 140px;
+  right: 30px;
+  position: absolute;
 }
 .banner {
   display: 'flex';
@@ -269,8 +274,14 @@ export default {
   font-size: 14px;
   color: rgba(34, 34, 34, 0.75);
 }
+.card > .price {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #222222;
+}
 .halo-btn {
-  margin: 100px auto;
+  margin: 30px auto;
   display: block;
 }
 </style>
