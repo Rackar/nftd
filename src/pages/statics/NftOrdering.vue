@@ -47,15 +47,60 @@
       </div>
     </div>
   </div>
+  <!-- <q-card> -->
+  <q-tabs
+    v-model="tab"
+    dense
+    class="text-grey"
+    active-color="primary"
+    indicator-color="primary"
+    align="justify"
+    narrow-indicator
+  >
+    <q-tab name="Details" label="Details" />
+    <q-tab name="Commnets" label="Commnets" />
+  </q-tabs>
+
+  <q-separator />
+
+  <q-tab-panels v-model="tab" animated>
+    <q-tab-panel name="Details">
+      <div class="row">
+        <div class="col">
+          <div>About artist</div>
+          <div>The girl of Avignon" is an oil painting created by Spanish painter Pablo Ruiz Picasso in 1907. Museum of modern art, New York.In this painting, there are five girls sitting or standing, scratching theirheads and posturing. In front of them is a small square stool with several clusters of grapes on it. The characters are completely distorted andillegible. The picture presents a single plane."I'm not a surrealist, I've never been divorced from reality. I always stayin the real situation This is Picasso's idea when he created "Guernica".Although people don't think Picasso is a realistic painter, in Picasso's idea, his paintings are not only based on the strongest emotional experience in his heart, but also the depiction of reality. Picasso is the most creative and far-reaching artistic genius in the history of western modernart in the 20th century. He is known as "the most complex" and knowshow to express</div>
+          <div>Read more</div>
+        </div>
+        <div class="col">
+          <TransactionRecords />
+          <div>address:0xdfsodfsjdflkjlj</div>
+        </div>
+      </div>
+    </q-tab-panel>
+
+    <q-tab-panel name="Commnets">
+      <q-input v-model="text" filled type="textarea" />
+
+      <div>xx comments</div>
+      <div v-for="x in 4">
+        <div>name</div>
+
+        <div>sdfsdfsdofjslfdsldfkjsladfjlsadfiasdf</div>
+      </div>
+    </q-tab-panel>
+  </q-tab-panels>
+  <!-- </q-card> -->
+  <div></div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { date } from 'quasar';
+import TransactionRecords from '../../components/TransactionRecords.vue';
 
 export default defineComponent({
   name: 'NftOrdering',
-  components: {},
+  components: { TransactionRecords },
   props: {
     title: {
       type: String,
@@ -85,7 +130,7 @@ export default defineComponent({
       countdownLeft.value = formatTimegap(diffSec);
     }
     onMounted(() => {
-      let endDate = '2021-3-5';
+      let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
       setInterval(() => Countdown(endDate), 1000);
     });
     let list = [{}];
@@ -94,6 +139,8 @@ export default defineComponent({
       slide: ref(1),
       countdownLeft,
       fullscreen: ref(false),
+      tab: ref('Details'),
+      text: ref(''),
     };
   },
 });

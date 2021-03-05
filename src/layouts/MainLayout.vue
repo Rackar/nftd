@@ -59,10 +59,22 @@ const linksList = [
     link: '/water',
   },
   {
+    title: '瀑布流组件',
+    caption: '',
+    icon: 'list',
+    link: '/water2',
+  },
+  {
     title: '静态',
     caption: '',
     icon: 'list',
     link: '/static',
+  },
+  {
+    title: 'nft',
+    caption: '',
+    icon: 'list',
+    link: '/static/nft',
   },
   // {
   //   title: 'Discord Chat Channel',

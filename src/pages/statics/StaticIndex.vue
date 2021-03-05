@@ -1,9 +1,6 @@
 <template>
   <div>
-    <section class="row top">
-      <div class="col-2 offset-1 text-h5" offset-2>Filoli</div>
-      <div class="right-toolbar" style>Connect Wallet About</div>
-    </section>
+    <Header />
     <section class="row" style=" justify-content:center;padding-top:20px;">
       <div class="col" style="max-width: 220px;  ">
         <q-input filled bottom-slots v-model="text" label="Search" maxlength="20" :dense="dense">
@@ -29,9 +26,13 @@
       <div class="water-fall" v-if="data.length">
         <water-fall :data="data" gap="20px" width="240px" class="container" :delay="true">
           <template #default="item">
-            <router-link to="/static">
+            <router-link to="/static/nft">
               <div class="card">
-                <img class="img" :src="item.src" />
+                <div>
+                  <img class="img" :src="item.src" />
+                  <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
+                </div>
+
                 <!-- <p>{{ item.src }}</p> -->
                 <div class="artist">{{item.artist}}</div>
                 <div class="info">{{item.info}}</div>
@@ -50,11 +51,13 @@
 import { ref, reactive, onMounted } from 'vue';
 import { api } from '../../boot/axios';
 import WaterFall from '../../libs/water-fall';
+import Header from '../../components/Header.vue';
 
 export default {
   components: {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     WaterFall,
+    Header,
   },
   setup() {
     let initdata = [
@@ -263,6 +266,9 @@ export default {
   width: 100%;
   margin-bottom: 5px;
   /* cursor: pointer; */
+}
+.card .img:hover {
+  opacity: 0.5;
 }
 .card > .artist {
   text-align: center;
