@@ -9,6 +9,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'add', component: () => import('pages/AddArticle.vue') },
       { path: 'list', component: () => import('pages/ArticleList.vue') },
       { path: 'water', component: () => import('components/waterfall.vue') },
+      { path: 'water2', component: () => import('components/WaterFallCompWraper.vue') },
+
     ],
   },
   {
