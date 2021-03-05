@@ -36,9 +36,6 @@ export default {
 
     // onMounted(() => {});
     return {
-      text: ref(''),
-      ph: ref(''),
-      dense: ref(false),
       list,
     };
   },

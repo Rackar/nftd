@@ -1,19 +1,19 @@
 <template>
   <q-page class="column">
-    <h3>这里是介绍，以及静态图片 {{t("index.title")}}</h3>
+    <h3>info title {{t("index.title")}}</h3>
     <div>
       <router-link to="/add">
-        <q-btn color="white" text-color="black" label="我要发起众筹" />
+        <q-btn color="white" text-color="black" label="start" />
       </router-link>
     </div>
 
     <div class="row">
       <div class="col">
-        <div>当前项目</div>
+        <div>当前</div>
         <PieCharts />
       </div>
       <div class="col">
-        <div>总项目</div>
+        <div>总</div>
         <KlineCharts />
       </div>
     </div>

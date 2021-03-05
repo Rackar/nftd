@@ -5,6 +5,6 @@ export default {
   failed: '失败',
   success: '成功',
   index: {
-    title: '这里是项目介绍，以及静态图片'
+    title: 'i18n cn info'
   }
 };

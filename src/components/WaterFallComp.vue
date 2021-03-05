@@ -34,6 +34,10 @@ export default {
         return !d.length || d[0].key;
       },
     },
+    url: {
+      type: String,
+      default: '',
+    },
     delay: {
       type: Boolean,
       default: true,
@@ -48,7 +52,8 @@ export default {
     },
   },
   setup(props) {
-    let list = props.data;
+    let list = ref([]);
+    list.value = [...props.data];
     let hasMore = ref(true);
     // function preview(url, e) {
     //   const { width, height } = e.target;
@@ -65,18 +70,8 @@ export default {
             'Bull. Screenprint in colors with embossing on Arches Cover paper',
           price: 12000,
         },
-        {
-          key: '13',
-          v: 2,
-          src: 'assets/images/b2.png',
-          artist: 'Picasso',
-          info:
-            'Bull. Screenprint in colors with embossing on Arches Cover paper',
-          price: 12000,
-        },
       ];
-      console.log(list, newdata);
-      list = [...list, ...newdata];
+      list.value = [...list.value, ...newdata];
     }
     function loadMore() {
       fetchData();

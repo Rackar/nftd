@@ -167,7 +167,7 @@ export default {
         price: 12000,
       },
     ];
-    const data = ref([]);
+    let data = ref([]);
     let hasMore = ref(true);
     // function preview(url, e) {
     //   const { width, height } = e.target;
