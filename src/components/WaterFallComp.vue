@@ -4,7 +4,10 @@
       <template #default="item">
         <router-link to="/static">
           <div class="card">
-            <img class="img" :src="item.src" />
+            <div>
+              <img class="img" :src="item.src" />
+              <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
+            </div>
             <!-- <p>{{ item.src }}</p> -->
             <div class="artist">{{item.artist}}</div>
             <div class="info">{{item.info}}</div>
@@ -14,12 +17,12 @@
       </template>
     </water-fall>
   </div>
-  <button class="halo-btn halo-btn-primary" @click.stop.prevent="loadMore">加载更多</button>
+  <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn>
 </template>
 
 <script>
 import { ref, reactive, onMounted } from 'vue';
-import WaterFall from 'kuan-vue-waterfall';
+import WaterFall from '../libs/water-fall';
 
 export default {
   name: 'WaterFallComponent',
@@ -85,10 +88,47 @@ export default {
       dense: ref(false),
       list,
       loadMore,
+      fetchData,
     };
   },
 };
 </script>
 
 <style>
+.card {
+  padding: 10px;
+  background-color: white;
+  border-radius: 3px;
+  color: #666;
+  line-height: 1.5;
+  word-break: break-all;
+}
+.card .img {
+  width: 100%;
+  margin-bottom: 5px;
+  /* cursor: pointer; */
+}
+.card .img:hover {
+  opacity: 0.5;
+}
+.card > .artist {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #222222;
+}
+.card > .info {
+  font-size: 14px;
+  color: rgba(34, 34, 34, 0.75);
+}
+.card > .price {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #222222;
+}
+.halo-btn {
+  margin: 30px auto;
+  display: block;
+}
 </style>

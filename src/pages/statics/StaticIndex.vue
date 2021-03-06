@@ -252,9 +252,9 @@ export default {
   color: #4a4a4a;
 }
 .container {
-  min-height: 90vh;
+  /* min-height: 90vh; */
 }
-.card {
+/* .card {
   padding: 10px;
   background-color: white;
   border-radius: 3px;
@@ -265,7 +265,6 @@ export default {
 .card .img {
   width: 100%;
   margin-bottom: 5px;
-  /* cursor: pointer; */
 }
 .card .img:hover {
   opacity: 0.5;
@@ -285,9 +284,9 @@ export default {
   font-size: 14px;
   font-weight: bold;
   color: #222222;
-}
-.halo-btn {
+} */
+/* .halo-btn {
   margin: 30px auto;
   display: block;
-}
+} */
 </style>
