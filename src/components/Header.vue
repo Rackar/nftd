@@ -9,7 +9,9 @@
         <img class="left-image" width="40" height="40" src="assets/logos/twitter.png" alt srcset />
       </div>
       <div class="right-toolbar">
-        <span class="right-title">Connect Wallet</span>
+        <span class="right-title">
+          <ConnectWallet />
+        </span>
         <span class="right-title">About</span>
       </div>
     </section>
@@ -18,8 +20,10 @@
 
 <script>
 import { ref, reactive, onMounted } from 'vue';
+import ConnectWallet from './ConnectWallet';
 
 export default {
+  components: { ConnectWallet },
   setup() {
     return {
       text: ref(''),

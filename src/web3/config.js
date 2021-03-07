@@ -612,8 +612,6 @@ let ABI = [
 ]
 
 
-
-
 function init() {
     //获得web3实例
     if (typeof web3 !== 'undefined') {
@@ -647,6 +645,7 @@ function dNFTbuyer(dNFTid) {
         }).catch(e => console.log(e));
     })
 }
-init()
-// wrapNFT(Web3.utils.randomHex(32), "")
-dNFTbuyer(0)
+// init()
+// // wrapNFT(Web3.utils.randomHex(32), "")
+// dNFTbuyer(0)
+export { ABI, address }

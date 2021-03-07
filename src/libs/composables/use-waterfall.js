@@ -29,7 +29,7 @@ export default (itemWidth, data = []) => {
   }
 
   const setContainerWidth = () => {
-    let clientWidth = container.value && container.value.clientWidth || 0
+    let clientWidth = (container.value && container.value.clientWidth) || 0
     colNum = Math.floor(clientWidth / itemWidth) || 1
     state.containerWidth = `${colNum * itemWidth}px`
   }
