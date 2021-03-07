@@ -1,5 +1,7 @@
 <template>
-  <WaterFallComp :data="list" />
+  <div>
+    <WaterFallComp :data="list" @loadMore="fetchMore" />
+  </div>
 </template>
 
 <script>
@@ -11,6 +13,23 @@ export default {
   components: {
     WaterFallComp,
   },
+  // emits: {
+  //   loadMore: () => {
+  //     console.log('res');
+  //     let newdata = [
+  //       {
+  //         key: '12',
+  //         v: 1,
+  //         src: 'assets/images/b1.png',
+  //         artist: 'Picasso',
+  //         info:
+  //           'Bull. Screenprint in colors with embossing on Arches Cover paper',
+  //         price: 12000,
+  //       },
+  //     ];
+  //     list.value = [...list.value, ...newdata];
+  //   },
+  // },
 
   setup() {
     let list = ref([
@@ -33,10 +52,27 @@ export default {
         price: 12000,
       },
     ]);
+    function fetchMore() {
+      console.log('res');
+      let newdata = [
+        {
+          key: '12',
+          v: 1,
+          src: 'assets/images/b1.png',
+          artist: 'Picasso',
+          info:
+            'Bull. Screenprint in colors with embossing on Arches Cover paper',
+          price: 12000,
+        },
+      ];
+      list.value = [...list.value, ...newdata];
+    }
 
     // onMounted(() => {});
     return {
       list,
+      fetchMore,
+      // loadMore,
     };
   },
 };

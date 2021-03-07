@@ -23,7 +23,8 @@
         <div class="tabs">New</div>
         <div class="tabs">Price</div>
       </div>
-      <div class="water-fall" v-if="data.length">
+      <WaterFallComp :data="data" @loadMore="fetchData" />
+      <!-- <div class="water-fall" v-if="data.length">
         <water-fall :data="data" gap="20px" width="240px" class="container" :delay="true">
           <template #default="item">
             <router-link to="/static/nft">
@@ -33,7 +34,6 @@
                   <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
                 </div>
 
-                <!-- <p>{{ item.src }}</p> -->
                 <div class="artist">{{item.artist}}</div>
                 <div class="info">{{item.info}}</div>
                 <div class="price">{{item.price}} ETH</div>
@@ -41,8 +41,8 @@
             </router-link>
           </template>
         </water-fall>
-      </div>
-      <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn>
+      </div>-->
+      <!-- <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn> -->
     </section>
   </div>
 </template>
@@ -50,13 +50,15 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import { api } from '../../boot/axios';
-import WaterFall from '../../libs/water-fall';
+// import WaterFall from '../../libs/water-fall';
 import Header from '../../components/Header.vue';
+import WaterFallComp from '../../components/WaterFallComp';
 
 export default {
   components: {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    WaterFall,
+    // WaterFall,
+    WaterFallComp,
     Header,
   },
   setup() {
@@ -204,7 +206,7 @@ export default {
       fetchData();
     }
     onMounted(() => {
-      data.value.push(...initdata);
+      data.value = [...initdata];
     });
     return {
       text: ref(''),

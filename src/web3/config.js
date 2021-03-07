@@ -610,20 +610,22 @@ let ABI = [
     }
 ]
 
-//获得web3实例
-if (typeof web3 !== 'undefined') {
-    web3js = new Web3(web3.currentProvider);
-} else {
-    // set the provider you want from Web3.providers
-    // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-    web3js = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
+
+
+
+function init() {
+    //获得web3实例
+    if (typeof web3 !== 'undefined') {
+        web3js = new Web3(web3.currentProvider);
+    } else {
+        // set the provider you want from Web3.providers
+        // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        web3js = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
+    }
+
+    // 实例化 myContract
+    myContract = new web3js.eth.Contract(ABI, address);
 }
-
-// 实例化 myContract
-var myContract = new web3js.eth.Contract(ABI, address);
-
-// myContract.methods.myMethod(123).call() //本地节点
-// myContract.methods.myMethod(123).send() //上链
 
 function wrapNFT(contractAd, NFTid) {
     return new Promise((resolve, reject) => {

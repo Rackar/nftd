@@ -34,48 +34,49 @@ import EssentialLink from 'components/EssentialLink.vue';
 
 const linksList = [
   {
-    title: '首页',
-    caption: 'MainPage',
+    title: '静态',
+    caption: '',
     icon: 'public',
     link: '/',
+  },
+  {
+    title: 'nft',
+    caption: '',
+    icon: 'list',
+    link: '/nft',
+  },
+  {
+    title: '框架',
+    caption: 'MainPage',
+    icon: 'public',
+    link: '/test/',
   },
   {
     title: '发起众筹',
     caption: 'Add',
     icon: 'record_voice_over',
-    link: '/add',
+    link: '/test/add',
   },
   {
     title: '众筹列表',
     caption: 'List',
     icon: 'code',
-    link: '/list',
+    link: '/test/list',
   },
 
   {
     title: '瀑布流',
     caption: '',
     icon: 'list',
-    link: '/water',
+    link: '/test/water',
   },
   {
     title: '瀑布流组件',
     caption: '',
     icon: 'list',
-    link: '/water2',
+    link: '/test/water2',
   },
-  {
-    title: '静态',
-    caption: '',
-    icon: 'list',
-    link: '/static',
-  },
-  {
-    title: 'nft',
-    caption: '',
-    icon: 'list',
-    link: '/static/nft',
-  },
+
   // {
   //   title: 'Discord Chat Channel',
   //   caption: 'chat.quasar.dev',

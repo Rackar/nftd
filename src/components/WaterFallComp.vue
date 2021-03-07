@@ -2,7 +2,7 @@
   <div class="water-fall" v-if="list.length">
     <water-fall :data="list" gap="20px" width="240px" class="container" :delay="true">
       <template #default="item">
-        <router-link to="/static">
+        <router-link to="/nft/">
           <div class="card">
             <div>
               <img class="img" :src="item.src" />
@@ -23,6 +23,7 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import WaterFall from '../libs/water-fall';
+let list = ref([]);
 
 export default {
   name: 'WaterFallComponent',
@@ -54,8 +55,12 @@ export default {
       default: 200,
     },
   },
-  setup(props) {
-    let list = ref([]);
+  watch: {
+    data(thenew, theold) {
+      list.value = [...thenew];
+    },
+  },
+  setup(props, context) {
     list.value = [...props.data];
     let hasMore = ref(true);
     // function preview(url, e) {
@@ -63,18 +68,8 @@ export default {
     //   photoSwipe.preview(width ? [{ src: url, w: width, h: height }] : url);
     // }
     function fetchData() {
-      let newdata = [
-        {
-          key: '12',
-          v: 1,
-          src: 'assets/images/b1.png',
-          artist: 'Picasso',
-          info:
-            'Bull. Screenprint in colors with embossing on Arches Cover paper',
-          price: 12000,
-        },
-      ];
-      list.value = [...list.value, ...newdata];
+      console.log(context);
+      context.emit('loadMore');
     }
     function loadMore() {
       fetchData();
