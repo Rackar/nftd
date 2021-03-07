@@ -1,3 +1,4 @@
+let Web3 = require("web3")
 let address = "0x4F403512972058aC424A05d2460D03b54E70c0e8" //kovan合约地址
 let ABI = [
     {
@@ -620,7 +621,9 @@ function init() {
     } else {
         // set the provider you want from Web3.providers
         // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-        web3js = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
+        // web3js = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
+        web3js = new Web3(new Web3.providers.WebsocketProvider("wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509"));
+
     }
 
     // 实例化 myContract
@@ -629,10 +632,10 @@ function init() {
 
 function wrapNFT(contractAd, NFTid) {
     return new Promise((resolve, reject) => {
-        myContract.methods.warp(contractAd, NFTid).call().then(function (result) {
+        myContract.methods.wrap(contractAd, NFTid).call().then(function (result) {
             console.log("dNFT: " + JSON.stringify(result));
             resolve(result)
-        });
+        }).catch(e => console.log(e));
     })
 }
 
@@ -641,8 +644,9 @@ function dNFTbuyer(dNFTid) {
         myContract.methods.dNFTbuyer(dNFTid).call().then(function (result) {
             console.log("dNFT buy status: " + JSON.stringify(result));
             resolve(result)
-        });
+        }).catch(e => console.log(e));
     })
 }
-
-
+init()
+// wrapNFT(Web3.utils.randomHex(32), "")
+dNFTbuyer(0)
