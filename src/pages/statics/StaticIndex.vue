@@ -14,7 +14,7 @@
       </div>
     </section>
     <section class="banner">
-      <img src="assets/images/banner.png" alt height="210" />
+      <img src="icons/banner@3x.png" alt height="210" />
       <!-- <div class="banner-img">banner</div> -->
     </section>
     <section>

@@ -1,8 +1,8 @@
 <template>
   <q-page class="column items-center justify-evenly">
-    <h1 class="row myh1">发起团购</h1>
+    <h1 class="row myh1">发起</h1>
     <div class="row">
-      <q-input outlined v-model="text" label="团购标题" />
+      <q-input outlined v-model="text" label="标题" />
     </div>
     <div class="row">
       <q-editor
@@ -86,9 +86,16 @@
         <q-input
           filled
           type="number"
+          v-model="address"
+          label="NFT地址"
+          lazy-rules
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+        />
+        <q-input
+          filled
+          type="number"
           v-model="totals"
           label="筹集资金总数"
-          hint="prices"
           lazy-rules
           :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
@@ -135,7 +142,7 @@ export default defineComponent({
   name: 'AddArticle',
   setup() {
     const $q = useQuasar();
-    const qeditor = ref('输入团购详情');
+    const qeditor = ref('details');
 
     const totals = ref(null);
     const tokens = ref(null);

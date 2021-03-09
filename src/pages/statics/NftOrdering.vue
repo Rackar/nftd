@@ -2,7 +2,7 @@
   <div class="main-page">
     <div class="row">
       <div class="col">
-        <div class="q-pa-md">
+        <div>
           <q-carousel
             class="left-slide"
             swipeable
@@ -68,12 +68,12 @@
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="Details">
           <div class="row">
-            <div class="col">
+            <div class="col p-30">
               <div>About artist</div>
               <div>The girl of Avignon" is an oil painting created by Spanish painter Pablo Ruiz Picasso in 1907. Museum of modern art, New York.In this painting, there are five girls sitting or standing, scratching theirheads and posturing. In front of them is a small square stool with several clusters of grapes on it. The characters are completely distorted andillegible. The picture presents a single plane."I'm not a surrealist, I've never been divorced from reality. I always stayin the real situation This is Picasso's idea when he created "Guernica".Although people don't think Picasso is a realistic painter, in Picasso's idea, his paintings are not only based on the strongest emotional experience in his heart, but also the depiction of reality. Picasso is the most creative and far-reaching artistic genius in the history of western modernart in the 20th century. He is known as "the most complex" and knowshow to express</div>
               <div>Read more</div>
             </div>
-            <div class="col">
+            <div class="col p-30">
               <TransactionRecords />
               <div>address:0xdfsodfsjdflkjlj</div>
             </div>
@@ -151,7 +151,7 @@ export default defineComponent({
 </script>
 <style>
 .main-page {
-  width: 1440px;
+  width: 1200px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -203,5 +203,8 @@ export default defineComponent({
 .comment-title {
   font-weight: bold;
   font-size: 16px;
+}
+.p-30 {
+  padding: 30px 30px;
 }
 </style>

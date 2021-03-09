@@ -2,11 +2,11 @@
   <div>
     <section class="row top">
       <div class="col-2 offset-1 left-toolbar">
-        <img class="left-image" width="40" height="40" src="assets/logos/logo1.png" alt srcset />
-        <span class="header-title">Filoli</span>
+        <img class="left-image" height="40" src="icons/logo@2x.png" alt srcset />
+        <!-- <span class="header-title">Filoli</span> -->
 
-        <img class="left-image" width="40" height="40" src="assets/logos/chat.png" alt srcset />
-        <img class="left-image" width="40" height="40" src="assets/logos/twitter.png" alt srcset />
+        <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
+        <img class="left-image" width="40" height="40" src="icons/twitter@2x.png" alt srcset />
       </div>
       <div class="right-toolbar">
         <span class="right-title">
