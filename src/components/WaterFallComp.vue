@@ -8,10 +8,8 @@
               <img class="img" :src="item.src" />
               <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
             </div>
-            <!-- <p>{{ item.src }}</p> -->
             <div class="artist">{{item.artist}}</div>
             <div class="info">{{item.info}}</div>
-            <!-- <div>{{item.v}}</div> -->
           </div>
         </router-link>
       </template>
