@@ -103,8 +103,8 @@ export default defineComponent({
       // await wrapNFT(address_N, 1);
       // await dNFTbuyer(2);
       // await idTodNFT(2);
-      // unClaimOf(2, '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490');
-      claim(2);
+      unClaimOf(2, '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490');
+      // claim(2);
       // balanceOf('0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490');
       // approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1); //已成功 A2
     };
@@ -315,57 +315,57 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         current.myContract.methods
           .dNFTbuyer(dNFTid)
-          .send({ from: current.account })
+          .send({ from: current.account, value: Web3.utils.toWei('0.3') })
           .then(function (result) {
             console.log('dNFT buy status: ' + JSON.stringify(result));
             resolve(result);
             let status = {
               // blockHash:
-              //   '0x746eb18087f04212d3a710ec578d97e31b6440589f6ac4dc83827fcb211c064b',
-              // blockNumber: 23848594,
+              //   '0xd1b68fde8c5639223c6bd1f5efb097caaa74c354f9cf379e97991835151a64c4',
+              // blockNumber: 23849764,
               // contractAddress: null,
-              // cumulativeGasUsed: 3785086,
+              // cumulativeGasUsed: 3059266,
               // from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              // gasUsed: 49250,
+              // gasUsed: 100385,
               // logsBloom:
               //   '0x00000000000000000000000000000000000002000000000000000000080000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000008000000800000000020000000000000000000000000000000000000000000000000000001080000000000',
               // status: true,
               // to: '0x4f403512972058ac424a05d2460d03b54e70c0e8',
               // transactionHash:
-              //   '0x718be646fce0c8541a533b04ea0445de5a4e783ec08004ca8997be18c8602d26',
-              // transactionIndex: 9,
+              //   '0x6772092f570315a862e351202b0acd128bc9770f76fe661727dfa204714803e8',
+              // transactionIndex: 25,
               // events: {
               //   TransferSingle: {
               //     address: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
               //     blockHash:
-              //       '0x746eb18087f04212d3a710ec578d97e31b6440589f6ac4dc83827fcb211c064b',
-              //     blockNumber: 23848594,
-              //     logIndex: 19,
+              //       '0xd1b68fde8c5639223c6bd1f5efb097caaa74c354f9cf379e97991835151a64c4',
+              //     blockNumber: 23849764,
+              //     logIndex: 41,
               //     removed: false,
               //     transactionHash:
-              //       '0x718be646fce0c8541a533b04ea0445de5a4e783ec08004ca8997be18c8602d26',
-              //     transactionIndex: 9,
+              //       '0x6772092f570315a862e351202b0acd128bc9770f76fe661727dfa204714803e8',
+              //     transactionIndex: 25,
               //     transactionLogIndex: '0x0',
               //     type: 'mined',
-              //     id: 'log_8c53bd30',
+              //     id: 'log_869a90da',
               //     returnValues: {
               //       0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
               //       1: '0x0000000000000000000000000000000000000000',
               //       2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
               //       3: '2',
-              //       4: '0',
+              //       4: '300000000000000000000',
               //       operator: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
               //       from: '0x0000000000000000000000000000000000000000',
               //       to: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
               //       id: '2',
-              //       value: '0',
+              //       value: '300000000000000000000',
               //     },
               //     event: 'TransferSingle',
               //     signature:
               //       '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
               //     raw: {
               //       data:
-              //         '0x00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000',
+              //         '0x000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000001043561a8829300000',
               //       topics: [
               //         '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
               //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',

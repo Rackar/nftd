@@ -35,16 +35,18 @@
         </div>
       </div>
       <div class="col">
-        <div class="order-title">Awenon Maden</div>
-        <div class="order-artist">Picasso</div>
-        <div class="order-artist-info">Spaninsh,1881-1973</div>
-        <div
-          class="order-info"
-        >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
-        <div class="order-price">19,000 ETH ($3,300.90)</div>
-        <div class="order-countdown">count down {{countdownLeft}}</div>
-        <div class="order-buy">
-          <q-btn>Buy Now</q-btn>
+        <div class="right-side">
+          <div class="order-title">Awenon Maden</div>
+          <div class="order-artist">Picasso</div>
+          <div class="order-artist-info">Spaninsh,1881-1973</div>
+          <div
+            class="order-info"
+          >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
+          <div class="order-price">19,000 ETH ($3,300.90)</div>
+          <div class="order-countdown">count down {{countdownLeft}}</div>
+          <div class="order-buy">
+            <q-btn>Buy Now</q-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -168,6 +170,11 @@ export default defineComponent({
 }
 .left-slide {
   border-radius: 12px;
+  margin: 30px;
+  width: 400px;
+}
+.right-side {
+  margin: 30px;
 }
 .order-title {
   padding: 20px 0;
