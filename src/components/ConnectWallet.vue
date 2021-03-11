@@ -100,13 +100,14 @@ export default defineComponent({
       }
     };
     let test = async () => {
-      // await wrapNFT(address_N, 1);
+      // await wrapNFT(address_N, 2);
       // await dNFTbuyer(2);
       // await idTodNFT(2);
-      unClaimOf(2, '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490');
+      // unClaimOf(2, current.account);
       // claim(2);
-      // balanceOf('0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490');
-      // approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1); //已成功 A2
+      // balanceOf(current.account);
+      // approve(address, 2); //已成功 A2
+      getPastEvents();
     };
     function balanceOf(userAddress) {
       return new Promise((resolve, reject) => {
@@ -117,6 +118,56 @@ export default defineComponent({
           .then(function (result) {
             console.log('balance: ' + JSON.stringify(result));
             resolve(result);
+          })
+          .catch((e) => console.log(e));
+      });
+    }
+    function getPastEvents(eventName = 'NewNFTwraped') {
+      return new Promise((resolve, reject) => {
+        console.log(current);
+        current.myContract
+          .getPastEvents(eventName, { fromBlock: 0, toBlock: 'latest' })
+          .then(function (result) {
+            console.log('events: ' + JSON.stringify(result));
+            resolve(result);
+            let events = [
+              {
+                address: '0x4667fbC2C61fb2370F8314b356924E01Fe2e1A6e',
+                blockHash:
+                  '0xa0cc7d75b7e549c8ec6ac8d81d180886fedeb42d0eca34cff9420a8559a88b51',
+                blockNumber: 23861142,
+                logIndex: 3,
+                removed: false,
+                transactionHash:
+                  '0xd7b90e62e5585eece2113b672e3787e1bd0d2c53a024f84ea0bc79c0354f0dcf',
+                transactionIndex: 1,
+                transactionLogIndex: '0x3',
+                type: 'mined',
+                id: 'log_cdb2d4d0',
+                returnValues: {
+                  0: '0x227897e07508229AA6F794D39681428351447201',
+                  1: '2',
+                  2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                  NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
+                  NFTid: '2',
+                  Principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                },
+                event: 'NewNFTwraped',
+                signature:
+                  '0x4958f28e48c3d79a95eee5a92db2dd8f218fce330b02d862233214f605baadd1',
+                raw: {
+                  data: '0x',
+                  topics: [
+                    '0x4958f28e48c3d79a95eee5a92db2dd8f218fce330b02d862233214f605baadd1',
+                    '0x000000000000000000000000227897e07508229aa6f794d39681428351447201',
+                    '0x0000000000000000000000000000000000000000000000000000000000000002',
+                    '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                  ],
+                },
+              },
+            ];
+
+            let NFTlist = events.map((res) => res.returnValues);
           })
           .catch((e) => console.log(e));
       });
@@ -186,6 +237,58 @@ export default defineComponent({
               //   },
               // }
             };
+            // let t = {
+            //   blockHash:
+            //     '0xe7d6831bc2f91bab52eef5a054e43f55aec6fe2744f98888daef227ce94e982d',
+            //   blockNumber: 23861082,
+            //   contractAddress: null,
+            //   cumulativeGasUsed: 328124,
+            //   from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+            //   gasUsed: 35500,
+            //   logsBloom:
+            //     '0x04000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000002000000000000000000000210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000080000000000100000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000800000000008000010000000000000000000000000000000000000008000000000000000000000',
+            //   status: true,
+            //   to: '0x227897e07508229aa6f794d39681428351447201',
+            //   transactionHash:
+            //     '0x63b9f60582db977fc0137f349ed93a668ea705fe00741eeac6b63fa514414e20',
+            //   transactionIndex: 5,
+            //   events: {
+            //     Approval: {
+            //       address: '0x227897e07508229AA6F794D39681428351447201',
+            //       blockHash:
+            //         '0xe7d6831bc2f91bab52eef5a054e43f55aec6fe2744f98888daef227ce94e982d',
+            //       blockNumber: 23861082,
+            //       logIndex: 10,
+            //       removed: false,
+            //       transactionHash:
+            //         '0x63b9f60582db977fc0137f349ed93a668ea705fe00741eeac6b63fa514414e20',
+            //       transactionIndex: 5,
+            //       transactionLogIndex: '0x0',
+            //       type: 'mined',
+            //       id: 'log_f50b7f24',
+            //       returnValues: {
+            //         0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+            //         1: '0x4667fbC2C61fb2370F8314b356924E01Fe2e1A6e',
+            //         2: '2',
+            //         owner: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+            //         approved: '0x4667fbC2C61fb2370F8314b356924E01Fe2e1A6e',
+            //         tokenId: '2',
+            //       },
+            //       event: 'Approval',
+            //       signature:
+            //         '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+            //       raw: {
+            //         data: '0x',
+            //         topics: [
+            //           '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+            //           '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+            //           '0x0000000000000000000000004667fbc2c61fb2370f8314b356924e01fe2e1a6e',
+            //           '0x0000000000000000000000000000000000000000000000000000000000000002',
+            //         ],
+            //       },
+            //     },
+            //   },
+            // };
             resolve(result);
           })
           .catch((e) => console.log(e));

@@ -1,7 +1,7 @@
 <template>
   <div class="main-page">
-    <div class="row">
-      <div class="col">
+    <div class="row wrap">
+      <div class="col-xs-12 col-sm-12 col-md-6">
         <div>
           <q-carousel
             class="left-slide"
@@ -34,7 +34,7 @@
           </q-carousel>
         </div>
       </div>
-      <div class="col">
+      <div class="col-xs-12 col-sm-12 col-md-6">
         <div class="right-side">
           <div class="order-title">Awenon Maden</div>
           <div class="order-artist">Picasso</div>
@@ -71,9 +71,9 @@
         <q-tab-panel name="Details">
           <div class="row">
             <div class="col p-30">
-              <div>About artist</div>
+              <div class="about-artist">About artist</div>
               <div>The girl of Avignon" is an oil painting created by Spanish painter Pablo Ruiz Picasso in 1907. Museum of modern art, New York.In this painting, there are five girls sitting or standing, scratching theirheads and posturing. In front of them is a small square stool with several clusters of grapes on it. The characters are completely distorted andillegible. The picture presents a single plane."I'm not a surrealist, I've never been divorced from reality. I always stayin the real situation This is Picasso's idea when he created "Guernica".Although people don't think Picasso is a realistic painter, in Picasso's idea, his paintings are not only based on the strongest emotional experience in his heart, but also the depiction of reality. Picasso is the most creative and far-reaching artistic genius in the history of western modernart in the 20th century. He is known as "the most complex" and knowshow to express</div>
-              <div>Read more</div>
+              <div class="read-more">Read more</div>
             </div>
             <div class="col p-30">
               <TransactionRecords />
@@ -83,7 +83,9 @@
         </q-tab-panel>
 
         <q-tab-panel name="Commnets">
-          <q-input v-model="text" filled type="textarea" />
+          <q-input v-model="text" filled type="textarea">
+            <q-btn v-if="text.length" class="btn-save">save</q-btn>
+          </q-input>
 
           <div class="comment-title">xx comments</div>
           <div v-for="x in 4" :key="x.key">
@@ -153,29 +155,37 @@ export default defineComponent({
 </script>
 <style>
 .main-page {
-  width: 1200px;
+  width: 1024px;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
 }
-@media only screen and (max-width: 1440px) {
-  .main-page {
-    width: 720px;
-  }
-}
-@media only screen and (max-width: 720px) {
-  .main-page {
-    width: 400px;
-  }
-}
 .left-slide {
   border-radius: 12px;
   margin: 30px;
-  width: 400px;
+  /* width: 400px; */
 }
 .right-side {
   margin: 30px;
 }
+@media only screen and (max-width: 1440px) {
+  .main-page {
+    width: 800px;
+  }
+  .left-slide {
+    /* margin: 0; */
+    /* width: 300px; */
+  }
+  .right-side {
+    /* margin: 0; */
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .main-page {
+    width: 400px;
+  }
+}
+
 .order-title {
   padding: 20px 0;
   font-size: 18px;
@@ -211,7 +221,19 @@ export default defineComponent({
   font-weight: bold;
   font-size: 16px;
 }
+.btn-save {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
 .p-30 {
   padding: 30px 30px;
+}
+.about-artist {
+  font-size: 22px;
+}
+.read-more {
+  color: grey;
+  cursor: pointer;
 }
 </style>
