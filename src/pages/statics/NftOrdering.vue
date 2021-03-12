@@ -45,7 +45,12 @@
           <div class="order-price">19,000 ETH ($3,300.90)</div>
           <div class="order-countdown">count down {{countdownLeft}}</div>
           <div class="order-buy">
-            <q-btn>Buy Now</q-btn>
+            <q-btn @click="buyDnft" :disable="current.loading">
+              Buy Now
+              <q-inner-loading :showing="current.loading">
+                <q-spinner color="primary" size="3em" :thickness="2" />
+              </q-inner-loading>
+            </q-btn>
           </div>
         </div>
       </div>
@@ -98,19 +103,39 @@
     </div>
 
     <!-- </q-card> -->
+    <q-dialog v-model="current.showBuytab">
+      <q-card class="sell-card">
+        <div>Buy dNFT:</div>
+        <q-input outlined v-model="current.count" />
+
+        <div></div>
+        <q-btn @click="confirmBuy" label="Confirm"></q-btn>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
-import { date } from 'quasar';
+import { defineComponent, ref, onMounted, reactive } from 'vue';
+import { date, useQuasar } from 'quasar';
 import TransactionRecords from '../../components/TransactionRecords.vue';
+import { ABI, address } from 'src/web3/config';
+import { api } from '../../boot/axios';
+const Web3 = require('web3');
 
 export default defineComponent({
   name: 'NftOrdering',
   components: { TransactionRecords },
   props: {
-    title: {
+    nftcontract: {
+      type: String,
+      required: true,
+    },
+    nftid: {
+      type: String,
+      required: true,
+    },
+    dnftid: {
       type: String,
       required: true,
     },
@@ -119,8 +144,49 @@ export default defineComponent({
       type: Boolean,
     },
   },
-  setup() {
+  setup(props) {
+    let $q = useQuasar();
     let countdownLeft = ref('');
+    let current = reactive({
+      showBuytab: false,
+      count: 1,
+      loading: false,
+      boughters: [],
+    });
+
+    function init() {
+      const web3 = new Web3((window as any).ethereum);
+      const myContract = new web3.eth.Contract(ABI, address); //nft
+      return myContract;
+    }
+    function countToWei(number = 1) {
+      return Web3.utils.toWei((number * 0.001).toString());
+    }
+    function dNFTbuyer(dNFTid: string, number = 1) {
+      let myContract = init();
+      current.showBuytab = false;
+      current.loading = true;
+      return new Promise((resolve, reject) => {
+        myContract.methods
+          .dNFTbuyer(dNFTid)
+          .send({
+            from: (window as any).ethereum.selectedAddress,
+            value: countToWei(number),
+          })
+          .then(function (result: any) {
+            current.loading = false;
+            console.log('dNFT buy status: ' + JSON.stringify(result));
+            $q.notify('success');
+            resolve(result);
+          })
+          .catch((e: any) => console.log(e));
+      });
+    }
+    async function getBoughtHistory() {
+      let list = await api.get('boughters?id=' + props.dnftid);
+      current.boughters = list.data.data;
+      debugger;
+    }
     function formatTimegap(times: number) {
       let days = Math.floor(times / 3600 / 24);
       let hours = Math.floor(times / 3600) - days * 24;
@@ -137,9 +203,17 @@ export default defineComponent({
       let diffSec = date.getDateDiff(endDate, now, 'seconds');
       countdownLeft.value = formatTimegap(diffSec);
     }
+
+    function buyDnft() {
+      current.showBuytab = true;
+    }
+    function confirmBuy() {
+      dNFTbuyer(props.dnftid, current.count);
+    }
     onMounted(() => {
       let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
       setInterval(() => Countdown(endDate), 1000);
+      getBoughtHistory();
     });
     let list = [{}];
     return {
@@ -149,6 +223,9 @@ export default defineComponent({
       fullscreen: ref(false),
       tab: ref('Details'),
       text: ref(''),
+      current,
+      buyDnft,
+      confirmBuy,
     };
   },
 });
@@ -235,5 +312,8 @@ export default defineComponent({
 .read-more {
   color: grey;
   cursor: pointer;
+}
+.sell-card {
+  padding: 50px;
 }
 </style>

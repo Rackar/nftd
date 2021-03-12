@@ -34,7 +34,7 @@
                   <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
                 </div>
 
-                <div class="artist">{{item.artist}}</div>
+                <div class="name">{{item.name}}</div>
                 <div class="info">{{item.info}}</div>
                 <div class="price">{{item.price}} ETH</div>
               </div>
@@ -53,6 +53,8 @@ import { api } from '../../boot/axios';
 // import WaterFall from '../../libs/water-fall';
 import Header from '../../components/Header.vue';
 import WaterFallComp from '../../components/WaterFallComp';
+import { ABI_721_standard } from 'src/web3/config';
+const Web3 = require('web3');
 
 export default {
   components: {
@@ -65,111 +67,123 @@ export default {
     let initdata = [
       {
         key: '0',
-        v: 1,
-        src: 'assets/images/b1.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 1,
+        image: 'assets/images/b1.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '1',
-        v: 2,
-        src: 'assets/images/b2.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 2,
+        image: 'assets/images/b2.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '2',
-        v: 3,
-        src: 'assets/images/b3.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 3,
+        image: 'assets/images/b3.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '3',
-        v: 4,
-        src: 'assets/images/b4.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 4,
+        image: 'assets/images/b4.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '4',
-        v: 5,
-        src: 'assets/images/b5.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 5,
+        image: 'assets/images/b5.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '5',
-        v: 6,
-        src: 'assets/images/b6.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 6,
+        image: 'assets/images/b6.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '6',
-        v: 7,
-        src: 'assets/images/b7.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 7,
+        image: 'assets/images/b7.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '7',
-        v: 8,
-        src: 'assets/images/b8.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 8,
+        image: 'assets/images/b8.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '8',
-        v: 9,
-        src: 'assets/images/b9.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 9,
+        image: 'assets/images/b9.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '9',
-        v: 10,
-        src: 'assets/images/b10.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 10,
+        image: 'assets/images/b10.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '10',
-        v: 11,
-        src: 'assets/images/b11.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 11,
+        image: 'assets/images/b11.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
       {
         key: '11',
-        v: 12,
-        src: 'assets/images/b12.png',
-        artist: 'Picasso',
-        info:
+        NFTid: 12,
+        image: 'assets/images/b12.png',
+        name: 'Picasso',
+        description:
           'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
       },
     ];
     let data = ref([]);
@@ -182,21 +196,23 @@ export default {
       let newdata = [
         {
           key: '12',
-          v: 1,
-          src: 'assets/images/art1.jpg',
-          artist: 'Picasso',
-          info:
+          NFTid: 1,
+          image: 'assets/images/art1.jpg',
+          name: 'Picasso',
+          description:
             'Bull. Screenprint in colors with embossing on Arches Cover paper',
           price: 12000,
+          NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
         },
         {
           key: '13',
-          v: 2,
-          src: 'assets/images/art2.jpg',
-          artist: 'Picasso',
-          info:
+          NFTid: 2,
+          image: 'assets/images/art2.jpg',
+          name: 'Picasso',
+          description:
             'Bull. Screenprint in colors with embossing on Arches Cover paper',
           price: 12000,
+          NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
         },
       ];
       data.value = [...data.value, ...initdata];
@@ -205,8 +221,29 @@ export default {
     function loadMore() {
       fetchData();
     }
-    onMounted(() => {
-      data.value = [...initdata];
+    onMounted(async () => {
+      let list = await api.get('dnfts');
+      let nfts = list.data.data;
+      let metaDatas = [];
+      nfts.forEach(async (nft) => {
+        const web3 = new Web3(window.ethereum);
+        const myContract = new web3.eth.Contract(
+          ABI_721_standard,
+          nft.NFTCotract
+        ); //nft
+        await myContract.methods
+          .uri(nft.NFTid)
+          .call()
+          .then((meta) => {
+            meta.NFTCotract = nft.NFTCotract;
+            meta.NFTid = nft.NFTid;
+            meta.dNFTid = nft.dNFTid;
+            metaDatas.push(meta);
+          });
+      });
+      console.log(metaDatas);
+
+      data.value = [...initdata, ...metaDatas];
     });
     return {
       text: ref(''),
@@ -271,7 +308,7 @@ export default {
 .card .img:hover {
   opacity: 0.5;
 }
-.card > .artist {
+.card > .name {
   text-align: center;
   font-size: 20px;
   font-weight: bold;

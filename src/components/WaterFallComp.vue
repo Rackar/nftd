@@ -2,14 +2,14 @@
   <div class="water-fall" v-if="list.length">
     <water-fall :data="list" gap="20px" width="240px" class="container" :delay="true">
       <template #default="item">
-        <router-link to="/nft/">
+        <router-link :to="'/nft/'+item.NFTCotract+'/'+item.NFTid+'/'+item.dNFTid">
           <div class="card">
             <div>
-              <img class="img" :src="item.src" />
+              <img class="img" :src="item.image" />
               <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
             </div>
-            <div class="artist">{{item.artist}}</div>
-            <div class="info">{{item.info}}</div>
+            <div class="artist">{{item.name}}</div>
+            <div class="info">{{item.description}}</div>
           </div>
         </router-link>
       </template>

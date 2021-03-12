@@ -88,6 +88,7 @@ module.exports = configure(function (/* ctx */) {
           position: 'top',
           /* look at QUASARCONFOPTIONS from the API card (bottom of page) */
         },
+        loading: { /* look at QUASARCONFOPTIONS from the API card (bottom of page) */ }
       },
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -101,7 +102,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify'],
+      plugins: ['Notify', 'Loading'],
     },
 
     // animations: 'all', // --- includes all animations

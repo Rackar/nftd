@@ -1,9 +1,26 @@
 <template>
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
   <span v-else>
-    <span>{{current.account}}</span>
     <button @click="test">test</button>
+    <q-btn @click="wrapToSell" label="Sell"></q-btn>
+    <span class="cursor-pointer" @click="copyAddress(current.account)">
+      {{acc}}
+      <q-tooltip anchor="bottom middle" self="center middle">
+        <!-- {{current.account}} -->
+        Copy Account Address
+      </q-tooltip>
+    </span>
   </span>
+  <q-dialog v-model="current.sellShow">
+    <q-card class="sell-card">
+      <div>NFT contract address</div>
+      <q-input outlined v-model="current.sellNFTaddress" />
+      <div>NFT ID</div>
+      <q-input outlined v-model="current.sellNFTid" />
+      <div>You need to approve this NFT to Filoli Contract Address first: {{current.address}}</div>
+      <q-btn @click="confirmSell" label="Confirm"></q-btn>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -18,12 +35,14 @@ import {
   reactive,
 } from 'vue';
 const Web3 = require('web3');
+import { useQuasar, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N } from '../web3/config';
 
 export default defineComponent({
   name: 'ConnectWallet',
   props: {},
   setup(props) {
+    const $q = useQuasar();
     function connect() {
       WalletInit();
     }
@@ -31,7 +50,28 @@ export default defineComponent({
       account: '',
       network: '',
       myContract: {},
+      sellShow: false,
+      address,
+      sellNFTaddress: '',
+      sellNFTid: '',
     });
+    let copyAddress = (url) => {
+      copyToClipboard(url)
+        .then(() => {
+          $q.notify('Address copyed.');
+          // 成功!
+        })
+        .catch(() => {
+          $q.notify('Browser not allowed.');
+          // 失败
+        });
+    };
+    let wrapToSell = () => {
+      current.sellShow = true;
+    };
+    const confirmSell = async () => {
+      await wrapNFT(current.sellNFTaddress, current.sellNFTid);
+    };
     let init = () => {
       if (
         window.ethereum &&
@@ -39,8 +79,9 @@ export default defineComponent({
         window.ethereum.selectedAddress
       ) {
         const web3 = new Web3(window.ethereum);
+        // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft 只有approve时调用
         const myContract = new web3.eth.Contract(ABI, address); //dnft
-        // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft
+
         current.account = window.ethereum.selectedAddress;
         current.network = window.ethereum.chainId;
         current.myContract = myContract;
@@ -99,14 +140,22 @@ export default defineComponent({
         );
       }
     };
+    function countToWei(number = 1) {
+      return Web3.utils.toWei((number * 0.001).toString());
+    }
+    function weiToCount(amount) {
+      return Web3.utils.fromWei(amount) * 1000;
+    }
     let test = async () => {
-      // await wrapNFT(address_N, 3);
-      // await dNFTbuyer(2);
+      // approve(address, 5); //已成功 A2
+      // await wrapNFT(address_N, 4);
+      // await dNFTbuyer(1);
+      // let value = countToWei(1);
+      // console.log(value, weiToCount(value), countToWei(weiToCount(value)));
       // await idTodNFT(2);
       // unClaimOf(2, current.account);
       // claim(2);
       // balanceOf(current.account);
-      // approve(address, 2); //已成功 A2
       // getPastEvents();
       // takeNFT(1);
     };
@@ -345,58 +394,59 @@ export default defineComponent({
               //   },
               // }
             };
-            // let t = {
-            //   blockHash:
-            //     '0xe7d6831bc2f91bab52eef5a054e43f55aec6fe2744f98888daef227ce94e982d',
-            //   blockNumber: 23861082,
-            //   contractAddress: null,
-            //   cumulativeGasUsed: 328124,
-            //   from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-            //   gasUsed: 35500,
-            //   logsBloom:
-            //     '0x04000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000002000000000000000000000210000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000080000000000100000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000800000000008000010000000000000000000000000000000000000008000000000000000000000',
-            //   status: true,
-            //   to: '0x227897e07508229aa6f794d39681428351447201',
-            //   transactionHash:
-            //     '0x63b9f60582db977fc0137f349ed93a668ea705fe00741eeac6b63fa514414e20',
-            //   transactionIndex: 5,
-            //   events: {
-            //     Approval: {
-            //       address: '0x227897e07508229AA6F794D39681428351447201',
-            //       blockHash:
-            //         '0xe7d6831bc2f91bab52eef5a054e43f55aec6fe2744f98888daef227ce94e982d',
-            //       blockNumber: 23861082,
-            //       logIndex: 10,
-            //       removed: false,
-            //       transactionHash:
-            //         '0x63b9f60582db977fc0137f349ed93a668ea705fe00741eeac6b63fa514414e20',
-            //       transactionIndex: 5,
-            //       transactionLogIndex: '0x0',
-            //       type: 'mined',
-            //       id: 'log_f50b7f24',
-            //       returnValues: {
-            //         0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-            //         1: '0x4667fbC2C61fb2370F8314b356924E01Fe2e1A6e',
-            //         2: '2',
-            //         owner: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-            //         approved: '0x4667fbC2C61fb2370F8314b356924E01Fe2e1A6e',
-            //         tokenId: '2',
-            //       },
-            //       event: 'Approval',
-            //       signature:
-            //         '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-            //       raw: {
-            //         data: '0x',
-            //         topics: [
-            //           '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-            //           '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-            //           '0x0000000000000000000000004667fbc2c61fb2370f8314b356924e01fe2e1a6e',
-            //           '0x0000000000000000000000000000000000000000000000000000000000000002',
-            //         ],
-            //       },
-            //     },
-            //   },
-            // };
+            let t = {
+              blockHash:
+                '0x17eb40a79c8c88efb16594c4e1548ce9f8e1e4e7d75e7e83e1883a4432a08bb1',
+              blockNumber: 23878109,
+              contractAddress: null,
+              cumulativeGasUsed: 124860,
+              from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+              gasUsed: 50500,
+              logsBloom:
+                '0x00000000000000000080000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000010200000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000080000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000002000000000000000000000000002000000000001000000000000000000000000000000000000000008000000000800000000008000010000000000000000000000000000000000000000000000000000000000000',
+              status: true,
+              to: '0x227897e07508229aa6f794d39681428351447201',
+              transactionHash:
+                '0xf64c04af10e22e4c4a0dc0e4e2d48b3124d0e9d9e45f5a38abf78b38249a76ae',
+              transactionIndex: 1,
+              events: {
+                Approval: {
+                  address: '0x227897e07508229AA6F794D39681428351447201',
+                  blockHash:
+                    '0x17eb40a79c8c88efb16594c4e1548ce9f8e1e4e7d75e7e83e1883a4432a08bb1',
+                  blockNumber: 23878109,
+                  logIndex: 4,
+                  removed: false,
+                  transactionHash:
+                    '0xf64c04af10e22e4c4a0dc0e4e2d48b3124d0e9d9e45f5a38abf78b38249a76ae',
+                  transactionIndex: 1,
+                  transactionLogIndex: '0x0',
+                  type: 'mined',
+                  id: 'log_de8790e1',
+                  returnValues: {
+                    0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    1: '0xD49091863732A03901e46074127Fd04e15080572',
+                    2: '4',
+                    owner: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    approved: '0xD49091863732A03901e46074127Fd04e15080572',
+                    tokenId: '4',
+                  },
+                  event: 'Approval',
+                  signature:
+                    '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+                  raw: {
+                    data: '0x',
+                    topics: [
+                      '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                      '0x000000000000000000000000d49091863732a03901e46074127fd04e15080572',
+                      '0x0000000000000000000000000000000000000000000000000000000000000004',
+                    ],
+                  },
+                },
+              },
+            };
+
             resolve(result);
           })
           .catch((e) => console.log(e));
@@ -522,70 +572,106 @@ export default defineComponent({
           .catch((e) => console.log(e));
       });
     }
-    function dNFTbuyer(dNFTid) {
+    function dNFTbuyer(dNFTid, number = 1) {
+      let value = Web3.utils.toWei((number * 0.001).toString());
       return new Promise((resolve, reject) => {
         current.myContract.methods
           .dNFTbuyer(dNFTid)
-          .send({ from: current.account, value: Web3.utils.toWei('0.3') })
+          .send({ from: current.account, value: countToWei(number) })
+          // .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT buy status: ' + JSON.stringify(result));
             resolve(result);
             let status = {
-              // blockHash:
-              //   '0xd1b68fde8c5639223c6bd1f5efb097caaa74c354f9cf379e97991835151a64c4',
-              // blockNumber: 23849764,
-              // contractAddress: null,
-              // cumulativeGasUsed: 3059266,
-              // from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              // gasUsed: 100385,
-              // logsBloom:
-              //   '0x00000000000000000000000000000000000002000000000000000000080000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000800000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000008000000800000000020000000000000000000000000000000000000000000000000000001080000000000',
-              // status: true,
-              // to: '0x4f403512972058ac424a05d2460d03b54e70c0e8',
-              // transactionHash:
-              //   '0x6772092f570315a862e351202b0acd128bc9770f76fe661727dfa204714803e8',
-              // transactionIndex: 25,
-              // events: {
-              //   TransferSingle: {
-              //     address: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
-              //     blockHash:
-              //       '0xd1b68fde8c5639223c6bd1f5efb097caaa74c354f9cf379e97991835151a64c4',
-              //     blockNumber: 23849764,
-              //     logIndex: 41,
-              //     removed: false,
-              //     transactionHash:
-              //       '0x6772092f570315a862e351202b0acd128bc9770f76fe661727dfa204714803e8',
-              //     transactionIndex: 25,
-              //     transactionLogIndex: '0x0',
-              //     type: 'mined',
-              //     id: 'log_869a90da',
-              //     returnValues: {
-              //       0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       1: '0x0000000000000000000000000000000000000000',
-              //       2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       3: '2',
-              //       4: '300000000000000000000',
-              //       operator: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       from: '0x0000000000000000000000000000000000000000',
-              //       to: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       id: '2',
-              //       value: '300000000000000000000',
-              //     },
-              //     event: 'TransferSingle',
-              //     signature:
-              //       '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
-              //     raw: {
-              //       data:
-              //         '0x000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000001043561a8829300000',
-              //       topics: [
-              //         '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
-              //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //         '0x0000000000000000000000000000000000000000000000000000000000000000',
-              //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //       ],
-              //     },
-              //   },
-              // },
+              blockHash:
+                '0x954d7136bb3e8a89b71db1c2f17b029e1c6dc40eac53f18f316f332c141e8a52',
+              blockNumber: 23880020,
+              contractAddress: null,
+              cumulativeGasUsed: 176511,
+              from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+              gasUsed: 51051,
+              logsBloom:
+                '0x00000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000000000000000000000000042000000000000000000000000000000000000000040000040000000000000000000000000000020000000000000080000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000001000000000000000000000000000000000000000000008000000801000001060000000000000000000000000000000000000000000000000000000080000000000',
+              status: true,
+              to: '0xd49091863732a03901e46074127fd04e15080572',
+              transactionHash:
+                '0x08434e9057b55670e4672ea6dea418facb5939068f35597b94e594053df252ca',
+              transactionIndex: 3,
+              events: {
+                TransferSingle: {
+                  address: '0xD49091863732A03901e46074127Fd04e15080572',
+                  blockHash:
+                    '0x954d7136bb3e8a89b71db1c2f17b029e1c6dc40eac53f18f316f332c141e8a52',
+                  blockNumber: 23880020,
+                  logIndex: 3,
+                  removed: false,
+                  transactionHash:
+                    '0x08434e9057b55670e4672ea6dea418facb5939068f35597b94e594053df252ca',
+                  transactionIndex: 3,
+                  transactionLogIndex: '0x0',
+                  type: 'mined',
+                  id: 'log_8356b559',
+                  returnValues: {
+                    0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    1: '0x0000000000000000000000000000000000000000',
+                    2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    3: '1',
+                    4: '0',
+                    operator: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    from: '0x0000000000000000000000000000000000000000',
+                    to: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    id: '1',
+                    value: '0',
+                  },
+                  event: 'TransferSingle',
+                  signature:
+                    '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
+                  raw: {
+                    data:
+                      '0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000',
+                    topics: [
+                      '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                      '0x0000000000000000000000000000000000000000000000000000000000000000',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                    ],
+                  },
+                },
+                dNFTbought: {
+                  address: '0xD49091863732A03901e46074127Fd04e15080572',
+                  blockHash:
+                    '0x954d7136bb3e8a89b71db1c2f17b029e1c6dc40eac53f18f316f332c141e8a52',
+                  blockNumber: 23880020,
+                  logIndex: 4,
+                  removed: false,
+                  transactionHash:
+                    '0x08434e9057b55670e4672ea6dea418facb5939068f35597b94e594053df252ca',
+                  transactionIndex: 3,
+                  transactionLogIndex: '0x1',
+                  type: 'mined',
+                  id: 'log_63ffd353',
+                  returnValues: {
+                    0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    1: '1',
+                    2: '0',
+                    Buyer: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    dNFTid: '1',
+                    amount: '0',
+                  },
+                  event: 'dNFTbought',
+                  signature:
+                    '0xc00a752656b181ab62fc85f0076b32528570a87bcc5aaec8c318e41508a33017',
+                  raw: {
+                    data:
+                      '0x0000000000000000000000000000000000000000000000000000000000000000',
+                    topics: [
+                      '0xc00a752656b181ab62fc85f0076b32528570a87bcc5aaec8c318e41508a33017',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                      '0x0000000000000000000000000000000000000000000000000000000000000001',
+                    ],
+                  },
+                },
+              },
             };
           })
           .catch((e) => console.log(e));
@@ -687,6 +773,13 @@ export default defineComponent({
       connect,
       current,
       test,
+      acc: computed(
+        () =>
+          current.account.substr(0, 5) + '...' + current.account.substr(-3, 5)
+      ),
+      copyAddress,
+      wrapToSell,
+      confirmSell,
     };
   },
 });
@@ -696,5 +789,8 @@ export default defineComponent({
   cursor: pointer;
   color: red;
   padding-right: 30px;
+}
+.sell-card {
+  padding: 50px;
 }
 </style>

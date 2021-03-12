@@ -18,9 +18,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/StaticLayout.vue'),
     children: [
       { path: '', component: () => import('pages/statics/StaticIndex.vue') },
-      { path: 'nft', component: () => import('pages/statics/NftOrdering.vue') },
-
-
+      { path: 'nft/:nftcontract/:nftid/:dnftid', props: true, component: () => import('pages/statics/NftOrdering.vue') },
     ],
   },
 
