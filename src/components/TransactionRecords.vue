@@ -5,10 +5,14 @@
       <div class="table-title-bought">Bought</div>
       <div class="table-title-time">Time</div>
     </div>
-    <div class="table-content" v-for="row in list" :key="row.id">
-      <div class="table-content-investor">{{row.investor}}</div>
-      <div class="table-content-bought">{{row.bought}}</div>
-      <div class="table-content-time">{{row.time}}</div>
+    <div class="table-content" v-for="row in buyers" :key="row.id">
+      <div class="table-content-investor">
+        {{
+        row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5)
+        }}
+      </div>
+      <div class="table-content-bought">{{row.count}}</div>
+      <div class="table-content-time">{{row.updatedAt.toLocaleString()}}</div>
     </div>
     <div>1 2 3 11</div>
   </div>
@@ -19,6 +23,9 @@ import { ref, reactive, onMounted } from 'vue';
 
 export default {
   name: 'TransactionRecords',
+  props: {
+    buyers: Array,
+  },
 
   setup() {
     let list = ref([

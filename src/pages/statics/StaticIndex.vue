@@ -68,6 +68,7 @@ export default {
       {
         key: '0',
         NFTid: 1,
+        dNFTid: 1,
         image: 'assets/images/b1.png',
         name: 'Picasso',
         description:
@@ -78,6 +79,7 @@ export default {
       {
         key: '1',
         NFTid: 2,
+        dNFTid: 1,
         image: 'assets/images/b2.png',
         name: 'Picasso',
         description:
@@ -88,6 +90,7 @@ export default {
       {
         key: '2',
         NFTid: 3,
+        dNFTid: 1,
         image: 'assets/images/b3.png',
         name: 'Picasso',
         description:
@@ -98,6 +101,7 @@ export default {
       {
         key: '3',
         NFTid: 4,
+        dNFTid: 1,
         image: 'assets/images/b4.png',
         name: 'Picasso',
         description:
@@ -108,6 +112,7 @@ export default {
       {
         key: '4',
         NFTid: 5,
+        dNFTid: 1,
         image: 'assets/images/b5.png',
         name: 'Picasso',
         description:
@@ -118,6 +123,7 @@ export default {
       {
         key: '5',
         NFTid: 6,
+        dNFTid: 1,
         image: 'assets/images/b6.png',
         name: 'Picasso',
         description:
@@ -128,6 +134,7 @@ export default {
       {
         key: '6',
         NFTid: 7,
+        dNFTid: 2,
         image: 'assets/images/b7.png',
         name: 'Picasso',
         description:
@@ -138,6 +145,7 @@ export default {
       {
         key: '7',
         NFTid: 8,
+        dNFTid: 2,
         image: 'assets/images/b8.png',
         name: 'Picasso',
         description:
@@ -148,6 +156,7 @@ export default {
       {
         key: '8',
         NFTid: 9,
+        dNFTid: 2,
         image: 'assets/images/b9.png',
         name: 'Picasso',
         description:
@@ -158,6 +167,7 @@ export default {
       {
         key: '9',
         NFTid: 10,
+        dNFTid: 2,
         image: 'assets/images/b10.png',
         name: 'Picasso',
         description:
@@ -168,6 +178,7 @@ export default {
       {
         key: '10',
         NFTid: 11,
+        dNFTid: 2,
         image: 'assets/images/b11.png',
         name: 'Picasso',
         description:
@@ -178,6 +189,7 @@ export default {
       {
         key: '11',
         NFTid: 12,
+        dNFTid: 2,
         image: 'assets/images/b12.png',
         name: 'Picasso',
         description:
@@ -231,16 +243,20 @@ export default {
           ABI_721_standard,
           nft.NFTCotract
         ); //nft
-        await myContract.methods
-          .uri(nft.NFTid)
-          .call()
-          .then((meta) => {
-            meta.NFTCotract = nft.NFTCotract;
-            meta.NFTid = nft.NFTid;
-            meta.dNFTid = nft.dNFTid;
-            metaDatas.push(meta);
-          });
+
+        //TODO 在元数据符合标准时调用
+        // debugger;
+        // await myContract.methods
+        //   .tokenURI(nft.NFTid)
+        //   .call()
+        //   .then((meta) => {
+        //     meta.NFTCotract = nft.NFTCotract;
+        //     meta.NFTid = nft.NFTid;
+        //     meta.dNFTid = nft.dNFTid;
+        //     metaDatas.push(meta);
+        //   });
       });
+
       console.log(metaDatas);
 
       data.value = [...initdata, ...metaDatas];

@@ -143,9 +143,7 @@ export default defineComponent({
     function countToWei(number = 1) {
       return Web3.utils.toWei((number * 0.001).toString());
     }
-    function weiToCount(amount) {
-      return Web3.utils.fromWei(amount) * 1000;
-    }
+
     let test = async () => {
       // approve(address, 5); //已成功 A2
       // await wrapNFT(address_N, 4);

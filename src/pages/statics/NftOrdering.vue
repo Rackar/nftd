@@ -81,7 +81,7 @@
               <div class="read-more">Read more</div>
             </div>
             <div class="col p-30">
-              <TransactionRecords />
+              <TransactionRecords :buyers="current.boughters" />
               <div>address:0xdfsodfsjdflkjlj</div>
             </div>
           </div>
@@ -93,7 +93,7 @@
           </q-input>
 
           <div class="comment-title">xx comments</div>
-          <div v-for="x in 4" :key="x.key">
+          <div v-for="buyer in current.boughters" :key="buyer.key">
             <div class="comment-name">name</div>
 
             <div class="comment-content">sdfsdfsdofjslfdsldfkjsladfjlsadfiasdf</div>
@@ -162,6 +162,9 @@ export default defineComponent({
     function countToWei(number = 1) {
       return Web3.utils.toWei((number * 0.001).toString());
     }
+    function weiToCount(amount: string) {
+      return Web3.utils.fromWei(amount);
+    }
     function dNFTbuyer(dNFTid: string, number = 1) {
       let myContract = init();
       current.showBuytab = false;
@@ -184,8 +187,15 @@ export default defineComponent({
     }
     async function getBoughtHistory() {
       let list = await api.get('boughters?id=' + props.dnftid);
-      current.boughters = list.data.data;
-      debugger;
+      // debugger;
+      current.boughters = list.data.data
+        .filter((ele: any) => ele.amount !== '0')
+        .map((ele: any) => {
+          ele.count = weiToCount(ele.amount);
+          return ele;
+        });
+
+      // debugger;
     }
     function formatTimegap(times: number) {
       let days = Math.floor(times / 3600 / 24);
