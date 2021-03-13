@@ -1160,7 +1160,9 @@ let web3Instance = {
     myContract: {}
 }
 
-function changeWeb3Instance(ABI = ABI, address = address) {
+function changeWeb3Instance(ABIin, addressIn) {
+    if (!ABIin) ABIin = ABI
+    if (!addressIn) addressIn = address
     if (
         window.ethereum &&
         window.ethereum.isMetaMask &&
@@ -1250,7 +1252,7 @@ async function getMyAddress() {
     if (typeof window.ethereum !== 'undefined') {
         if (window.ethereum.isMetaMask &&
             window.ethereum.selectedAddress) {
-            changeWeb3Instance()
+            // changeWeb3Instance()
         } else {
             await enableMetamask()
         }
@@ -1258,7 +1260,7 @@ async function getMyAddress() {
     } else {
         noticeNeedMetamask()
     }
-    return web3Instance.myAddress
+    return window.ethereum.selectedAddress
 }
 // init()
 // // wrapNFT(Web3.utils.randomHex(32), "")

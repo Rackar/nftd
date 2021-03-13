@@ -93,8 +93,10 @@
           </q-input>
 
           <div class="comment-title">{{current.comments.length}} Comments</div>
-          <div v-for="comment in current.comments" :key="comment._id">
-            <div class="comment-name">{{comment.userAddress}}</div>
+          <div v-for="comment in current.comments" :key="comment._id" class="flex">
+            <div
+              class="comment-name"
+            >{{comment.userAddress.substr(0, 5) + '...' + comment.userAddress.substr(-3, 5)}}</div>
 
             <div class="comment-content">{{comment.content}}</div>
           </div>
@@ -204,11 +206,10 @@ export default defineComponent({
     }
     async function saveComment() {
       let comment = {
-        userAddress: getMyAddress(),
+        userAddress: await getMyAddress(),
         dNFTid: props.dnftid,
         content: current.commentInput,
       };
-      debugger;
       let list = await api.post('comments', { comment: comment });
       if (list.data.status === 1) {
         current.comments.push(comment);
@@ -327,6 +328,13 @@ export default defineComponent({
 .comment-title {
   font-weight: bold;
   font-size: 16px;
+}
+.comment-name {
+  width: 140px;
+  line-height: 30px;
+}
+.comment-content {
+  line-height: 30px;
 }
 .btn-save {
   position: absolute;

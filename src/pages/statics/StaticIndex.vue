@@ -261,10 +261,11 @@ export default {
         //   .tokenURI(nft.NFTid)
         //   .call()
         //   .then((meta) => {
-        //     meta.NFTCotract = nft.NFTCotract;
-        //     meta.NFTid = nft.NFTid;
-        //     meta.dNFTid = nft.dNFTid;
-        //     metaDatas.push(meta);
+        //     if (meta && meta.name) {
+        //       nft.name = meta.name;
+        //       nft.image = meta.image;
+        //       nft.description = meta.description;
+        //     }
         //   });
 
         //预计价格
