@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <!-- <Header /> -->
     <section class="row" style=" justify-content:center;padding-top:20px;">
       <div class="col" style="max-width: 220px;  ">
         <q-input filled bottom-slots v-model="text" label="Search" maxlength="20" :dense="dense">
@@ -29,7 +29,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { api } from '../../boot/axios';
 // import WaterFall from '../../libs/water-fall';
-import Header from '../../components/Header.vue';
+// import Header from '../../components/Header.vue';
 import WaterFallComp from '../../components/WaterFallComp';
 import { ABI_721_standard, ABI, address } from 'src/web3/config';
 const Web3 = require('web3');
@@ -39,7 +39,7 @@ export default {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // WaterFall,
     WaterFallComp,
-    Header,
+    // Header,
   },
   setup() {
     let initdata = [
