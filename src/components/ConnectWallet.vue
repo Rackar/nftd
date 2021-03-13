@@ -1,8 +1,8 @@
 <template>
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
   <span v-else>
-    <button @click="test">test</button>
-    <q-btn @click="wrapToSell" label="Sell"></q-btn>
+    <!-- <button @click="test">test</button> -->
+    <q-btn @click="wrapToSell" label="Sell" class="btn-sell"></q-btn>
     <span class="cursor-pointer" @click="copyAddress(current.account)">
       {{acc}}
       <q-tooltip anchor="bottom middle" self="center middle">
@@ -12,7 +12,7 @@
     </span>
   </span>
   <q-dialog v-model="current.sellShow">
-    <q-card class="sell-card">
+    <q-card class="sell-card" style="border-radius: 15px;">
       <div>NFT contract address</div>
       <q-input outlined v-model="current.sellNFTaddress" />
       <div>NFT ID</div>
@@ -787,6 +787,9 @@ export default defineComponent({
   cursor: pointer;
   color: red;
   padding-right: 30px;
+}
+.btn-sell {
+  margin-right: 15px;
 }
 .sell-card {
   padding: 50px;

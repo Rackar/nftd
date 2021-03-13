@@ -75,14 +75,14 @@
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="Details">
           <div class="row">
-            <div class="col p-30">
+            <div class="col p-20">
               <div class="about-artist">About artist</div>
               <div>The girl of Avignon" is an oil painting created by Spanish painter Pablo Ruiz Picasso in 1907. Museum of modern art, New York.In this painting, there are five girls sitting or standing, scratching theirheads and posturing. In front of them is a small square stool with several clusters of grapes on it. The characters are completely distorted andillegible. The picture presents a single plane."I'm not a surrealist, I've never been divorced from reality. I always stayin the real situation This is Picasso's idea when he created "Guernica".Although people don't think Picasso is a realistic painter, in Picasso's idea, his paintings are not only based on the strongest emotional experience in his heart, but also the depiction of reality. Picasso is the most creative and far-reaching artistic genius in the history of western modernart in the 20th century. He is known as "the most complex" and knowshow to express</div>
               <div class="read-more">Read more</div>
             </div>
-            <div class="col p-30">
+            <div class="col p-20">
               <TransactionRecords :buyers="current.boughters" />
-              <div>address:0xdfsodfsjdflkjlj</div>
+              <!-- <div>address:0xdfsodfsjdflkjlj</div> -->
             </div>
           </div>
         </q-tab-panel>
@@ -107,11 +107,46 @@
     <!-- </q-card> -->
     <q-dialog v-model="current.showBuytab">
       <q-card class="sell-card">
-        <div>Buy dNFT:</div>
-        <q-input outlined v-model="current.count" />
+        <div>How many shares would you like to buy?</div>
+        <div class="sell-title">NFT name here</div>
+        <div>Current Valuation 10 ETH ($10,834)</div>
+        <div>180 shares issued</div>
+        <q-input outlined v-model="current.count" class="sell-input" />
 
-        <div></div>
-        <q-btn @click="confirmBuy" label="Confirm"></q-btn>
+        <div class="flex">
+          <q-btn
+            class="sell-input-btn"
+            :class="current.count==1?'btn-active':''"
+            @click="current.count=1"
+          >1</q-btn>
+          <q-btn
+            class="sell-input-btn"
+            :class="current.count==10?'btn-active':''"
+            @click="current.count=10"
+          >10</q-btn>
+          <q-btn
+            class="sell-input-btn"
+            :class="current.count==100?'btn-active':''"
+            @click="current.count=100"
+          >100</q-btn>
+          <q-btn
+            class="sell-input-btn"
+            :class="current.count==200?'btn-active':''"
+            @click="current.count=200"
+          >200</q-btn>
+          <q-btn
+            class="sell-input-btn"
+            :class="current.count==500?'btn-active':''"
+            @click="current.count=500"
+          >500</q-btn>
+          <q-btn
+            class="sell-input-btn"
+            :class="current.count==1000?'btn-active':''"
+            @click="current.count=1000"
+          >1000</q-btn>
+        </div>
+        <q-btn @click="confirmBuy" label="Pay with Metamask" class="btn-confirm"></q-btn>
+        <div>* Only Metamask wallet is support at this moment.</div>
       </q-card>
     </q-dialog>
   </div>
@@ -186,7 +221,10 @@ export default defineComponent({
             $q.notify('success');
             resolve(result);
           })
-          .catch(() => console.log(e));
+          .catch((e) => {
+            current.loading = false;
+            console.log(e);
+          });
       });
     }
     async function getBoughtHistory() {
@@ -353,5 +391,29 @@ export default defineComponent({
 }
 .sell-card {
   padding: 50px;
+  text-align: center;
+}
+.sell-title {
+  font-size: 26px;
+  font-weight: bold;
+}
+.sell-input {
+  width: 160px;
+  margin: 10px auto;
+  font-size: 24px;
+}
+.sell-input-btn {
+  width: 60px;
+  margin: 5px 45px;
+}
+.btn-active {
+  background-color: grey;
+  color: white;
+}
+.btn-confirm {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: black;
+  color: white;
 }
 </style>
