@@ -8,14 +8,11 @@
             <q-icon v-if="text !== ''" name="close" @click="text = ''" class="cursor-pointer" />
             <q-icon name="search" />
           </template>
-
-          <!-- <template v-slot:hint>Field hint</template> -->
         </q-input>
       </div>
     </section>
     <section class="banner">
       <img src="icons/banner@3x.png" alt height="210" />
-      <!-- <div class="banner-img">banner</div> -->
     </section>
     <section>
       <div class="row" style=" justify-content:center;">
@@ -24,25 +21,6 @@
         <div class="tabs">Price</div>
       </div>
       <WaterFallComp :data="data" @loadMore="fetchData" />
-      <!-- <div class="water-fall" v-if="data.length">
-        <water-fall :data="data" gap="20px" width="240px" class="container" :delay="true">
-          <template #default="item">
-            <router-link to="/static/nft">
-              <div class="card">
-                <div>
-                  <img class="img" :src="item.src" />
-                  <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
-                </div>
-
-                <div class="name">{{item.name}}</div>
-                <div class="info">{{item.info}}</div>
-                <div class="price">{{item.price}} ETH</div>
-              </div>
-            </router-link>
-          </template>
-        </water-fall>
-      </div>-->
-      <!-- <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn> -->
     </section>
   </div>
 </template>
@@ -53,7 +31,7 @@ import { api } from '../../boot/axios';
 // import WaterFall from '../../libs/water-fall';
 import Header from '../../components/Header.vue';
 import WaterFallComp from '../../components/WaterFallComp';
-import { ABI_721_standard } from 'src/web3/config';
+import { ABI_721_standard, ABI, address } from 'src/web3/config';
 const Web3 = require('web3');
 
 export default {
@@ -233,9 +211,42 @@ export default {
     function loadMore() {
       fetchData();
     }
+    function getNFTprice(dNFTid) {
+      const web3 = new Web3(window.ethereum);
+      const myContract = new web3.eth.Contract(ABI, address);
+      return new Promise((resolve, reject) => {
+        myContract.methods
+          .idTodNFT(dNFTid)
+          .call()
+          .then(function (result) {
+            console.log('dNFT status: ' + JSON.stringify(result));
+            resolve(result);
+            let dnft = {
+              // 0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+              // 1: '0x227897e07508229AA6F794D39681428351447201',
+              // 2: '0',
+              // 3: '1',
+              // 4: '2',
+              // 5: '1615366956',
+              // 6: '0',
+              // 7: false,
+              // principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+              // contractAd: '0x227897e07508229AA6F794D39681428351447201',
+              // accProfitsPer_dNFT1e18: '0',
+              // NFTid: '1',
+              // dNFTid: '2',
+              // lastBuyTimestamp: '1615366956',
+              // salesRevenue: '0',
+              // principalClaim: false,
+            };
+          })
+          .catch((e) => console.log(e));
+      });
+    }
     onMounted(async () => {
       let list = await api.get('dnfts');
       let nfts = list.data.data;
+      console.log(nfts);
       let metaDatas = [];
       nfts.forEach(async (nft) => {
         const web3 = new Web3(window.ethereum);
@@ -255,6 +266,11 @@ export default {
         //     meta.dNFTid = nft.dNFTid;
         //     metaDatas.push(meta);
         //   });
+
+        //预计价格
+        let dNFTs = await getNFTprice(nft.dNFTid);
+        nft.salesRevenue = dNFTs.salesRevenue;
+        metaDatas.push(nft);
       });
 
       console.log(metaDatas);

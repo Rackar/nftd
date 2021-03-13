@@ -1153,20 +1153,27 @@ let ABI_N = [
 
 let ABI_721_standard = ABI_N
 
-function init() {
-    //获得web3实例
-    if (typeof web3 !== 'undefined') {
-        web3js = new Web3(web3.currentProvider);
-    } else {
-        // set the provider you want from Web3.providers
-        // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-        // web3js = new Web3(new Web3.providers.WebsocketProvider("wss://mainnet.infura.io/ws"));
-        web3js = new Web3(new Web3.providers.WebsocketProvider("wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509"));
+let web3Instance = {
+    myAddress: "",
+    chainId: "",
+    web3js: {},
+    myContract: {}
+}
 
+function changeWeb3Instance(ABI = ABI, address = address) {
+    if (
+        window.ethereum &&
+        window.ethereum.isMetaMask &&
+        window.ethereum.selectedAddress
+    ) {
+        const web3 = new Web3(window.ethereum);
+        // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft 只有approve时调用
+        const myContract = new web3.eth.Contract(ABI, address); //dnft
+        web3Instance.myAddress = window.ethereum.selectedAddress;
+        web3Instance.chainId = window.ethereum.chainId;
+        web3Instance.web3js = web3;
+        web3Instance.myContract = myContract;
     }
-
-    // 实例化 myContract
-    myContract = new web3js.eth.Contract(ABI, address);
 }
 
 function wrapNFT(contractAd, NFTid) {
@@ -1186,7 +1193,74 @@ function dNFTbuyer(dNFTid) {
         }).catch(e => console.log(e));
     })
 }
+let init = () => {
+    if (
+        window.ethereum &&
+        window.ethereum.isMetaMask &&
+        window.ethereum.selectedAddress
+    ) {
+        const web3 = new Web3(window.ethereum);
+        // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft 只有approve时调用
+        const myContract = new web3.eth.Contract(ABI, address); //dnft
+
+        current.account = window.ethereum.selectedAddress;
+        current.network = window.ethereum.chainId;
+        current.myContract = myContract;
+    }
+};
+let WalletInit = async () => {
+    //判断页面是否安装Metamask
+    if (typeof window.ethereum !== 'undefined') {
+        enableMetamask()
+    } else {
+        noticeNeedMetamask()
+    }
+};
+function noticeNeedMetamask() {
+    console.log('没有metamask');
+    alert(
+        'MetaMask not found, please intall it from browser extensions store first.'
+    );
+}
+async function enableMetamask() {
+    const ethereum = window.ethereum;
+    //禁止自动刷新，metamask要求写的
+    ethereum.autoRefreshOnNetworkChange = false;
+
+    try {
+        //第一次链接Metamask
+        const accounts = await ethereum.enable();
+        changeWeb3Instance();
+        ethereum.on('accountsChanged', function (accounts) {
+            console.log('accountsChanged:' + accounts);
+            changeWeb3Instance();
+            web3Instance.myAddress = accounts.length ? accounts[0] : accounts;
+        });
+        ethereum.on('networkChanged', function (networkVersion) {
+            console.log('networkChanged:' + networkVersion);
+
+            changeWeb3Instance();
+            web3Instance.chainId = networkVersion;
+        });
+    } catch (e) {
+        console.log('link error', e);
+    }
+}
+async function getMyAddress() {
+    if (typeof window.ethereum !== 'undefined') {
+        if (window.ethereum.isMetaMask &&
+            window.ethereum.selectedAddress) {
+            changeWeb3Instance()
+        } else {
+            await enableMetamask()
+        }
+
+    } else {
+        noticeNeedMetamask()
+    }
+    return web3Instance.myAddress
+}
 // init()
 // // wrapNFT(Web3.utils.randomHex(32), "")
 // dNFTbuyer(0)
-export { ABI, address, ABI_N, address_N, ABI_721_standard }
+export { ABI, address, ABI_N, address_N, ABI_721_standard, getMyAddress }

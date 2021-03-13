@@ -58,6 +58,9 @@ export default {
       list.value = [...thenew];
     },
   },
+  emits: {
+    loadMore: null,
+  },
   setup(props, context) {
     list.value = [...props.data];
     let hasMore = ref(true);

@@ -88,15 +88,15 @@
         </q-tab-panel>
 
         <q-tab-panel name="Commnets">
-          <q-input v-model="text" filled type="textarea">
-            <q-btn v-if="text.length" class="btn-save">save</q-btn>
+          <q-input v-model="current.commentInput" filled type="textarea">
+            <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
           </q-input>
 
-          <div class="comment-title">xx comments</div>
-          <div v-for="buyer in current.boughters" :key="buyer.key">
-            <div class="comment-name">name</div>
+          <div class="comment-title">{{current.comments.length}} Comments</div>
+          <div v-for="comment in current.comments" :key="comment._id">
+            <div class="comment-name">{{comment.userAddress}}</div>
 
-            <div class="comment-content">sdfsdfsdofjslfdsldfkjsladfjlsadfiasdf</div>
+            <div class="comment-content">{{comment.content}}</div>
           </div>
         </q-tab-panel>
       </q-tab-panels>
@@ -115,11 +115,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, ref, onMounted, reactive } from 'vue';
 import { date, useQuasar } from 'quasar';
 import TransactionRecords from '../../components/TransactionRecords.vue';
-import { ABI, address } from 'src/web3/config';
+import { ABI, address, getMyAddress } from 'src/web3/config';
 import { api } from '../../boot/axios';
 const Web3 = require('web3');
 
@@ -152,20 +152,22 @@ export default defineComponent({
       count: 1,
       loading: false,
       boughters: [],
+      comments: [],
+      commentInput: '',
     });
 
     function init() {
-      const web3 = new Web3((window as any).ethereum);
+      const web3 = new Web3(window.ethereum);
       const myContract = new web3.eth.Contract(ABI, address); //nft
       return myContract;
     }
     function countToWei(number = 1) {
       return Web3.utils.toWei((number * 0.001).toString());
     }
-    function weiToCount(amount: string) {
+    function weiToCount(amount) {
       return Web3.utils.fromWei(amount);
     }
-    function dNFTbuyer(dNFTid: string, number = 1) {
+    function dNFTbuyer(dNFTid, number = 1) {
       let myContract = init();
       current.showBuytab = false;
       current.loading = true;
@@ -173,31 +175,48 @@ export default defineComponent({
         myContract.methods
           .dNFTbuyer(dNFTid)
           .send({
-            from: (window as any).ethereum.selectedAddress,
+            from: window.ethereum.selectedAddress,
             value: countToWei(number),
           })
-          .then(function (result: any) {
+          .then(function (result) {
             current.loading = false;
             console.log('dNFT buy status: ' + JSON.stringify(result));
             $q.notify('success');
             resolve(result);
           })
-          .catch((e: any) => console.log(e));
+          .catch(() => console.log(e));
       });
     }
     async function getBoughtHistory() {
       let list = await api.get('boughters?id=' + props.dnftid);
       // debugger;
       current.boughters = list.data.data
-        .filter((ele: any) => ele.amount !== '0')
-        .map((ele: any) => {
+        .filter((ele) => ele.amount !== '0')
+        .map((ele) => {
           ele.count = weiToCount(ele.amount);
           return ele;
         });
-
-      // debugger;
     }
-    function formatTimegap(times: number) {
+    async function getComment() {
+      let list = await api.get('comments?id=' + props.dnftid);
+      // debugger;
+      current.comments = list.data.data;
+    }
+    async function saveComment() {
+      let comment = {
+        userAddress: getMyAddress(),
+        dNFTid: props.dnftid,
+        content: current.commentInput,
+      };
+      debugger;
+      let list = await api.post('comments', { comment: comment });
+      if (list.data.status === 1) {
+        current.comments.push(comment);
+        current.commentInput = '';
+      }
+      // current.comments = list.data.data;
+    }
+    function formatTimegap(times) {
       let days = Math.floor(times / 3600 / 24);
       let hours = Math.floor(times / 3600) - days * 24;
       let mins = Math.floor(times / 60) - days * 24 * 60 - hours * 60;
@@ -208,7 +227,7 @@ export default defineComponent({
       string += secs;
       return string;
     }
-    function Countdown(endDate: string) {
+    function Countdown(endDate) {
       let now = Date.now();
       let diffSec = date.getDateDiff(endDate, now, 'seconds');
       countdownLeft.value = formatTimegap(diffSec);
@@ -220,10 +239,11 @@ export default defineComponent({
     function confirmBuy() {
       dNFTbuyer(props.dnftid, current.count);
     }
-    onMounted(() => {
+    onMounted(async () => {
       let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
       setInterval(() => Countdown(endDate), 1000);
-      getBoughtHistory();
+      await getBoughtHistory();
+      await getComment();
     });
     let list = [{}];
     return {
@@ -232,10 +252,10 @@ export default defineComponent({
       countdownLeft,
       fullscreen: ref(false),
       tab: ref('Details'),
-      text: ref(''),
       current,
       buyDnft,
       confirmBuy,
+      saveComment,
     };
   },
 });
