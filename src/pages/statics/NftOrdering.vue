@@ -228,14 +228,18 @@ export default defineComponent({
       });
     }
     async function getBoughtHistory() {
-      let list = await api.get('boughters?id=' + props.dnftid);
-      // debugger;
-      current.boughters = list.data.data
-        .filter((ele) => ele.amount !== '0')
-        .map((ele) => {
-          ele.count = weiToCount(ele.amount);
-          return ele;
-        });
+      try {
+        let list = await api.get('boughters?id=' + props.dnftid);
+        // debugger;
+        current.boughters = list.data.data
+          .filter((ele) => ele.amount !== '0')
+          .map((ele) => {
+            ele.count = weiToCount(ele.amount);
+            return ele;
+          });
+      } catch (error) {
+        current.boughters = [];
+      }
     }
     async function getComment() {
       let list = await api.get('comments?id=' + props.dnftid);
