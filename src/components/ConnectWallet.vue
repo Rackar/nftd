@@ -30,6 +30,14 @@
       <q-btn @click="confirmSell" label="Confirm"></q-btn>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="current.showAccount">
+    <q-card class="sell-card" style="border-radius: 15px;">
+      <div>12.02 ETH ($2065.00)</div>
+      <div>TOtal Dividends</div>
+      <div>Field 1.02 ETH ($365.00)</div>
+      <div>Field 1.02 ETH ($365.00)</div>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -63,6 +71,7 @@ export default defineComponent({
       address,
       sellNFTaddress: '',
       sellNFTid: '',
+      showAccount: false,
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
