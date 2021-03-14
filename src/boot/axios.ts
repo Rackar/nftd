@@ -7,7 +7,7 @@ declare module '@vue/runtime-core' {
   }
 }
 
-const api = axios.create({ baseURL: 'http://localhost:3006/noauth/filoli/' });
+const api = axios.create({ baseURL: process.env.PROD ? 'http://18.176.191.82:3006/noauth/filoli/' : 'http://localhost:3006/noauth/filoli/' });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

@@ -3,6 +3,15 @@
   <span v-else>
     <!-- <button @click="test">test</button> -->
     <q-btn @click="wrapToSell" label="Sell" class="btn-sell"></q-btn>
+    <q-avatar
+      size="24px"
+      font-size="18px"
+      color="teal"
+      text-color="white"
+      icon="person"
+      class="account-avatar"
+      @click="current.showAccount=true"
+    ></q-avatar>
     <span class="cursor-pointer" @click="copyAddress(current.account)">
       {{acc}}
       <q-tooltip anchor="bottom middle" self="center middle">
@@ -793,5 +802,9 @@ export default defineComponent({
 }
 .sell-card {
   padding: 50px;
+}
+.account-avatar {
+  cursor: pointer;
+  margin-right: 10px;
 }
 </style>

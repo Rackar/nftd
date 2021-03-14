@@ -244,39 +244,46 @@ export default {
       });
     }
     onMounted(async () => {
-      let list = await api.get('dnfts');
-      let nfts = list.data.data;
-      console.log(nfts);
-      let metaDatas = [];
-      nfts.forEach(async (nft) => {
-        const web3 = new Web3(window.ethereum);
-        const myContract = new web3.eth.Contract(
-          ABI_721_standard,
-          nft.NFTCotract
-        ); //nft
+      try {
+        let list = await api.get('dnfts');
+        let nfts = list.data.data;
+        console.log(nfts);
+        let metaDatas = [];
+        nfts.forEach(async (nft) => {
+          const web3 = new Web3(window.ethereum);
+          const myContract = new web3.eth.Contract(
+            ABI_721_standard,
+            nft.NFTCotract
+          ); //nft
 
-        //TODO 在元数据符合标准时调用
-        // debugger;
-        // await myContract.methods
-        //   .tokenURI(nft.NFTid)
-        //   .call()
-        //   .then((meta) => {
-        //     if (meta && meta.name) {
-        //       nft.name = meta.name;
-        //       nft.image = meta.image;
-        //       nft.description = meta.description;
-        //     }
-        //   });
+          //TODO 在元数据符合标准时调用
+          // debugger;
+          // await myContract.methods
+          //   .tokenURI(nft.NFTid)
+          //   .call()
+          //   .then((meta) => {
+          //     if (meta && meta.name) {
+          //       nft.name = meta.name;
+          //       nft.image = meta.image;
+          //       nft.description = meta.description;
+          //     }
+          //   });
 
-        //预计价格
-        let dNFTs = await getNFTprice(nft.dNFTid);
-        nft.salesRevenue = dNFTs.salesRevenue;
-        metaDatas.push(nft);
-      });
+          //预计价格
+          let dNFTs = await getNFTprice(nft.dNFTid);
+          nft.salesRevenue = dNFTs.salesRevenue;
+          metaDatas.push(nft);
+        });
 
-      console.log(metaDatas);
-
-      data.value = [...initdata, ...metaDatas];
+        console.log(metaDatas);
+        if (metaDatas.length) {
+          data.value = [...metaDatas];
+        } else {
+          data.value = [...initdata];
+        }
+      } catch (error) {
+        data.value = [...initdata];
+      }
     });
     return {
       text: ref(''),
