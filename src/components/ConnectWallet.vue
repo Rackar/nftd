@@ -32,10 +32,12 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="sell-card" style="border-radius: 15px;">
-      <div>12.02 ETH ($2065.00)</div>
+      <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH ($ 00)</div>
       <div>TOtal Dividends</div>
-      <div>Field 1.02 ETH ($365.00)</div>
-      <div>Field 1.02 ETH ($365.00)</div>
+      <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
+        <span>{{dnft.dNFTid}}-{{dnft.price.substr(0,7)}} eth</span>
+      </div>
+      <!-- <div>Field 1.02 ETH ($365.00)</div> -->
     </q-card>
   </q-dialog>
 </template>
@@ -54,6 +56,7 @@ import {
 const Web3 = require('web3');
 import { useQuasar, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N } from '../web3/config';
+import { api } from '../boot/axios';
 
 export default defineComponent({
   name: 'ConnectWallet',
@@ -72,6 +75,8 @@ export default defineComponent({
       sellNFTaddress: '',
       sellNFTid: '',
       showAccount: false,
+      myBoughtList: [],
+      myTotalClaim: 0,
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -103,6 +108,43 @@ export default defineComponent({
         current.account = window.ethereum.selectedAddress;
         current.network = window.ethereum.chainId;
         current.myContract = myContract;
+        api
+          .get('boughters?uad=' + window.ethereum.selectedAddress)
+          .then(async (res) => {
+            let data = res.data.data;
+            let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
+            for (let i = 0; i < dNFTids.length; i++) {
+              const dNFTid = dNFTids[i];
+              let unClaim = await unClaimOf(
+                dNFTid,
+                window.ethereum.selectedAddress
+              );
+              let result = {
+                dNFTid,
+                myAddress: window.ethereum.selectedAddress,
+                price: weiToCount(unClaim),
+              };
+              // result.count = weiToCount(result.salesRevenue);
+              current.myBoughtList.push(result);
+            }
+            // await dNFTids.forEach(async (dNFTid) => {
+            //   let unClaim = await unClaimOf(
+            //     dNFTid,
+            //     window.ethereum.selectedAddress
+            //   );
+            //   debugger;
+            //   let result = {
+            //     dNFTid,
+            //     myAddress: window.ethereum.selectedAddress,
+            //     price: weiToCount(unClaim),
+            //   };
+            //   // result.count = weiToCount(result.salesRevenue);
+            //   current.myBoughtList.push(result);
+            // });
+            current.myTotalClaim = current.myBoughtList
+              .map((buy) => parseFloat(buy.price))
+              .reduce((pre, cur) => pre + cur, 0);
+          });
       }
     };
     let WalletInit = async () => {
@@ -160,6 +202,9 @@ export default defineComponent({
     };
     function countToWei(number = 1) {
       return Web3.utils.toWei((number * 0.001).toString());
+    }
+    function weiToCount(amount) {
+      return Web3.utils.fromWei(amount);
     }
 
     let test = async () => {
@@ -727,27 +772,11 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         current.myContract.methods
           .unClaimOf(dNFTid, ownerAddress)
-          .send({ from: current.account })
+          .call({ from: current.account })
           .then(function (result) {
-            console.log('dNFT claim status: ' + JSON.stringify(result));
+            console.log('dNFT claim : ' + JSON.stringify(result));
             resolve(result);
-            let t = {
-              // blockHash:
-              //   '0xf7f5bf4195e0164b07f8803e3e380cac03e4dafa71526ffc35cf9009a1b3b967',
-              // blockNumber: 23848853,
-              // contractAddress: null,
-              // cumulativeGasUsed: 2078903,
-              // from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              // gasUsed: 29348,
-              // logsBloom:
-              //   '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-              // status: true,
-              // to: '0x4f403512972058ac424a05d2460d03b54e70c0e8',
-              // transactionHash:
-              //   '0xc8a40f8c6aa9f15763f96053242ba2840eb91ce21ac25936105c5b6ed90e1182',
-              // transactionIndex: 9,
-              // events: {},
-            };
+            let t = '3499999999999935';
           })
           .catch((e) => console.log(e));
       });
@@ -756,27 +785,11 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         current.myContract.methods
           .claim(dNFTid)
-          .send({ from: current.account })
+          .call({ from: current.account })
           .then(function (result) {
             console.log('dNFT claim status: ' + JSON.stringify(result));
             resolve(result);
-            let t = {
-              // blockHash:
-              //   '0x0dfc4ec01194c8edbda423d14efdde11d0b8a6312207f25f7693b96725f38c27',
-              // blockNumber: 23848872,
-              // contractAddress: null,
-              // cumulativeGasUsed: 3475155,
-              // from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              // gasUsed: 33946,
-              // logsBloom:
-              //   '0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-              // status: true,
-              // to: '0x4f403512972058ac424a05d2460d03b54e70c0e8',
-              // transactionHash:
-              //   '0xe95c3942d7c6e2969e81a1db29607956dc5657b5cf24aba61cc955b1289dcc1c',
-              // transactionIndex: 14,
-              // events: {},
-            };
+            let t = {};
           })
           .catch((e) => console.log(e));
       });
