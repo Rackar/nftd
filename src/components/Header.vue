@@ -1,12 +1,17 @@
 <template>
   <div>
     <section class="row top">
-      <div class="col-2 offset-1 left-toolbar">
-        <img class="left-image" height="40" src="icons/logo@2x.png" alt srcset />
+      <div class="left-toolbar">
+        <router-link to="/">
+          <img class="left-image" height="40" src="icons/logo@2x.png" alt srcset />
+        </router-link>
         <!-- <span class="header-title">Filoli</span> -->
-
-        <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
-        <img class="left-image" width="40" height="40" src="icons/twitter@2x.png" alt srcset />
+        <a href="https://discord.gg/evT2jawc" target="_blank">
+          <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
+        </a>
+        <a href="https://twitter.com/filo_li" target="_blank">
+          <img class="left-image" width="40" height="40" src="icons/twitter@2x.png" alt srcset />
+        </a>
       </div>
       <div class="right-toolbar">
         <span class="right-title">
@@ -39,8 +44,9 @@ export default {
   align-items: center;
   padding-top: 30px;
   padding-bottom: 4px;
-  /* padding-bottom: 4px; */
+  padding: 30px 50px 4px;
   border-bottom: rgb(219, 219, 219) 1px solid;
+  justify-content: space-between;
 }
 .header-title {
   font-size: 40px;
@@ -59,9 +65,9 @@ export default {
   margin-right: 10px;
 }
 .right-toolbar {
-  min-width: 140px;
-  right: 30px;
-  position: absolute;
+  /* min-width: 140px; */
+  /* right: 30px;
+  position: absolute; */
 }
 .right-title {
   margin-right: 30px;

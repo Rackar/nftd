@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <Header /> -->
-    <section class="row" style=" justify-content:center;padding-top:20px;">
+    <!-- <section class="row" style=" justify-content:center;padding-top:20px;">
       <div class="col" style="max-width: 220px;  ">
         <q-input filled bottom-slots v-model="text" label="Search" maxlength="20" :dense="dense">
           <template v-slot:append>
@@ -10,15 +10,14 @@
           </template>
         </q-input>
       </div>
-    </section>
+    </section>-->
     <section class="banner">
-      <img src="icons/banner@3x.png" alt height="210" />
+      <img src="icons/banner@3x.png" alt style=" max-height: 210px" />
     </section>
     <section>
       <div class="row" style=" justify-content:center;">
-        <div class="tabs">Most viewed</div>
-        <div class="tabs">New</div>
-        <div class="tabs">Price</div>
+        <div class="tabs">Ongoing</div>
+        <div class="tabs">Past</div>
       </div>
       <WaterFallComp :data="data" @loadMore="fetchData" />
     </section>
@@ -298,17 +297,16 @@ export default {
 </script>
 
 <style>
-.top {
+/* .top {
   align-items: baseline;
   padding-top: 30px;
-  /* padding-bottom: 4px; */
   border-bottom: rgb(219, 219, 219) 1px solid;
 }
 .right-toolbar {
   min-width: 140px;
   right: 30px;
   position: absolute;
-}
+} */
 .banner {
   display: 'flex';
   position: 'relative';
@@ -325,7 +323,7 @@ export default {
   background-color: blue;
 }
 .tabs {
-  width: 200px;
+  width: 150px;
   text-align: center;
   font-size: 30px;
   color: #4a4a4a;
