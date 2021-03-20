@@ -2,6 +2,10 @@
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
   <span v-else>
     <!-- <button @click="test">test</button> -->
+    <router-link to="/createnft">
+      <q-btn label="Create NFT (test)" class="btn-sell"></q-btn>
+    </router-link>
+
     <q-btn @click="wrapToSell" label="Sell" class="btn-sell"></q-btn>
     <q-avatar
       size="24px"
@@ -22,9 +26,12 @@
   </span>
   <q-dialog v-model="current.sellShow">
     <q-card class="sell-card" style="border-radius: 15px;">
-      <div>NFT contract address</div>
+      <div>NFT contract address (default: {{address_721}})</div>
       <q-input outlined v-model="current.sellNFTaddress" />
-      <div>NFT ID</div>
+      <div>
+        NFT ID
+        <!-- (available: {{current.myNFTs}}) -->
+      </div>
       <q-input outlined v-model="current.sellNFTid" />
       <div>You need to approve this NFT to Filoli Contract Address first: {{current.address}}</div>
       <q-btn @click="confirmSell" label="Confirm"></q-btn>
@@ -55,7 +62,7 @@ import {
 } from 'vue';
 const Web3 = require('web3');
 import { useQuasar, copyToClipboard } from 'quasar';
-import { ABI, address, ABI_N, address_N } from '../web3/config';
+import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
 
 export default defineComponent({
@@ -77,6 +84,7 @@ export default defineComponent({
       showAccount: false,
       myBoughtList: [],
       myTotalClaim: 0,
+      myNFTs: [],
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -89,7 +97,11 @@ export default defineComponent({
           // 失败
         });
     };
-    let wrapToSell = () => {
+    let wrapToSell = async () => {
+      // await api.get('dnfts?uad=' + current.account).then((res) => {
+      //   let list = res.data.data;
+      //   current.myNFTs = list.map((data) => data.NFTid).join(',');
+      // });
       current.sellShow = true;
     };
     const confirmSell = async () => {
@@ -517,10 +529,12 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         console.log(current);
         current.myContract.methods
-          .wrap(contractAd, NFTid)
+          .wrap(contractAd, parseInt(NFTid))
           .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT: ' + JSON.stringify(result));
+            $q.notify('dnft wrapped.');
+            current.sellShow = false;
             resolve(result);
             let dNFT = {
               // blockHash:
@@ -809,6 +823,7 @@ export default defineComponent({
       copyAddress,
       wrapToSell,
       confirmSell,
+      address_721,
     };
   },
 });
