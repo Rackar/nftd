@@ -243,93 +243,48 @@ export default {
       });
     }
     onMounted(async () => {
-      // try {
-      let list = await api.get('dnfts');
-      let nfts = list.data.data;
-      console.log(nfts);
-      let metaDatas = [];
-      for (let i = 0; i < nfts.length; i++) {
-        const nft = nfts[i];
-        const web3 = new Web3(window.ethereum);
-        const myContract = new web3.eth.Contract(
-          ABI_721_standard,
-          nft.NFTCotract
-        ); //nft
+      data.value = [...initdata];
 
-        //TODO 在元数据符合标准时调用
-        // debugger;
-
-        //预计价格
-        let dNFTs = await getNFTprice(nft.dNFTid);
-        await myContract.methods
-          .tokenURI(nft.NFTid)
-          .call()
-          .then(async (apiURL) => {
-            if (apiURL === 'fly.io' || apiURL === 'walk.io') {
-              nft.name = 'test name';
-              nft.description = 'test description';
-            } else {
-              let obj = await api.get(apiURL);
-              if (obj && obj.data.status === 1) {
-                nft.name = obj.data.data.name;
-                nft.description = obj.data.data.description;
-                nft.image = obj.data.data.image;
-              }
-            }
-          });
-        nft.salesRevenue = dNFTs.salesRevenue;
-        metaDatas.push(nft);
-      }
-
-      console.log(metaDatas);
-      metaDatas.forEach((meta) => {
-        if (meta.image && meta.image.substr(0, 4) === 'http') {
-        } else {
-          meta.image =
-            'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2887354198,2403429628&fm=26&gp=0.jpg';
-        }
-      });
-      if (metaDatas.length) {
-        data.value = [...metaDatas];
-      } else {
-        data.value = [...initdata];
-      }
-
-      // nfts.forEach(async (nft) => {
+      // let list = await api.get('dnfts');
+      // let nfts = list.data.data;
+      // console.log(nfts);
+      // let metaDatas = [];
+      // for (let i = 0; i < nfts.length; i++) {
+      //   const nft = nfts[i];
       //   const web3 = new Web3(window.ethereum);
       //   const myContract = new web3.eth.Contract(
       //     ABI_721_standard,
       //     nft.NFTCotract
-      //   ); //nft
-
-      //   //TODO 在元数据符合标准时调用
-      //   // debugger;
-      //   // await myContract.methods
-      //   //   .tokenURI(nft.NFTid)
-      //   //   .call()
-      //   //   .then((meta) => {
-      //   //     if (meta && meta.name) {
-      //   //       nft.name = meta.name;
-      //   //       nft.image = meta.image;
-      //   //       nft.description = meta.description;
-      //   //     }
-      //   //   });
+      //   );
 
       //   //预计价格
       //   let dNFTs = await getNFTprice(nft.dNFTid);
+      //   await myContract.methods
+      //     .tokenURI(nft.NFTid)
+      //     .call()
+      //     .then(async (apiURL) => {
+      //       if (apiURL === 'fly.io' || apiURL === 'walk.io') {
+      //         nft.name = 'test name';
+      //         nft.description = 'test description';
+      //       } else {
+      //         let obj = await api.get(apiURL);
+      //         if (obj && obj.data.status === 1) {
+      //           nft.name = obj.data.data.name;
+      //           nft.description = obj.data.data.description;
+      //           nft.image = obj.data.data.image;
+      //         }
+      //       }
+      //     });
       //   nft.salesRevenue = dNFTs.salesRevenue;
+      //   if (nft.image && nft.image.substr(0, 4) === 'http') {
+      //   } else {
+      //     nft.image =
+      //       'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2887354198,2403429628&fm=26&gp=0.jpg';
+      //   }
       //   metaDatas.push(nft);
-      // });
+      // }
 
-      // console.log(metaDatas);
-      // if (metaDatas.length) {
-      //   data.value = [...metaDatas];
-      // } else {
-      //   data.value = [...initdata];
-      // }
-      // } catch (error) {
-      //   data.value = [...initdata];
-      // }
+      // data.value = [...metaDatas];
     });
     return {
       text: ref(''),
