@@ -17,7 +17,9 @@
         <span class="right-title">
           <ConnectWallet />
         </span>
-        <span class="right-title">About</span>
+        <span class="right-title">
+          <router-link to="/about">About</router-link>
+        </span>
       </div>
     </section>
   </div>

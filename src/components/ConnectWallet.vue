@@ -1,7 +1,7 @@
 <template>
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
   <span v-else>
-    <!-- <button @click="test">test</button> -->
+    <q-btn label="add me to whitelist" class="btn-sell" @click="addWhitelist"></q-btn>
     <router-link to="/createnft">
       <q-btn label="Create NFT (test)" class="btn-sell"></q-btn>
     </router-link>
@@ -231,6 +231,8 @@ export default defineComponent({
       // balanceOf(current.account);
       // getPastEvents();
       // takeNFT(1);
+      // setArtist("0xb808261924a86047368af6bc7bb91a737c668d31")
+      // artistWhiteList('0xb808261924a86047368af6bc7bb91a737c668d31');
     };
     function balanceOf(userAddress) {
       return new Promise((resolve, reject) => {
@@ -245,7 +247,38 @@ export default defineComponent({
           .catch((e) => console.log(e));
       });
     }
-
+    //检查艺术家ad是否在白名单中
+    async function addWhitelist() {
+      let isin = await artistWhiteList(current.account);
+      if (!isin) {
+        setArtist(current.account);
+      }
+    }
+    function artistWhiteList(artistAddress) {
+      return new Promise((resolve, reject) => {
+        console.log(current);
+        current.myContract.methods
+          .artistWhiteList(artistAddress)
+          .call()
+          .then(function (result) {
+            console.log('is in whitelist? ' + JSON.stringify(result));
+            resolve(result);
+          });
+      });
+    }
+    //设置地址为艺术家白名单
+    function setArtist(artistAddress) {
+      return new Promise((resolve, reject) => {
+        console.log(current);
+        current.myContract.methods
+          .setArtist(artistAddress, true)
+          .send({ from: current.account })
+          .then(function (result) {
+            console.log('set artist: ' + JSON.stringify(result));
+            resolve(result);
+          });
+      });
+    }
     function takeNFT(dNFTid) {
       return new Promise((resolve, reject) => {
         console.log(current);
@@ -526,6 +559,9 @@ export default defineComponent({
       });
     }
     function wrapNFT(contractAd, NFTid) {
+      $q.loading.show({
+        message: 'Please <b>wait</b> a few seconds...',
+      });
       return new Promise((resolve, reject) => {
         console.log(current);
         current.myContract.methods
@@ -533,6 +569,7 @@ export default defineComponent({
           .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT: ' + JSON.stringify(result));
+            $q.loading.hide();
             $q.notify('dnft wrapped.');
             current.sellShow = false;
             resolve(result);
@@ -644,7 +681,10 @@ export default defineComponent({
               // },
             };
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            console.log(e);
+            $q.loading.hide();
+          });
       });
     }
     function dNFTbuyer(dNFTid, number = 1) {
@@ -824,6 +864,7 @@ export default defineComponent({
       wrapToSell,
       confirmSell,
       address_721,
+      addWhitelist,
     };
   },
 });

@@ -16,7 +16,11 @@
         <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
         <div>
-          <q-btn label="publish" type="submit" color="primary" />
+          <q-btn label="publish" type="submit" color="primary">
+            <q-inner-loading :showing="current.loading">
+              <q-spinner color="primary" size="3em" :thickness="2" />
+            </q-inner-loading>
+          </q-btn>
           <!-- <q-btn label="approve" color="primary" /> -->
         </div>
       </q-form>
@@ -44,6 +48,7 @@ export default {
       name: '',
       description: '',
       image: '',
+      loading: false,
     });
     function init() {
       const web3 = new Web3(window.ethereum);
@@ -57,6 +62,7 @@ export default {
       let tokenURI = 'ss';
 
       return new Promise(async (resolve, reject) => {
+        current.loading = true;
         let index = await myContract.methods.totalSupply().call();
         index = parseInt(index) + 1;
         myContract.methods
@@ -146,6 +152,7 @@ export default {
           })
           .catch((e) => {
             console.log(e);
+            current.loading = false;
           });
       });
       $q.notify({
@@ -165,6 +172,7 @@ export default {
           .then(function (result) {
             console.log('approve: ' + JSON.stringify(result));
             $q.notify('New NFT id is ' + tokenId + ', please copy it to sell.');
+            current.loading = false;
             let comments = {
               //  调用approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1);
               // result = {
@@ -277,7 +285,10 @@ export default {
 
             resolve(result);
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            console.log(e);
+            current.loading = false;
+          });
       });
     }
     return {
