@@ -39,10 +39,10 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="sell-card" style="border-radius: 15px;">
-      <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH ($ 00)</div>
-      <div>TOtal Dividends</div>
+      <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH</div>
+      <div>Total Dividends:</div>
       <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
-        <span>{{dnft.dNFTid}}-{{dnft.price.substr(0,7)}} eth</span>
+        <span>{{dnft.dNFTid}}-{{dnft.name}}-{{dnft.price.substr(0,7)}} eth</span>
       </div>
       <!-- <div>Field 1.02 ETH ($365.00)</div> -->
     </q-card>
@@ -64,6 +64,7 @@ const Web3 = require('web3');
 import { useQuasar, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
+import { useStorage } from '@vueuse/core';
 
 export default defineComponent({
   name: 'ConnectWallet',
@@ -85,6 +86,7 @@ export default defineComponent({
       myBoughtList: [],
       myTotalClaim: 0,
       myNFTs: [],
+      thelist: [],
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -120,6 +122,10 @@ export default defineComponent({
         current.account = window.ethereum.selectedAddress;
         current.network = window.ethereum.chainId;
         current.myContract = myContract;
+
+        let gState = useStorage('cache');
+        let dNFTs = JSON.parse(gState.value).dnfts;
+
         api
           .get('boughters?uad=' + window.ethereum.selectedAddress)
           .then(async (res) => {
@@ -131,28 +137,16 @@ export default defineComponent({
                 dNFTid,
                 window.ethereum.selectedAddress
               );
+              let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
               let result = {
                 dNFTid,
+                name: name ? name.name : '',
                 myAddress: window.ethereum.selectedAddress,
                 price: weiToCount(unClaim),
               };
-              // result.count = weiToCount(result.salesRevenue);
               current.myBoughtList.push(result);
             }
-            // await dNFTids.forEach(async (dNFTid) => {
-            //   let unClaim = await unClaimOf(
-            //     dNFTid,
-            //     window.ethereum.selectedAddress
-            //   );
-            //   debugger;
-            //   let result = {
-            //     dNFTid,
-            //     myAddress: window.ethereum.selectedAddress,
-            //     price: weiToCount(unClaim),
-            //   };
-            //   // result.count = weiToCount(result.salesRevenue);
-            //   current.myBoughtList.push(result);
-            // });
+
             current.myTotalClaim = current.myBoughtList
               .map((buy) => parseFloat(buy.price))
               .reduce((pre, cur) => pre + cur, 0);

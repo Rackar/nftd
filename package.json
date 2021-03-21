@@ -12,6 +12,7 @@
   "dependencies": {
     "@halobear/utils": "^2.0.1",
     "@quasar/extras": "^1.0.0",
+    "@vueuse/core": "^4.4.1",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "echarts": "^5.0.2",

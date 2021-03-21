@@ -32,6 +32,7 @@ import { api } from '../../boot/axios';
 import WaterFallComp from '../../components/WaterFallComp';
 import { ABI_721_standard, ABI, address } from 'src/web3/config';
 const Web3 = require('web3');
+import { useStorage } from '@vueuse/core';
 
 export default {
   components: {
@@ -249,6 +250,10 @@ export default {
       });
 
       data.value = [...list];
+      let gState = useStorage('cache', { dnfts: res.data.data });
+      console.log(gState);
+      // gState.dnfts = res.data.data;
+      // console.log(gState.dnfts);
       // let nfts = list.data.data;
       // console.log(nfts);
       // let metaDatas = [];
