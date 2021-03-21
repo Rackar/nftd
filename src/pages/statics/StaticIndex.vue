@@ -243,9 +243,12 @@ export default {
       });
     }
     onMounted(async () => {
-      data.value = [...initdata];
+      let res = await api.get('dnfts');
+      let list = res.data.data.filter((nft) => {
+        return nft.image && nft.image.substr(0, 4) === 'http';
+      });
 
-      // let list = await api.get('dnfts');
+      data.value = [...list];
       // let nfts = list.data.data;
       // console.log(nfts);
       // let metaDatas = [];

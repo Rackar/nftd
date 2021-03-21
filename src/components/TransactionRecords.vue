@@ -12,7 +12,7 @@
         }}
       </div>
       <div class="table-content-bought">{{row.count}}</div>
-      <div class="table-content-time">{{row.updatedAt.toLocaleString().substr(0,19)}}</div>
+      <div class="table-content-time">{{new Date(row.updatedAt).toLocaleString()}}</div>
     </div>
     <!-- <div>1 2 3 11</div> -->
   </div>

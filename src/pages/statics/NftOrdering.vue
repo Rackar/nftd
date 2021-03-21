@@ -13,11 +13,12 @@
             v-model:fullscreen="fullscreen"
             infinite
           >
-            <q-carousel-slide :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" />
-            <q-carousel-slide :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
-            <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
-            <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
-
+            <q-carousel-slide
+              :name="i"
+              v-for="(img,i) in current.images"
+              :key="img"
+              :img-src="img"
+            />
             <template v-slot:control>
               <q-carousel-control position="bottom-right" :offset="[18, 18]">
                 <q-btn
@@ -36,14 +37,14 @@
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6">
         <div class="right-side">
-          <div class="order-title">Awenon Maden</div>
-          <div class="order-artist">Picasso</div>
+          <div class="order-title">{{current.name}}</div>
+          <!-- <div class="order-artist">Picasso</div>
           <div class="order-artist-info">Spaninsh,1881-1973</div>
           <div
             class="order-info"
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
           <div class="order-price">19,000 ETH ($3,300.90)</div>
-          <div class="order-countdown">count down {{countdownLeft}}</div>
+          <div class="order-countdown">count down {{countdownLeft}}</div>-->
           <div class="order-buy">
             <q-btn @click="buyDnft" :disable="current.loading">
               Buy Now
@@ -76,9 +77,9 @@
         <q-tab-panel name="Details">
           <div class="row">
             <div class="col-xs-12 col-md-6">
-              <div class="about-artist">About artist</div>
-              <div>The girl of Avignon" is an oil painting created by Spanish painter Pablo Ruiz Picasso in 1907. Museum of modern art, New York.In this painting, there are five girls sitting or standing, scratching theirheads and posturing. In front of them is a small square stool with several clusters of grapes on it. The characters are completely distorted andillegible. The picture presents a single plane."I'm not a surrealist, I've never been divorced from reality. I always stayin the real situation This is Picasso's idea when he created "Guernica".Although people don't think Picasso is a realistic painter, in Picasso's idea, his paintings are not only based on the strongest emotional experience in his heart, but also the depiction of reality. Picasso is the most creative and far-reaching artistic genius in the history of western modernart in the 20th century. He is known as "the most complex" and knowshow to express</div>
-              <div class="read-more">Read more</div>
+              <div class="about-artist">Description</div>
+              <div>{{current.description}}</div>
+              <!-- <div class="read-more">Read more</div> -->
             </div>
             <div class="col-xs-12 col-md-6">
               <TransactionRecords :buyers="current.boughters" />
@@ -156,7 +157,12 @@
 import { defineComponent, ref, onMounted, reactive } from 'vue';
 import { date, useQuasar } from 'quasar';
 import TransactionRecords from '../../components/TransactionRecords.vue';
-import { ABI, address, getMyAddress } from 'src/web3/config';
+import {
+  ABI,
+  address,
+  getMyAddress,
+  justEnableMetamask,
+} from 'src/web3/config';
 import { api } from '../../boot/axios';
 const Web3 = require('web3');
 
@@ -191,6 +197,9 @@ export default defineComponent({
       boughters: [],
       comments: [],
       commentInput: '',
+      images: [],
+      name: '',
+      description: '',
     });
 
     function init() {
@@ -219,6 +228,11 @@ export default defineComponent({
             current.loading = false;
             console.log('dNFT buy status: ' + JSON.stringify(result));
             $q.notify('success');
+            current.boughters.push({
+              Buyer: window.ethereum.selectedAddress,
+              count: number,
+              updatedAt: new Date(),
+            });
             resolve(result);
           })
           .catch((e) => {
@@ -226,6 +240,13 @@ export default defineComponent({
             console.log(e);
           });
       });
+    }
+    async function getNFTmeta() {
+      let res = await api.get('nfts?id=' + props.nftid);
+      let meta = res.data.data;
+      current.name = meta.name;
+      current.description = meta.description;
+      current.images = [meta.image];
     }
     async function getBoughtHistory() {
       try {
@@ -276,7 +297,8 @@ export default defineComponent({
       countdownLeft.value = formatTimegap(diffSec);
     }
 
-    function buyDnft() {
+    async function buyDnft() {
+      await justEnableMetamask();
       current.showBuytab = true;
     }
     function confirmBuy() {
@@ -285,13 +307,14 @@ export default defineComponent({
     onMounted(async () => {
       let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
       setInterval(() => Countdown(endDate), 1000);
+      getNFTmeta();
       await getBoughtHistory();
       await getComment();
     });
     let list = [{}];
     return {
       list,
-      slide: ref(1),
+      slide: ref(0),
       countdownLeft,
       fullscreen: ref(false),
       tab: ref('Details'),

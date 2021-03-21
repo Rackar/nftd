@@ -1654,6 +1654,24 @@ function noticeNeedMetamask() {
         'MetaMask not found, please intall it from browser extensions store first.'
     );
 }
+
+async function justEnableMetamask() {
+    if (typeof window.ethereum !== 'undefined') {
+        const ethereum = window.ethereum;
+        //禁止自动刷新，metamask要求写的
+        ethereum.autoRefreshOnNetworkChange = false;
+
+        try {
+            //第一次链接Metamask
+            const accounts = await ethereum.enable();
+        } catch (e) {
+            console.log('link error', e);
+        }
+    } else {
+        noticeNeedMetamask()
+    }
+}
+
 async function enableMetamask() {
     const ethereum = window.ethereum;
     //禁止自动刷新，metamask要求写的
@@ -1695,4 +1713,4 @@ async function getMyAddress() {
 // init()
 // // wrapNFT(Web3.utils.randomHex(32), "")
 // dNFTbuyer(0)
-export { ABI, address, ABI_N, address_N, address_721, ABI_721_standard, getMyAddress }
+export { ABI, address, ABI_N, address_N, address_721, ABI_721_standard, getMyAddress, justEnableMetamask }

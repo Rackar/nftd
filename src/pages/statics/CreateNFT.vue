@@ -7,13 +7,17 @@
       <q-form @submit="onSubmit" class="q-gutter-md">
         <q-input outlined v-model="current.name" label="NFT Name" />
         <q-input outlined v-model="current.description" label="NFT description" />
-        <q-input outlined v-model="current.image" label="NFT image path" />
-
+        <q-input
+          outlined
+          v-model="current.image"
+          label="NFT image path"
+          :rules="[ val => val && val.substr(0,4) ==='http' || 'Image path start with http/https']"
+        />
         <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
         <div>
           <q-btn label="publish" type="submit" color="primary" />
-          <q-btn label="approve" color="primary" />
+          <!-- <q-btn label="approve" color="primary" /> -->
         </div>
       </q-form>
     </div>
@@ -58,7 +62,7 @@ export default {
         myContract.methods
           .awardItem(
             myAddress,
-            'http://localhost:3006/noauth/filoli/nfts?id=' + index
+            'http://filoli.io:3006/noauth/filoli/nfts?id=' + index
           )
           .send({
             from: myAddress,
