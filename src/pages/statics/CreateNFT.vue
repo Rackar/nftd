@@ -6,7 +6,7 @@
     <div class="q-pa-md" style="max-width: 400px">
       <q-form @submit="onSubmit" class="q-gutter-md">
         <q-input outlined v-model="current.name" label="NFT Name" />
-        <q-input outlined v-model="current.description" label="NFT description" />
+        <q-input outlined type="textarea" v-model="current.description" label="NFT description" />
         <q-input
           outlined
           v-model="current.image"
@@ -62,7 +62,7 @@ export default {
         myContract.methods
           .awardItem(
             myAddress,
-            'http://filoli.io:3006/noauth/filoli/nfts?id=' + index
+            'http://18.176.191.82:3006/noauth/filoli/nfts?id=' + index
           )
           .send({
             from: myAddress,
