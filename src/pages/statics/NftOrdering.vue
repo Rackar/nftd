@@ -38,13 +38,13 @@
       <div class="col-xs-12 col-sm-12 col-md-6">
         <div class="right-side">
           <div class="order-title">{{current.name}}</div>
-          <!-- <div class="order-artist">Picasso</div>
-          <div class="order-artist-info">Spaninsh,1881-1973</div>
-          <div
+          <div class="order-artist">{{current.artistName}}</div>
+          <div class="order-artist-info">{{current.artistInfo}}</div>
+          <!-- <div
             class="order-info"
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
           <div class="order-price">19,000 ETH ($3,300.90)</div>-->
-          <div class="order-countdown">count down {{countdownLeft}}</div>
+          <div class="order-countdown">Count down {{countdownLeft}}</div>
           <div class="order-buy">
             <q-btn @click="buyDnft" :disable="current.loading">
               Buy Now
@@ -200,6 +200,8 @@ export default defineComponent({
       images: [],
       name: '',
       description: '',
+      artistName: '',
+      artistInfo: '',
     });
 
     function init() {
@@ -275,6 +277,8 @@ export default defineComponent({
       current.name = meta.name;
       current.description = meta.description;
       current.images = [meta.image];
+      current.artistName = meta.artistName;
+      current.artistInfo = meta.artistInfo;
     }
     async function getBoughtHistory() {
       try {

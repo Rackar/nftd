@@ -14,7 +14,8 @@
           :rules="[ val => val && val.substr(0,4) ==='http' || 'Image path start with http/https']"
         />
         <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
-
+        <q-input outlined v-model="current.artistName" label="Artist Name" />
+        <q-input outlined v-model="current.artistInfo" label="Artist Information" />
         <div>
           <q-btn label="publish" type="submit" color="primary">
             <q-inner-loading :showing="current.loading">
@@ -48,6 +49,7 @@ export default {
       name: '',
       description: '',
       image: '',
+      artistName: '',
       loading: false,
     });
     function init() {
@@ -83,6 +85,8 @@ export default {
               name: current.name,
               description: current.description,
               image: current.image,
+              artistName: current.artistName,
+              artistInfo: current.artistInfo,
               nftid: index,
               contractAd: address_721,
             };
