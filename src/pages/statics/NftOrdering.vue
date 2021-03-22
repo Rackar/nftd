@@ -43,8 +43,8 @@
           <div
             class="order-info"
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
-          <div class="order-price">19,000 ETH ($3,300.90)</div>
-          <div class="order-countdown">count down {{countdownLeft}}</div>-->
+          <div class="order-price">19,000 ETH ($3,300.90)</div>-->
+          <div class="order-countdown">count down {{countdownLeft}}</div>
           <div class="order-buy">
             <q-btn @click="buyDnft" :disable="current.loading">
               Buy Now
@@ -109,9 +109,9 @@
     <q-dialog v-model="current.showBuytab">
       <q-card class="sell-card">
         <div>How many shares would you like to buy?</div>
-        <div class="sell-title">NFT name here</div>
-        <div>Current Valuation 10 ETH ($10,834)</div>
-        <div>180 shares issued</div>
+        <div class="sell-title">{{current.name}}</div>
+        <div>Current Valuation xx ETH ($00,000)</div>
+        <div>{{current.boughters.reduce((pre,cur)=>pre+parseInt(cur.count),0)}} shares issued</div>
         <q-input outlined v-model="current.count" class="sell-input" />
 
         <div class="flex">
@@ -213,6 +213,34 @@ export default defineComponent({
     function weiToCount(amount) {
       return Web3.utils.fromWei(amount);
     }
+    function getCountdown() {
+      let myContract = init();
+      return new Promise((resolve, reject) => {
+        myContract.methods
+          .idTodNFT(dNFTid)
+          .call()
+          .then(function (result) {
+            let { lastBuyTimestamp, sellFinishTime } = result;
+            if (sellFinishTime) {
+              let endDate = new Date(sellFinishTime);
+              setInterval(() => Countdown(endDate), 1000);
+            } else if (lastBuyTimestamp) {
+              // let endDate = new Date(sellFinishTime)
+              let endDate = date
+                .addToDate(new Date(lastBuyTimestamp), { days: 1 })
+                .toString();
+              setInterval(() => Countdown(endDate), 1000);
+            } else {
+              let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
+              setInterval(() => Countdown(endDate), 1000);
+            }
+            resolve(result);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
+    }
     function dNFTbuyer(dNFTid, number = 1) {
       let myContract = init();
       current.showBuytab = false;
@@ -305,11 +333,10 @@ export default defineComponent({
       dNFTbuyer(props.dnftid, current.count);
     }
     onMounted(async () => {
-      let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
-      setInterval(() => Countdown(endDate), 1000);
       getNFTmeta();
-      await getBoughtHistory();
-      await getComment();
+      getCountdown();
+      getBoughtHistory();
+      getComment();
     });
     let list = [{}];
     return {

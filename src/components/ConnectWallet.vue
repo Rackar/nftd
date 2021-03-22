@@ -246,6 +246,8 @@ export default defineComponent({
       let isin = await artistWhiteList(current.account);
       if (!isin) {
         setArtist(current.account);
+      } else {
+        $q.notify('aleady in whitelist');
       }
     }
     function artistWhiteList(artistAddress) {
