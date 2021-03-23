@@ -1,24 +1,13 @@
 <template>
   <div>
-    <!-- <Header /> -->
-    <!-- <section class="row" style=" justify-content:center;padding-top:20px;">
-      <div class="col" style="max-width: 220px;  ">
-        <q-input filled bottom-slots v-model="text" label="Search" maxlength="20" :dense="dense">
-          <template v-slot:append>
-            <q-icon v-if="text !== ''" name="close" @click="text = ''" class="cursor-pointer" />
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-    </section>-->
-    <section class="banner">
+    <!-- <section class="banner">
       <img src="icons/banner@3x.png" alt style=" max-height: 210px" />
-    </section>
+    </section>-->
     <section>
-      <div class="row" style=" justify-content:center;">
+      <!-- <div class="row" style=" justify-content:center;">
         <div class="tabs">Ongoing</div>
         <div class="tabs">Past</div>
-      </div>
+      </div>-->
       <WaterFallComp :data="data" @loadMore="fetchData" />
     </section>
   </div>
@@ -27,8 +16,6 @@
 <script>
 import { ref, reactive, onMounted } from 'vue';
 import { api } from '../../boot/axios';
-// import WaterFall from '../../libs/water-fall';
-// import Header from '../../components/Header.vue';
 import WaterFallComp from '../../components/WaterFallComp';
 import { ABI_721_standard, ABI, address } from 'src/web3/config';
 const Web3 = require('web3');
@@ -36,10 +23,7 @@ import { useStorage } from '@vueuse/core';
 
 export default {
   components: {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    // WaterFall,
     WaterFallComp,
-    // Header,
   },
   setup() {
     let initdata = [

@@ -219,22 +219,35 @@ export default defineComponent({
       let myContract = init();
       return new Promise((resolve, reject) => {
         myContract.methods
-          .idTodNFT(dNFTid)
+          .idTodNFT(props.dnftid)
           .call()
           .then(function (result) {
             let { lastBuyTimestamp, sellFinishTime } = result;
             if (sellFinishTime) {
-              let endDate = new Date(sellFinishTime);
-              setInterval(() => Countdown(endDate), 1000);
+              let endDate = new Date(sellFinishTime * 1000);
+              if (endDate > Date.now()) {
+                setInterval(() => Countdown(endDate), 1000);
+              } else {
+                countdownLeft.value = 'Selling ended.';
+              }
             } else if (lastBuyTimestamp) {
               // let endDate = new Date(sellFinishTime)
-              let endDate = date
-                .addToDate(new Date(lastBuyTimestamp), { days: 1 })
-                .toString();
-              setInterval(() => Countdown(endDate), 1000);
+              let endDate = date.addToDate(new Date(lastBuyTimestamp * 1000), {
+                days: 1,
+              });
+              // .toString();
+              if (endDate > Date.now()) {
+                setInterval(() => Countdown(endDate), 1000);
+              } else {
+                countdownLeft.value = 'Selling ended.';
+              }
             } else {
-              let endDate = date.addToDate(Date.now(), { days: 1 }).toString();
-              setInterval(() => Countdown(endDate), 1000);
+              let endDate = date.addToDate(Date.now(), { days: 1 });
+              if (endDate > Date.now()) {
+                setInterval(() => Countdown(endDate), 1000);
+              } else {
+                countdownLeft.value = 'Selling ended.';
+              }
             }
             resolve(result);
           })

@@ -1,6 +1,7 @@
 <template>
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
   <span v-else>
+    <!-- <button @click="test">test</button> -->
     <q-btn label="add me to whitelist" class="btn-sell" @click="addWhitelist"></q-btn>
     <router-link to="/createnft">
       <q-btn label="Create NFT (test)" class="btn-sell"></q-btn>
@@ -42,7 +43,8 @@
       <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH</div>
       <div>Total Dividends:</div>
       <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
-        <span>{{dnft.dNFTid}}-{{dnft.name}}-{{dnft.price.substr(0,7)}} eth</span>
+        <div class="mydnft-name" :class="{selling:dnft.isSelling}">{{dnft.dNFTid}}{{dnft.name}}</div>
+        <div class="mydnft-eth" :class="{selling:dnft.isSelling}">{{dnft.price.substr(0,7)}} eth</div>
       </div>
       <!-- <div>Field 1.02 ETH ($365.00)</div> -->
     </q-card>
@@ -214,6 +216,7 @@ export default defineComponent({
     }
 
     let test = async () => {
+      // testXML();
       // approve(address, 5); //已成功 A2
       // await wrapNFT(address_N, 4);
       // await dNFTbuyer(1);
@@ -228,6 +231,14 @@ export default defineComponent({
       // setArtist("0xb808261924a86047368af6bc7bb91a737c668d31")
       // artistWhiteList('0xb808261924a86047368af6bc7bb91a737c668d31');
     };
+    // function testXML() {
+    //   let url = 'http://localhost:3006/noauth/filoli/comments';
+    //   let post = new XMLHttpRequest();
+    //   post.open('POST', url, true);
+    //   post.setRequestHeader('Content-type', 'application/json');
+    //   let obj = { a: 'bb' };
+    //   post.send(JSON.stringify(obj));
+    // }
     function balanceOf(userAddress) {
       return new Promise((resolve, reject) => {
         console.log(current);
@@ -556,7 +567,7 @@ export default defineComponent({
     }
     function wrapNFT(contractAd, NFTid) {
       $q.loading.show({
-        message: 'Please <b>wait</b> a few seconds...',
+        message: 'Please wait a few seconds...',
       });
       return new Promise((resolve, reject) => {
         console.log(current);
@@ -880,5 +891,23 @@ export default defineComponent({
 .account-avatar {
   cursor: pointer;
   margin-right: 10px;
+}
+.mydnft-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+  border-top: 1px solid black;
+}
+.mydnft-name.selling {
+  color: grey;
+}
+.mydnft-eth {
+  font-weight: bold;
+  font-size: 16px;
+  color: black;
+  padding: 0 20px;
+}
+.mydnft-eth.selling {
+  color: grey;
 }
 </style>
