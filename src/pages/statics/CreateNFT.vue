@@ -3,7 +3,7 @@
     <h1 class="row myh1">test NFT publish</h1>
     <div class="row"></div>
 
-    <div class="q-pa-md" style="max-width: 400px">
+    <div class="q-pa-md" style="max-width: 500px;min-width: 400px;">
       <q-form @submit="onSubmit" class="q-gutter-md">
         <q-input outlined v-model="current.name" label="NFT Name" />
         <q-input outlined type="textarea" v-model="current.description" label="NFT description" />
@@ -24,6 +24,10 @@
           </q-btn>
           <!-- <q-btn label="approve" color="primary" /> -->
         </div>
+        <div v-if="current.nftid">
+          Approved NFT id:
+          <span style="color:red;">{{current.nftid}}</span>
+        </div>
       </q-form>
     </div>
   </q-page>
@@ -32,7 +36,8 @@
 <script>
 const Web3 = require('web3');
 import { useQuasar } from 'quasar';
-import { defineComponent, ref, reactive } from 'vue';
+import { useStore } from 'vuex';
+import { defineComponent, ref, reactive, computed } from 'vue';
 import {
   ABI_721_standard,
   address,
@@ -40,17 +45,25 @@ import {
   getMyAddress,
 } from 'src/web3/config';
 import { api } from '../../boot/axios';
+import { useStorage } from '@vueuse/core';
+
 export default {
   name: 'CreateNFT',
   setup() {
     const $q = useQuasar();
-
+    const $store = useStore();
     const current = reactive({
       name: '',
       description: '',
       image: '',
       artistName: '',
       loading: false,
+      nftid: computed({
+        get: () => $store.state.example.nftIdApproved,
+        set: (val) => {
+          $store.commit('example/setNftIdApproved', val);
+        },
+      }),
     });
     function init() {
       const web3 = new Web3(window.ethereum);
@@ -92,7 +105,7 @@ export default {
             };
 
             console.log('NFT status: ' + JSON.stringify(result));
-            $q.notify('Create success. Now approve.');
+            $q.notify('Creating successes. Now approving.');
             let s = await api.post('nfts', { nft });
             if (s) {
               // debugger;
@@ -177,6 +190,8 @@ export default {
             console.log('approve: ' + JSON.stringify(result));
             $q.notify('New NFT id is ' + tokenId + ', please copy it to sell.');
             current.loading = false;
+            // $store.commit('example/setNftIdApproved', tokenId);
+            current.nftid = '';
             let comments = {
               //  调用approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1);
               // result = {

@@ -1,10 +1,12 @@
 export interface ExampleStateInterface {
   prop: boolean;
+  nftIdApproved: string;
 }
 
 function state(): ExampleStateInterface {
   return {
-    prop: false
+    prop: false,
+    nftIdApproved: ''
   }
 };
 

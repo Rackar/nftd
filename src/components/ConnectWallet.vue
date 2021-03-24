@@ -26,7 +26,7 @@
     </span>
   </span>
   <q-dialog v-model="current.sellShow">
-    <q-card class="sell-card" style="border-radius: 15px;">
+    <q-card class="nft-sell-card" style="border-radius: 15px;">
       <div>NFT contract address (default: {{address_721}})</div>
       <q-input outlined v-model="current.sellNFTaddress" />
       <div>
@@ -39,7 +39,7 @@
     </q-card>
   </q-dialog>
   <q-dialog v-model="current.showAccount">
-    <q-card class="sell-card" style="border-radius: 15px;">
+    <q-card class="mydnft-card" style="border-radius: 15px;">
       <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH</div>
       <div>Total Dividends:</div>
       <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
@@ -67,12 +67,14 @@ import { useQuasar, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
 import { useStorage } from '@vueuse/core';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'ConnectWallet',
   props: {},
   setup(props) {
     const $q = useQuasar();
+    const $store = useStore();
     function connect() {
       WalletInit();
     }
@@ -82,7 +84,7 @@ export default defineComponent({
       myContract: {},
       sellShow: false,
       address,
-      sellNFTaddress: '',
+      sellNFTaddress: address_721,
       sellNFTid: '',
       showAccount: false,
       myBoughtList: [],
@@ -106,6 +108,8 @@ export default defineComponent({
       //   let list = res.data.data;
       //   current.myNFTs = list.map((data) => data.NFTid).join(',');
       // });
+
+      current.sellNFTid = $store.state.example.nftIdApproved;
       current.sellShow = true;
     };
     const confirmSell = async () => {
@@ -579,6 +583,8 @@ export default defineComponent({
             $q.loading.hide();
             $q.notify('dnft wrapped.');
             current.sellShow = false;
+            current.sellNFTid = '';
+            $store.commit('example/setNftIdApproved', '');
             resolve(result);
             let dNFT = {
               // blockHash:
@@ -885,7 +891,11 @@ export default defineComponent({
 .btn-sell {
   margin-right: 15px;
 }
-.sell-card {
+.nft-sell-card {
+  padding: 50px;
+}
+.mydnft-card {
+  text-align: center;
   padding: 50px;
 }
 .account-avatar {

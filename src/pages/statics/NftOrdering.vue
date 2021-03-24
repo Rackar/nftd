@@ -418,7 +418,7 @@ export default defineComponent({
   padding: 10px 0;
   font-size: 16px;
   line-height: 18px;
-  font-weight: bold;
+  color: gray;
   border-bottom: 1px rgb(218, 218, 218) solid;
 }
 .order-info {
