@@ -2,7 +2,12 @@
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
   <span v-else>
     <!-- <button @click="test">test</button> -->
-    <q-btn label="add me to whitelist" class="btn-sell" @click="addWhitelist"></q-btn>
+    <q-btn
+      label="add whitelist"
+      class="btn-sell"
+      v-if="current.isOwner"
+      @click="current.showAddWhitelist=true"
+    ></q-btn>
     <router-link to="/createnft">
       <q-btn label="Create NFT (test)" class="btn-sell"></q-btn>
     </router-link>
@@ -36,6 +41,14 @@
       <q-input outlined v-model="current.sellNFTid" />
       <div>You need to approve this NFT to Filoli Contract Address first: {{current.address}}</div>
       <q-btn @click="confirmSell" label="Confirm"></q-btn>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="current.showAddWhitelist">
+    <q-card class="nft-sell-card" style="border-radius: 15px;">
+      <div>User address to add whitelist</div>
+      <q-input outlined v-model="current.inputAddWhitelist" />
+
+      <q-btn @click="addWhitelist(current.inputAddWhitelist)" label="Confirm"></q-btn>
     </q-card>
   </q-dialog>
   <q-dialog v-model="current.showAccount">
@@ -87,10 +100,13 @@ export default defineComponent({
       sellNFTaddress: address_721,
       sellNFTid: '',
       showAccount: false,
+      showAddWhitelist: false,
+      inputAddWhitelist: '',
       myBoughtList: [],
       myTotalClaim: 0,
       myNFTs: [],
       thelist: [],
+      isOwner: false, //默认关闭白名单设置按钮
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -113,7 +129,12 @@ export default defineComponent({
       current.sellShow = true;
     };
     const confirmSell = async () => {
-      await wrapNFT(current.sellNFTaddress, current.sellNFTid);
+      let isin = await artistWhiteList(current.account);
+      if (isin) {
+        await wrapNFT(current.sellNFTaddress, current.sellNFTid);
+      } else {
+        $q.notify('You are not in whitelist yet, contact us please.');
+      }
     };
     let init = () => {
       if (
@@ -257,10 +278,12 @@ export default defineComponent({
       });
     }
     //检查艺术家ad是否在白名单中
-    async function addWhitelist() {
-      let isin = await artistWhiteList(current.account);
+    async function addWhitelist(userAddress) {
+      if (!userAddress) return $q.notify('Must input user address.');
+      let isin = await artistWhiteList(userAddress);
+      debugger;
       if (!isin) {
-        setArtist(current.account);
+        setArtist(userAddress);
       } else {
         $q.notify('aleady in whitelist');
       }
