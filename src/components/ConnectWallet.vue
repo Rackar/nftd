@@ -76,6 +76,9 @@ import {
   reactive,
 } from 'vue';
 const Web3 = require('web3');
+// This function detects most providers injected at window.ethereum
+import detectEthereumProvider from '@metamask/detect-provider';
+
 import { useQuasar, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
@@ -89,7 +92,8 @@ export default defineComponent({
     const $q = useQuasar();
     const $store = useStore();
     function connect() {
-      WalletInit();
+      // WalletInit();
+      newWalletInit();
     }
     let current = reactive({
       account: '',
@@ -136,18 +140,15 @@ export default defineComponent({
         $q.notify('You are not in whitelist yet, contact us please.');
       }
     };
-    let init = () => {
-      if (
-        window.ethereum &&
-        window.ethereum.isMetaMask &&
-        window.ethereum.selectedAddress
-      ) {
-        const web3 = new Web3(window.ethereum);
+    let init = (provider) => {
+      if (!provider) provider = window.ethereum;
+      if (provider && provider.isMetaMask && provider.selectedAddress) {
+        const web3 = new Web3(provider);
         // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft 只有approve时调用
         const myContract = new web3.eth.Contract(ABI, address); //dnft
 
-        current.account = window.ethereum.selectedAddress;
-        current.network = window.ethereum.chainId;
+        current.account = provider.selectedAddress;
+        current.network = provider.chainId;
         current.myContract = myContract;
 
         let gState = useStorage('cache');
@@ -156,21 +157,18 @@ export default defineComponent({
         checkIsOwner();
 
         api
-          .get('boughters?uad=' + window.ethereum.selectedAddress)
+          .get('boughters?uad=' + provider.selectedAddress)
           .then(async (res) => {
             let data = res.data.data;
             let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
             for (let i = 0; i < dNFTids.length; i++) {
               const dNFTid = dNFTids[i];
-              let unClaim = await unClaimOf(
-                dNFTid,
-                window.ethereum.selectedAddress
-              );
+              let unClaim = await unClaimOf(dNFTid, provider.selectedAddress);
               let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
               let result = {
                 dNFTid,
                 name: name ? name.name : '',
-                myAddress: window.ethereum.selectedAddress,
+                myAddress: provider.selectedAddress,
                 price: weiToCount(unClaim),
               };
               current.myBoughtList.push(result);
@@ -233,6 +231,33 @@ export default defineComponent({
         alert(
           'MetaMask not found, please intall it from browser extensions store first.'
         );
+      }
+    };
+    let newWalletInit = async () => {
+      const provider = await detectEthereumProvider();
+      // debugger;
+      if (provider) {
+        // From now on, this should always be true:
+        // provider === window.ethereum
+        // initialize your app
+        // await provider.enable();//之前的激活方式
+        const accounts = await ethereum.request({
+          method: 'eth_requestAccounts',
+        }); //根据官方文档新的激活方式
+        const account = accounts[0];
+        init(provider);
+        provider.on('accountsChanged', function (accounts) {
+          console.log('accountsChanged:' + accounts);
+          current.account = accounts[0];
+          init(provider);
+        });
+        provider.on('networkChanged', function (networkVersion) {
+          console.log('networkChanged:' + networkVersion);
+          current.network = networkVersion;
+          init(provider);
+        });
+      } else {
+        $q.notify('Please install MetaMask!');
       }
     };
     function countToWei(number = 1) {
