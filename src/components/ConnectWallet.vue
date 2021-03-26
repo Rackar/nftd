@@ -153,6 +153,8 @@ export default defineComponent({
         let gState = useStorage('cache');
         let dNFTs = JSON.parse(gState.value).dnfts;
 
+        checkIsOwner();
+
         api
           .get('boughters?uad=' + window.ethereum.selectedAddress)
           .then(async (res) => {
@@ -255,6 +257,7 @@ export default defineComponent({
       // takeNFT(1);
       // setArtist("0xb808261924a86047368af6bc7bb91a737c668d31")
       // artistWhiteList('0xb808261924a86047368af6bc7bb91a737c668d31');
+      // owner();
     };
     // function testXML() {
     //   let url = 'http://localhost:3006/noauth/filoli/comments';
@@ -264,6 +267,22 @@ export default defineComponent({
     //   let obj = { a: 'bb' };
     //   post.send(JSON.stringify(obj));
     // }
+    function checkIsOwner() {
+      return new Promise((resolve, reject) => {
+        console.log(current);
+        current.myContract.methods
+          .owner()
+          .call()
+          .then(function (result) {
+            console.log('owner is: ' + JSON.stringify(result));
+            current.isOwner =
+              result === Web3.utils.toChecksumAddress(current.account);
+            // debugger;
+            resolve(result);
+          })
+          .catch((e) => console.log(e));
+      });
+    }
     function balanceOf(userAddress) {
       return new Promise((resolve, reject) => {
         console.log(current);
