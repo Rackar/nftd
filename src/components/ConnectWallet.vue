@@ -56,8 +56,36 @@
       <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH</div>
       <div>Total Dividends:</div>
       <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
-        <div class="mydnft-name" :class="{selling:dnft.isSelling}">{{dnft.dNFTid}}{{dnft.name}}</div>
+        <!-- <div class="mydnft-name" :class="{selling:dnft.isSelling}">{{dnft.dNFTid}}{{dnft.name}}</div>
         <div class="mydnft-eth" :class="{selling:dnft.isSelling}">{{dnft.price.substr(0,7)}} eth</div>
+        <q-btn @click="claim(dnft.dNFTid)" label="claim" />-->
+        <q-item>
+          <q-item-section avatar top>
+            <q-icon name="account_tree" color="black" size="34px" />
+          </q-item-section>
+
+          <q-item-section top class="col-2 gt-sm">
+            <q-item-label class="q-mt-sm">{{dnft.dNFTid}}-{{dnft.name}}</q-item-label>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
+          </q-item-section>
+
+          <q-item-section top side>
+            <div class="text-grey-8 q-gutter-xs">
+              <q-btn
+                class="gt-xs"
+                size="12px"
+                flat
+                dense
+                label="claim"
+                @click="claim(dnft.dNFTid)"
+              />
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator spaced />
       </div>
       <!-- <div>Field 1.02 ETH ($365.00)</div> -->
     </q-card>
@@ -283,6 +311,7 @@ export default defineComponent({
       // setArtist("0xb808261924a86047368af6bc7bb91a737c668d31")
       // artistWhiteList('0xb808261924a86047368af6bc7bb91a737c668d31');
       // owner();
+      // fundNFT()
     };
     // function testXML() {
     //   let url = 'http://localhost:3006/noauth/filoli/comments';
@@ -919,9 +948,27 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         current.myContract.methods
           .claim(dNFTid)
-          .call({ from: current.account })
+          .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT claim status: ' + JSON.stringify(result));
+            resolve(result);
+            let t = {};
+          })
+          .catch((e) => console.log(e));
+      });
+    }
+    ///分配出售NFT的钱给各股东
+    function fundNFT(dNFTid, number) {
+      return new Promise((resolve, reject) => {
+        current.myContract.methods
+          .fundNFT(dNFTid)
+          .send({
+            from: current.account,
+            value: Web3.utils.toWei(number.toString()),
+          })
+          .then(function (result) {
+            debugger;
+            console.log('fundNFT status: ' + JSON.stringify(result));
             resolve(result);
             let t = {};
           })
@@ -945,6 +992,8 @@ export default defineComponent({
       confirmSell,
       address_721,
       addWhitelist,
+      fundNFT,
+      claim,
     };
   },
 });
@@ -964,6 +1013,7 @@ export default defineComponent({
 .mydnft-card {
   text-align: center;
   padding: 50px;
+  min-width: 400px;
 }
 .account-avatar {
   cursor: pointer;
