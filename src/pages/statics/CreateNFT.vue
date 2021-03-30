@@ -44,7 +44,7 @@ import {
   address_721,
   getMyAddress,
 } from 'src/web3/config';
-import { api } from '../../boot/axios';
+import { api, base } from '../../boot/axios';
 import { useStorage } from '@vueuse/core';
 
 export default {
@@ -81,10 +81,7 @@ export default {
         let index = await myContract.methods.totalSupply().call();
         index = parseInt(index) + 1;
         myContract.methods
-          .awardItem(
-            myAddress,
-            'http://18.176.191.82:3006/noauth/filoli/nfts?id=' + index
-          )
+          .awardItem(myAddress, base + 'nfts?id=' + index)
           .send({
             from: myAddress,
           })
