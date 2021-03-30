@@ -44,9 +44,16 @@
             class="order-info"
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
           <div class="order-price">19,000 ETH ($3,300.90)</div>-->
-          <div class="order-countdown">Count down {{countdownLeft}}</div>
+          <div class="order-countdown">
+            <span v-show="countdownLeft.value === 'Selling ended.'">Count down</span>
+            {{countdownLeft}}
+          </div>
           <div class="order-buy">
-            <q-btn @click="buyDnft" :disable="current.loading">
+            <q-btn
+              @click="buyDnft"
+              :disable="current.loading"
+              v-show="countdownLeft.value === 'Selling ended.'"
+            >
               Buy Now
               <q-inner-loading :showing="current.loading">
                 <q-spinner color="primary" size="3em" :thickness="2" />

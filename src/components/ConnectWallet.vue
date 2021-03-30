@@ -61,7 +61,8 @@
         <q-btn @click="claim(dnft.dNFTid)" label="claim" />-->
         <q-item>
           <q-item-section avatar top>
-            <q-icon name="account_tree" color="black" size="34px" />
+            <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
+            <q-icon v-else name="account_tree" color="black" size="34px" />
           </q-item-section>
 
           <q-item-section top class="col-2 gt-sm">
@@ -196,6 +197,7 @@ export default defineComponent({
               let result = {
                 dNFTid,
                 name: name ? name.name : '',
+                image: name ? name.image : '',
                 myAddress: provider.selectedAddress,
                 price: weiToCount(unClaim),
               };
@@ -945,12 +947,18 @@ export default defineComponent({
       });
     }
     function claim(dNFTid) {
+      $q.loading.show({
+        message: 'Please wait a few seconds...',
+      });
       return new Promise((resolve, reject) => {
         current.myContract.methods
           .claim(dNFTid)
           .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT claim status: ' + JSON.stringify(result));
+            $q.loading.hide();
+            $q.notify('claim success');
+            current.showAccount = false;
             resolve(result);
             let t = {};
           })
