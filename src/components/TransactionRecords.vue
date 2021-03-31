@@ -6,13 +6,13 @@
       <div class="table-title-time">Time</div>
     </div>
     <div class="table-content" v-for="row in buyers" :key="row.id">
-      <div class="table-content-investor">
+      <div class="table-title-investor">
         {{
         row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5)
         }}
       </div>
-      <div class="table-content-bought">{{row.count}}</div>
-      <div class="table-content-time">{{new Date(row.updatedAt).toLocaleString()}}</div>
+      <div class="table-title-bought">{{row.count}}</div>
+      <div class="table-title-time">{{new Date(row.updatedAt).toLocaleString()}}</div>
     </div>
     <!-- <div>1 2 3 11</div> -->
   </div>
@@ -71,21 +71,44 @@ export default {
 
 <style>
 .table {
-  width: 400px;
+  /* width: 400px; */
 }
 .table-title {
   font-size: 16px;
-  display: flex;
+  /* display: flex; */
   color: #4b4b4b;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   border-bottom: 1px gainsboro solid;
 }
 .table-content {
   font-size: 16px;
-  display: flex;
   color: #4b4b4b;
-  justify-content: space-between;
   line-height: 30px;
   border-bottom: 1px gainsboro solid;
+}
+.table-title-investor {
+  display: inline-block;
+  width: 150px;
+}
+.table-title-bought {
+  display: inline-block;
+  width: 100px;
+}
+.table-title-time {
+  display: inline-block;
+  width: 200px;
+}
+@media only screen and (max-width: 1024px) {
+  .table-title-investor {
+    display: inline-block;
+    width: 100px;
+  }
+  .table-title-bought {
+    display: inline-block;
+    width: 60px;
+  }
+  .table-title-time {
+    display: inline-block;
+  }
 }
 </style>

@@ -84,7 +84,7 @@
           <div class="row">
             <div class="col-xs-12 col-md-6">
               <div class="about-artist">Description</div>
-              <div>{{current.description}}</div>
+              <div class="about-des">{{current.description}}</div>
               <!-- <div class="read-more">Read more</div> -->
             </div>
             <div class="col-xs-12 col-md-6">
@@ -461,6 +461,9 @@ export default defineComponent({
 }
 .about-artist {
   font-size: 22px;
+}
+.about-des {
+  padding-bottom: 40px;
 }
 .read-more {
   color: grey;

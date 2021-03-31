@@ -37,6 +37,7 @@ export default {
   position: absolute;
   z-index: -1;
   top: 400px;
+  left: 80px;
 }
 .about-main {
   margin-left: 600px;
