@@ -51,8 +51,7 @@
           <div class="order-buy">
             <q-btn
               @click="buyDnft"
-              :disable="current.loading"
-              v-show="countdownLeft.value === 'Selling ended.'"
+              :disable="(current.loading || (countdownLeft == 'Selling ended.'))"
             >
               Buy Now
               <q-inner-loading :showing="current.loading">
