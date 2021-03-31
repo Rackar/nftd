@@ -45,7 +45,7 @@
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
           <div class="order-price">19,000 ETH ($3,300.90)</div>-->
           <div class="order-countdown">
-            <span v-show="countdownLeft.value === 'Selling ended.'">Count down</span>
+            <span v-show="countdownLeft !== 'Selling ended.'">Count down</span>
             {{countdownLeft}}
           </div>
           <div class="order-buy">

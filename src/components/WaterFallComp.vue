@@ -1,6 +1,6 @@
 <template>
   <div class="water-fall" v-if="list.length">
-    <water-fall :data="list" gap="20px" width="240px" class="container" :delay="true">
+    <water-fall :data="list" gap="30px" width="260px" class="container" :delay="true">
       <template #default="item">
         <router-link :to="'/nft/'+item.NFTCotract+'/'+item.NFTid+'/'+item.dNFTid">
           <div class="card">
@@ -101,7 +101,8 @@ export default {
 }
 .card .img {
   width: 100%;
-  margin-bottom: 5px;
+  border-radius: 15px 15px 0 0;
+  /* margin-bottom: 5px; */
   /* cursor: pointer; */
 }
 .card .img:hover {
