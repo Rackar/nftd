@@ -236,6 +236,15 @@ export default {
       data.value = [...list];
       let gState = useStorage('cache', { dnfts: res.data.data });
       console.log(gState);
+      // for (let i = 0; i < data.value.length; i++) {
+      //   const dnft = data.value[i];
+      //   let status = await getNFTprice(dnft.dNFTid);
+      //   debugger;
+      //   dnft.selling = status.sellFinishTime ? false : true;
+      //   dnft.price = (Web3.utils.fromWei(status.salesRevenue) * 1400).toFixed(
+      //     2
+      //   );
+      // }
       // gState.dnfts = res.data.data;
       // console.log(gState.dnfts);
       // let nfts = list.data.data;
