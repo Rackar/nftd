@@ -116,7 +116,7 @@
       <q-card class="sell-card">
         <div>How many shares would you like to buy?</div>
         <div class="sell-title">{{current.name}}</div>
-        <div>Current Valuation xx ETH ($00,000)</div>
+        <div>Current Valuation {{weiToCount(current.salesRevenue)}} ETH ($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</div>
         <div>{{current.boughters.reduce((pre,cur)=>pre+parseInt(cur.count),0)}} shares issued</div>
         <q-input outlined v-model="current.count" class="sell-input" />
 
@@ -208,6 +208,8 @@ export default defineComponent({
       description: '',
       artistName: '',
       artistInfo: '',
+      salesRevenue: '',
+      ethPrice: 0,
     });
 
     function init() {
@@ -228,7 +230,8 @@ export default defineComponent({
           .idTodNFT(props.dnftid)
           .call()
           .then(function (result) {
-            let { lastBuyTimestamp, sellFinishTime } = result;
+            let { lastBuyTimestamp, sellFinishTime, salesRevenue } = result;
+            current.salesRevenue = salesRevenue;
             if (sellFinishTime) {
               let endDate = new Date(sellFinishTime * 1000);
               if (endDate > Date.now()) {
@@ -277,6 +280,7 @@ export default defineComponent({
             current.loading = false;
             console.log('dNFT buy status: ' + JSON.stringify(result));
             $q.notify('success');
+            getCountdown();
             current.boughters.push({
               Buyer: window.ethereum.selectedAddress,
               count: number,
@@ -298,6 +302,10 @@ export default defineComponent({
       current.images = [meta.image];
       current.artistName = meta.artistName;
       current.artistInfo = meta.artistInfo;
+    }
+    async function getETHprice() {
+      let res = await api.get('ethprice');
+      current.ethPrice = res.data.data ? parseFloat(res.data.data) : 0;
     }
     async function getBoughtHistory() {
       try {
@@ -360,6 +368,7 @@ export default defineComponent({
       getCountdown();
       getBoughtHistory();
       getComment();
+      getETHprice();
     });
     let list = [{}];
     return {
@@ -372,6 +381,7 @@ export default defineComponent({
       buyDnft,
       confirmBuy,
       saveComment,
+      weiToCount,
     };
   },
 });

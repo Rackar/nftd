@@ -100,7 +100,7 @@ export default {
               nftid: index,
               contractAd: address_721,
             };
-
+            current.nftid = index;
             console.log('NFT status: ' + JSON.stringify(result));
             $q.notify('Creating successes. Now approving.');
             let s = await api.post('nfts', { nft });
@@ -188,7 +188,7 @@ export default {
             $q.notify('New NFT id is ' + tokenId + ', please copy it to sell.');
             current.loading = false;
             // $store.commit('example/setNftIdApproved', tokenId);
-            current.nftid = '';
+            // current.nftid = '';
             let comments = {
               //  调用approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1);
               // result = {
