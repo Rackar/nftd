@@ -32,7 +32,7 @@ export default {
 }
 .about-bg {
   background-image: url('/assets/images/bg.png');
-  width: 1400px;
+  width: 1200px;
   height: 800px;
   position: absolute;
   z-index: -1;
@@ -40,11 +40,11 @@ export default {
   left: 80px;
 }
 .about-main {
-  margin-left: 600px;
+  margin-left: 440px;
   padding: 80px;
   width: 1000px;
   font-size: 32px;
-  background-color: aliceblue;
+  background-color: rgb(250, 253, 255);
   color: #222222;
 }
 @media only screen and (max-width: 1024px) {
