@@ -232,6 +232,7 @@ export default {
       let list = res.data.data.filter((nft) => {
         return nft.image && nft.image.substr(0, 4) === 'http';
       });
+      list.reverse();
 
       data.value = [...list];
       let gState = useStorage('cache', { dnfts: res.data.data });
