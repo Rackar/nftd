@@ -6,12 +6,6 @@
           <img class="left-image" height="40" src="icons/logo@2x.png" alt srcset />
         </router-link>
         <!-- <span class="header-title">Filoli</span> -->
-        <a href="https://discord.gg/evT2jawc" target="_blank">
-          <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
-        </a>
-        <a href="https://twitter.com/filo_li" target="_blank">
-          <img class="left-image" width="40" height="40" src="icons/twitter@2x.png" alt srcset />
-        </a>
       </div>
       <div class="right-toolbar">
         <span class="right-title">
