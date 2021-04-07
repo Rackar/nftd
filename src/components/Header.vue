@@ -44,6 +44,12 @@ export default {
   border-bottom: rgb(219, 219, 219) 1px solid;
   justify-content: space-between;
 }
+@media only screen and (max-width: 1024px) {
+  .top {
+    padding: 10px;
+  }
+}
+
 .header-title {
   font-size: 40px;
   line-height: 40px;

@@ -9,7 +9,7 @@
       @click="current.showAddWhitelist=true"
     ></q-btn>
     <router-link to="/createnft">
-      <q-btn label="Create NFT (test)" class="btn-sell"></q-btn>
+      <q-btn label="Create NFT" class="btn-sell"></q-btn>
     </router-link>
 
     <q-btn @click="wrapToSell" label="Sell" class="btn-sell"></q-btn>
