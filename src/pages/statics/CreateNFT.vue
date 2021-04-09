@@ -45,7 +45,6 @@ import {
   getMyAddress,
 } from 'src/web3/config';
 import { api, base } from '../../boot/axios';
-import { useStorage } from '@vueuse/core';
 
 export default {
   name: 'CreateNFT',

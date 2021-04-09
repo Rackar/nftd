@@ -3,7 +3,7 @@
     <water-fall :data="list" gap="30px" width="260px" class="container" :delay="true">
       <template #default="item">
         <router-link :to="'/nft/'+item.NFTCotract+'/'+item.NFTid+'/'+item.dNFTid">
-          <div class="card">
+          <div class="card" :class="{sellout:item.Selling==='false'}">
             <div>
               <img class="img" :src="item.image" />
               <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
@@ -99,6 +99,10 @@ export default {
   line-height: 1.5;
   word-break: break-all;
 }
+.card.sellout {
+  border: #c3baba 3px dotted;
+  border-radius: 10px;
+}
 .card .img {
   width: 100%;
   border-radius: 15px 15px 0 0;
@@ -108,6 +112,7 @@ export default {
 .card .img:hover {
   opacity: 0.5;
 }
+
 .card > .artist {
   text-align: center;
   font-size: 20px;

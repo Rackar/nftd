@@ -12,6 +12,12 @@
       class="about-info"
     >Filoli.io is in beta development. It is intended for internal usage only. Terms and Privacy policy will be avaiable soon.</p>
     <p class="about-info">All rights reserved 2021</p>
+    <a href="https://discord.gg/evT2jawc" target="_blank">
+      <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
+    </a>
+    <a href="https://twitter.com/filo_li" target="_blank">
+      <img class="left-image" width="40" height="40" src="icons/twitter@2x.png" alt srcset />
+    </a>
   </div>
 </template>
 
@@ -68,5 +74,8 @@ export default {
 .about-info {
   font-size: 20px;
   color: #898989;
+}
+.left-image {
+  margin-right: 10px;
 }
 </style>

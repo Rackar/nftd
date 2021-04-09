@@ -480,7 +480,9 @@ export default defineComponent({
   font-size: 22px;
 }
 .about-des {
-  padding-bottom: 40px;
+  /* padding-right: 20px;
+  padding-bottom: 40px; */
+  padding: 10px 20px 40px 10px;
 }
 .read-more {
   color: grey;
