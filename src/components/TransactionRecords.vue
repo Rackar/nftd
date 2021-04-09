@@ -98,6 +98,19 @@ export default {
   display: inline-block;
   width: 200px;
 }
+@media only screen and (max-width: 1440px) {
+  .table-title-investor {
+    display: inline-block;
+    width: 100px;
+  }
+  .table-title-bought {
+    display: inline-block;
+    width: 80px;
+  }
+  .table-title-time {
+    display: inline-block;
+  }
+}
 @media only screen and (max-width: 1024px) {
   .table-title-investor {
     display: inline-block;

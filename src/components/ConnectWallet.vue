@@ -113,11 +113,13 @@ import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
 import { useStorage } from '@vueuse/core';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'ConnectWallet',
   props: {},
   setup(props) {
+    let router = useRouter();
     const $q = useQuasar();
     const $store = useStore();
     function connect() {
@@ -680,9 +682,12 @@ export default defineComponent({
             console.log('dNFT: ' + JSON.stringify(result));
             $q.loading.hide();
             $q.notify('dnft wrapped.');
+            $store.commit('example/setNftIdApproved', '');
+            let dnftUrl = `/nft/${contractAd}/${NFTid}/${result.events.TransferSingle.returnValues.id}`;
             current.sellShow = false;
             current.sellNFTid = '';
-            $store.commit('example/setNftIdApproved', '');
+            router.push(dnftUrl);
+
             resolve(result);
             let dNFT = {
               // blockHash:
