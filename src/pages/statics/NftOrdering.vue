@@ -171,6 +171,7 @@ import {
 } from 'src/web3/config';
 import { api } from '../../boot/axios';
 const Web3 = require('web3');
+let countdownInterval;
 
 export default defineComponent({
   name: 'NftOrdering',
@@ -223,6 +224,14 @@ export default defineComponent({
     function weiToCount(amount) {
       return Web3.utils.fromWei(amount);
     }
+    function setCountDownTime(endDate) {
+      clearInterval(countdownInterval);
+      if (endDate > Date.now()) {
+        countdownInterval = setInterval(() => Countdown(endDate), 1000);
+      } else {
+        countdownLeft.value = 'Selling ended.';
+      }
+    }
     function getCountdown() {
       let myContract = init();
       return new Promise((resolve, reject) => {
@@ -234,29 +243,27 @@ export default defineComponent({
             current.salesRevenue = salesRevenue;
             if (sellFinishTime) {
               let endDate = new Date(sellFinishTime * 1000);
-              if (endDate > Date.now()) {
-                setInterval(() => Countdown(endDate), 1000);
-              } else {
-                countdownLeft.value = 'Selling ended.';
-              }
+              setCountDownTime(endDate);
+              // if (endDate > Date.now()) {
+              //   setInterval(() => Countdown(endDate), 1000);
+              // } else {
+              //   countdownLeft.value = 'Selling ended.';
+              // }
             } else if (lastBuyTimestamp) {
               // let endDate = new Date(sellFinishTime)
               let endDate = date.addToDate(new Date(lastBuyTimestamp * 1000), {
                 days: 1,
               });
+              setCountDownTime(endDate);
               // .toString();
-              if (endDate > Date.now()) {
-                setInterval(() => Countdown(endDate), 1000);
-              } else {
-                countdownLeft.value = 'Selling ended.';
-              }
+              // if (endDate > Date.now()) {
+              //   setInterval(() => Countdown(endDate), 1000);
+              // } else {
+              //   countdownLeft.value = 'Selling ended.';
+              // }
             } else {
               let endDate = date.addToDate(Date.now(), { days: 1 });
-              if (endDate > Date.now()) {
-                setInterval(() => Countdown(endDate), 1000);
-              } else {
-                countdownLeft.value = 'Selling ended.';
-              }
+              setCountDownTime(endDate);
             }
             resolve(result);
           })

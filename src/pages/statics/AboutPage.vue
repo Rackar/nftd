@@ -1,6 +1,6 @@
 <template>
-  <h1 class="about-title">White Paper</h1>
-  <div class="about-bg"></div>
+  <!-- <h1 class="about-title">About</h1> -->
+  <!-- <div class="about-bg"></div> -->
   <div class="about-main">
     <p
       class="about-content"
@@ -40,9 +40,10 @@ export default {
   left: 80px;
 }
 .about-main {
-  margin-left: 440px;
+  /* margin-left: 440px;
+  width: 1000px; */
+
   padding: 80px;
-  width: 1000px;
   font-size: 32px;
   background-color: rgb(250, 253, 255);
   color: #222222;
