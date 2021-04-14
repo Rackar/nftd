@@ -92,7 +92,7 @@ export default {
 }
 .table-title-bought {
   display: inline-block;
-  width: 100px;
+  width: 140px;
 }
 .table-title-time {
   display: inline-block;

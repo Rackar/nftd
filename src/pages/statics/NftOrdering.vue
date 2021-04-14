@@ -64,7 +64,7 @@
     </div>
     <!-- <q-card> -->
     <div>
-      <q-tabs
+      <!-- <q-tabs
         v-model="tab"
         dense
         class="text-grey"
@@ -75,40 +75,40 @@
       >
         <q-tab name="Details" label="Details" />
         <q-tab name="Commnets" label="Commnets" />
-      </q-tabs>
+      </q-tabs>-->
 
       <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="Details">
-          <div class="row">
-            <div class="col-xs-12 col-md-6">
-              <div class="about-artist">Description</div>
-              <div class="about-des">{{current.description}}</div>
-              <!-- <div class="read-more">Read more</div> -->
-            </div>
-            <div class="col-xs-12 col-md-6">
-              <TransactionRecords :buyers="current.boughters" />
-              <!-- <div>address:0xdfsodfsjdflkjlj</div> -->
-            </div>
+      <q-tab-panel name="Details">
+        <div class="row">
+          <div class="col-xs-12 col-md-12">
+            <div class="about-artist">Details</div>
+            <div class="about-des">{{current.description}}</div>
+            <!-- <div class="read-more">Read more</div> -->
           </div>
-        </q-tab-panel>
-
-        <q-tab-panel name="Commnets">
-          <q-input v-model="current.commentInput" filled type="textarea">
-            <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
-          </q-input>
-
-          <div class="comment-title">{{current.comments.length}} Comments</div>
-          <div v-for="comment in current.comments" :key="comment._id" class="flex">
-            <div
-              class="comment-name"
-            >{{comment.userAddress.substr(0, 5) + '...' + comment.userAddress.substr(-3, 5)}}</div>
-
-            <div class="comment-content">{{comment.content}}</div>
+          <div class="col-xs-12 col-md-12">
+            <div class="about-artist">Transaction records</div>
+            <TransactionRecords :buyers="current.boughters" />
+            <!-- <div>address:0xdfsodfsjdflkjlj</div> -->
           </div>
-        </q-tab-panel>
-      </q-tab-panels>
+        </div>
+      </q-tab-panel>
+
+      <q-tab-panel name="Commnets">
+        <div class="about-artist">Commnets</div>
+        <q-input v-model="current.commentInput" filled type="textarea">
+          <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
+        </q-input>
+
+        <div class="comment-title">{{current.comments.length}} Comments</div>
+        <div v-for="comment in current.comments" :key="comment._id" class="flex">
+          <div
+            class="comment-name"
+          >{{comment.userAddress.substr(0, 5) + '...' + comment.userAddress.substr(-3, 5)}}</div>
+
+          <div class="comment-content">{{comment.content}}</div>
+        </div>
+      </q-tab-panel>
     </div>
 
     <!-- </q-card> -->
@@ -477,6 +477,7 @@ export default defineComponent({
   /* padding: 30px 30px; */
 }
 .about-artist {
+  padding-top: 30px;
   font-size: 22px;
 }
 .about-des {
