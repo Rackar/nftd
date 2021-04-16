@@ -50,14 +50,14 @@ export default {
   width: 1000px; */
 
   padding: 80px;
-  font-size: 32px;
+  font-size: 18px;
   background-color: rgb(250, 253, 255);
   color: #222222;
 }
 @media only screen and (max-width: 1024px) {
   .about-title {
     padding-left: 20px;
-    font-size: 32px;
+    font-size: 28px;
   }
   .about-bg {
     display: none;
@@ -66,7 +66,7 @@ export default {
     margin-left: 0;
     padding: 10px;
     width: auto;
-    font-size: 22px;
+    font-size: 16px;
     background-color: aliceblue;
     color: #222222;
   }

@@ -22,13 +22,14 @@
       class="account-avatar"
       @click="showAccount()"
     ></q-avatar>
-    <span class="cursor-pointer" @click="copyAddress(current.account)">
+    <span @click="showAccount()" class="cursor-pointer">{{acc}}</span>
+
+    <!-- <span class="cursor-pointer" @click="copyAddress(current.account)">
       {{acc}}
       <q-tooltip anchor="bottom middle" self="center middle">
-        <!-- {{current.account}} -->
         Copy Account Address
       </q-tooltip>
-    </span>
+    </span>-->
   </span>
   <q-dialog v-model="current.sellShow">
     <q-card class="nft-sell-card" style="border-radius: 15px;">
@@ -53,8 +54,10 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px;">
-      <div>{{current.myTotalClaim.toString().substr(0,7)}} ETH</div>
-      <div>Total Dividends:</div>
+      <div
+        class="money"
+      >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+      <div class="title">Total Dividends</div>
       <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
         <!-- <div class="mydnft-name" :class="{selling:dnft.isSelling}">{{dnft.dNFTid}}{{dnft.name}}</div>
         <div class="mydnft-eth" :class="{selling:dnft.isSelling}">{{dnft.price.substr(0,7)}} eth</div>
@@ -65,13 +68,17 @@
             <q-icon v-else name="account_tree" color="black" size="34px" />
           </q-item-section>
 
-          <q-item-section top class="col-2 gt-sm">
-            <q-item-label class="q-mt-sm">{{dnft.dNFTid}}-{{dnft.name}}</q-item-label>
-          </q-item-section>
-
-          <q-item-section>
+          <q-item-section top>
+            <q-item-label>
+              <!-- {{dnft.dNFTid}}- -->
+              {{dnft.name}}
+            </q-item-label>
             <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
           </q-item-section>
+
+          <!-- <q-item-section>
+            <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
+          </q-item-section>-->
 
           <q-item-section top side>
             <div class="text-grey-8 q-gutter-xs">
@@ -144,6 +151,7 @@ export default defineComponent({
       mydnftids: [],
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
+      ethPrice: 0,
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -176,6 +184,10 @@ export default defineComponent({
         refreshAccountDetails(current.mydnftids);
       }
     );
+    async function getETHprice() {
+      let res = await api.get('ethprice');
+      current.ethPrice = res.data.data ? parseFloat(res.data.data) : 0;
+    }
     async function refreshAccountDetails(dNFTids) {
       let dNFTs = $store.state.example.dnfts;
       if (dNFTs.length) {
@@ -1012,6 +1024,7 @@ export default defineComponent({
     onMounted(() => {
       // WalletInit();
       init();
+      getETHprice();
     });
     return {
       connect,
@@ -1048,7 +1061,7 @@ export default defineComponent({
 .mydnft-card {
   text-align: center;
   padding: 50px;
-  min-width: 400px;
+  min-width: 370px;
 }
 .account-avatar {
   cursor: pointer;
@@ -1070,6 +1083,12 @@ export default defineComponent({
   padding: 0 20px;
 }
 .mydnft-eth.selling {
+  color: grey;
+}
+.mydnft-card .money {
+  font-size: 20px;
+}
+.mydnft-card .title {
   color: grey;
 }
 </style>

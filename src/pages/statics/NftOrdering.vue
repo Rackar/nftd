@@ -44,25 +44,33 @@
             class="order-info"
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
           <div class="order-price">19,000 ETH ($3,300.90)</div>-->
-          <div class="order-countdown">
-            <span v-show="countdownLeft !== 'Selling ended.'">Sale ends in</span>
-            {{countdownLeft}}
-          </div>
-          <div class="order-valuation">Current Valuation</div>
-          <div
-            class="order-number"
-          >{{weiToCount(current.salesRevenue)}} ETH ($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</div>
 
-          <div class="order-buy">
-            <q-btn
-              @click="buyDnft"
-              :disable="(current.loading || (countdownLeft == 'Selling ended.'))"
-            >
-              Buy Shares
-              <q-inner-loading :showing="current.loading">
-                <q-spinner color="primary" size="3em" :thickness="2" />
-              </q-inner-loading>
-            </q-btn>
+          <div class="order-countdown">
+            <span v-show="countdownLeft !== 'Sold Out.'" class="order-countdown-normal">Sale ends in</span>
+            <span class="order-countdown-bold">{{countdownLeft}}</span>
+          </div>
+          <div class="order-buy-wrap">
+            <div class="order-valuation">Current Valuation</div>
+            <div class="order-number">
+              <span class="order-number-eth">{{weiToCount(current.salesRevenue)}} ETH</span>
+              <span
+                class="order-number-usd"
+              >($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</span>
+            </div>
+
+            <div class="order-buy">
+              <q-btn
+                color="blue"
+                class="full-width"
+                @click="buyDnft"
+                :disable="(current.loading || (countdownLeft == 'Sold Out.'))"
+              >
+                Buy Shares
+                <q-inner-loading :showing="current.loading">
+                  <q-spinner color="primary" size="3em" :thickness="2" />
+                </q-inner-loading>
+              </q-btn>
+            </div>
           </div>
         </div>
       </div>
@@ -92,7 +100,7 @@
             <!-- <div class="read-more">Read more</div> -->
           </div>
           <div class="col-xs-12 col-md-12">
-            <div class="about-artist">Transaction records</div>
+            <div class="about-artist">Transactions</div>
             <TransactionRecords :buyers="current.boughters" />
             <!-- <div>address:0xdfsodfsjdflkjlj</div> -->
           </div>
@@ -100,7 +108,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="Commnets">
-        <div class="about-artist">Commnets</div>
+        <div class="about-artist">Comments</div>
         <q-input v-model="current.commentInput" filled type="textarea">
           <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
         </q-input>
@@ -234,7 +242,7 @@ export default defineComponent({
       if (endDate > Date.now()) {
         countdownInterval = setInterval(() => Countdown(endDate), 1000);
       } else {
-        countdownLeft.value = 'Selling ended.';
+        countdownLeft.value = 'Sold Out.';
       }
     }
     function getCountdown() {
@@ -252,7 +260,7 @@ export default defineComponent({
               // if (endDate > Date.now()) {
               //   setInterval(() => Countdown(endDate), 1000);
               // } else {
-              //   countdownLeft.value = 'Selling ended.';
+              //   countdownLeft.value = 'Sold Out.';
               // }
             } else if (lastBuyTimestamp) {
               // let endDate = new Date(sellFinishTime)
@@ -264,7 +272,7 @@ export default defineComponent({
               // if (endDate > Date.now()) {
               //   setInterval(() => Countdown(endDate), 1000);
               // } else {
-              //   countdownLeft.value = 'Selling ended.';
+              //   countdownLeft.value = 'Sold Out.';
               // }
             } else {
               let endDate = date.addToDate(Date.now(), { days: 1 });
@@ -463,15 +471,34 @@ export default defineComponent({
   width: 240px;
   background-color: rgb(233, 127, 127);
   margin: 12px 0;
+  color: white;
   /* border-bottom: 1px rgb(218, 218, 218) solid; */
+}
+.order-countdown-normal {
+  padding-right: 8px;
+}
+.order-countdown-bold {
+  font-weight: bold;
+}
+.order-buy-wrap {
+  width: 240px;
+  padding: 10px;
+  border: 1px solid whitesmoke;
 }
 .order-valuation {
   font-size: 15px;
 }
 .order-number {
   margin-top: 6px;
-  font-size: 18px;
   margin-bottom: 12px;
+}
+.order-number-eth {
+  font-size: 18px;
+  color: black;
+}
+.order-number-usd {
+  font-size: 14px;
+  color: grey;
 }
 .comment-title {
   font-weight: bold;
