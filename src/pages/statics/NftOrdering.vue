@@ -45,15 +45,20 @@
           >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
           <div class="order-price">19,000 ETH ($3,300.90)</div>-->
           <div class="order-countdown">
-            <span v-show="countdownLeft !== 'Selling ended.'">Count down</span>
+            <span v-show="countdownLeft !== 'Selling ended.'">Sale ends in</span>
             {{countdownLeft}}
           </div>
+          <div class="order-valuation">Current Valuation</div>
+          <div
+            class="order-number"
+          >{{weiToCount(current.salesRevenue)}} ETH ($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</div>
+
           <div class="order-buy">
             <q-btn
               @click="buyDnft"
               :disable="(current.loading || (countdownLeft == 'Selling ended.'))"
             >
-              Buy Now
+              Buy Shares
               <q-inner-loading :showing="current.loading">
                 <q-spinner color="primary" size="3em" :thickness="2" />
               </q-inner-loading>
@@ -454,8 +459,19 @@ export default defineComponent({
   border-bottom: 1px rgb(218, 218, 218) solid;
 }
 .order-countdown {
-  padding: 10px 0;
+  padding: 10px 20px;
+  width: 240px;
+  background-color: rgb(233, 127, 127);
+  margin: 12px 0;
   /* border-bottom: 1px rgb(218, 218, 218) solid; */
+}
+.order-valuation {
+  font-size: 15px;
+}
+.order-number {
+  margin-top: 6px;
+  font-size: 18px;
+  margin-bottom: 12px;
 }
 .comment-title {
   font-weight: bold;
