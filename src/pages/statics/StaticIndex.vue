@@ -14,18 +14,20 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { api } from '../../boot/axios';
 import WaterFallComp from '../../components/WaterFallComp';
 import { ABI_721_standard, ABI, address } from 'src/web3/config';
 const Web3 = require('web3');
-import { useStorage } from '@vueuse/core';
+// import { useStorage } from '@vueuse/core';
+import { useStore } from 'vuex';
 
 export default {
   components: {
     WaterFallComp,
   },
   setup() {
+    const $store = useStore();
     let initdata = [
       {
         key: '0',
@@ -161,6 +163,14 @@ export default {
       },
     ];
     let data = ref([]);
+    let current = reactive({
+      dnfts: computed({
+        get: () => $store.state.example.dnfts,
+        set: (val) => {
+          $store.commit('example/setDNFTs', val);
+        },
+      }),
+    });
     let hasMore = ref(true);
     // function preview(url, e) {
     //   const { width, height } = e.target;
@@ -235,8 +245,11 @@ export default {
       list.reverse();
 
       data.value = [...list];
-      let gState = useStorage('cache', { dnfts: res.data.data });
-      console.log(gState);
+      // let gState = useStorage('cache', { dnfts: res.data.data });
+      current.dnfts = res.data.data;
+      console.log(current.dnfts);
+
+      // console.log(gState);
       // for (let i = 0; i < data.value.length; i++) {
       //   const dnft = data.value[i];
       //   let status = await getNFTprice(dnft.dNFTid);
@@ -295,6 +308,7 @@ export default {
       data: data,
       loadMore,
       fetchData,
+      current,
     };
   },
 };

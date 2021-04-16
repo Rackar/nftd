@@ -20,7 +20,7 @@
       text-color="white"
       icon="person"
       class="account-avatar"
-      @click="current.showAccount=true"
+      @click="showAccount()"
     ></q-avatar>
     <span class="cursor-pointer" @click="copyAddress(current.account)">
       {{acc}}
@@ -103,6 +103,7 @@ import {
   Ref,
   onMounted,
   reactive,
+  watch,
 } from 'vue';
 const Web3 = require('web3');
 // This function detects most providers injected at window.ethereum
@@ -111,7 +112,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { useQuasar, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
-import { useStorage } from '@vueuse/core';
+// import { useStorage } from '@vueuse/core';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 
@@ -140,6 +141,7 @@ export default defineComponent({
       myBoughtList: [],
       myTotalClaim: 0,
       myNFTs: [],
+      mydnftids: [],
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
     });
@@ -163,6 +165,40 @@ export default defineComponent({
       current.sellNFTid = $store.state.example.nftIdApproved;
       current.sellShow = true;
     };
+
+    let showAccount = async () => {
+      // refreshAccountDetails(current.mydnftids);
+      current.showAccount = true;
+    };
+    watch(
+      () => $store.state.example.dnfts,
+      () => {
+        refreshAccountDetails(current.mydnftids);
+      }
+    );
+    async function refreshAccountDetails(dNFTids) {
+      let dNFTs = $store.state.example.dnfts;
+      if (dNFTs.length) {
+        current.myBoughtList = [];
+        for (let i = 0; i < dNFTids.length; i++) {
+          const dNFTid = dNFTids[i];
+          let unClaim = await unClaimOf(dNFTid, current.account);
+          let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
+          let result = {
+            dNFTid,
+            name: name ? name.name : '',
+            image: name ? name.image : '',
+            myAddress: current.account,
+            price: weiToCount(unClaim),
+          };
+          current.myBoughtList.push(result);
+        }
+
+        current.myTotalClaim = current.myBoughtList
+          .map((buy) => parseFloat(buy.price))
+          .reduce((pre, cur) => pre + cur, 0);
+      }
+    }
     const confirmSell = async () => {
       let isin = await artistWhiteList(current.account);
       if (isin) {
@@ -182,8 +218,8 @@ export default defineComponent({
         current.network = provider.chainId;
         current.myContract = myContract;
 
-        let gState = useStorage('cache');
-        let dNFTs = JSON.parse(gState.value).dnfts;
+        // let gState = useStorage('cache');
+        // let dNFTs = JSON.parse(gState.value).dnfts;
 
         checkIsOwner();
 
@@ -192,23 +228,8 @@ export default defineComponent({
           .then(async (res) => {
             let data = res.data.data;
             let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
-            for (let i = 0; i < dNFTids.length; i++) {
-              const dNFTid = dNFTids[i];
-              let unClaim = await unClaimOf(dNFTid, provider.selectedAddress);
-              let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
-              let result = {
-                dNFTid,
-                name: name ? name.name : '',
-                image: name ? name.image : '',
-                myAddress: provider.selectedAddress,
-                price: weiToCount(unClaim),
-              };
-              current.myBoughtList.push(result);
-            }
-
-            current.myTotalClaim = current.myBoughtList
-              .map((buy) => parseFloat(buy.price))
-              .reduce((pre, cur) => pre + cur, 0);
+            current.mydnftids = dNFTids;
+            refreshAccountDetails(dNFTids);
           });
       }
     };
@@ -1007,6 +1028,7 @@ export default defineComponent({
       addWhitelist,
       fundNFT,
       claim,
+      showAccount,
     };
   },
 });
