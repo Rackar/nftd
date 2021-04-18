@@ -184,7 +184,6 @@ import {
 } from 'src/web3/config';
 import { api } from '../../boot/axios';
 const Web3 = require('web3');
-let countdownInterval;
 
 export default defineComponent({
   name: 'NftOrdering',
@@ -237,6 +236,7 @@ export default defineComponent({
     function weiToCount(amount) {
       return Web3.utils.fromWei(amount);
     }
+    let countdownInterval;
     function setCountDownTime(endDate) {
       clearInterval(countdownInterval);
       if (endDate > Date.now()) {
@@ -367,7 +367,7 @@ export default defineComponent({
       let string = days ? days + ' ' : '';
       string += (hours ? hours : '00') + ':';
       string += (mins ? mins : '00') + ':';
-      string += secs;
+      string += (secs > 9 ? '' : '0') + secs;
       return string;
     }
     function Countdown(endDate) {
