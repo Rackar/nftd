@@ -78,7 +78,7 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      // host: "192.168.67.133",
+      // host: "192.168.3.9",
       open: true, // opens browser window automatically
     },
 

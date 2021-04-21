@@ -350,14 +350,7 @@ export default defineComponent({
       // owner();
       // fundNFT()
     };
-    // function testXML() {
-    //   let url = 'http://localhost:3006/noauth/filoli/comments';
-    //   let post = new XMLHttpRequest();
-    //   post.open('POST', url, true);
-    //   post.setRequestHeader('Content-type', 'application/json');
-    //   let obj = { a: 'bb' };
-    //   post.send(JSON.stringify(obj));
-    // }
+
     function checkIsOwner() {
       return new Promise((resolve, reject) => {
         console.log(current);
@@ -587,63 +580,7 @@ export default defineComponent({
           .send({ from: current.account })
           .then(function (result) {
             console.log('approve: ' + JSON.stringify(result));
-            let comments = {
-              //  调用approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1);
-              // result = {
-              //   approve: {
-              //     blockHash:
-              //       '0xd5553e50a289a08038555ba628374e61dd17cbdcb5d9b8b0e3110000d8cac311',
-              //     blockNumber: 23847212,
-              //     contractAddress: null,
-              //     cumulativeGasUsed: 4434492,
-              //     from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //     gasUsed: 50500,
-              //     logsBloom:
-              //       '0x00000000000000000000000000000000000002000000000000000000000000000000001000000000000000000000000000000000000000000000000000240000000000000000000000000000000000000000001400040000000000000000000000000000000000000000000000000000000080000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000800000000048000010000000000000000000000000000000000000000000000000000000000000',
-              //     status: true,
-              //     to: '0x227897e07508229aa6f794d39681428351447201',
-              //     transactionHash:
-              //       '0x7ac55ea6ad2ab256c9c4184affd48149469cf3ef2c7d12bbcf1c8c9aa6181850',
-              //     transactionIndex: 12,
-              //     events: {
-              //       Approval: {
-              //         address: '0x227897e07508229AA6F794D39681428351447201',
-              //         blockHash:
-              //           '0xd5553e50a289a08038555ba628374e61dd17cbdcb5d9b8b0e3110000d8cac311',
-              //         blockNumber: 23847212,
-              //         logIndex: 20,
-              //         removed: false,
-              //         transactionHash:
-              //           '0x7ac55ea6ad2ab256c9c4184affd48149469cf3ef2c7d12bbcf1c8c9aa6181850',
-              //         transactionIndex: 12,
-              //         transactionLogIndex: '0x0',
-              //         type: 'mined',
-              //         id: 'log_aa354b07',
-              //         returnValues: {
-              //           0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //           1: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
-              //           2: '1',
-              //           owner: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //           approved: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
-              //           tokenId: '1',
-              //         },
-              //         event: 'Approval',
-              //         signature:
-              //           '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-              //         raw: {
-              //           data: '0x',
-              //           topics: [
-              //             '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-              //             '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //             '0x0000000000000000000000004f403512972058ac424a05d2460d03b54e70c0e8',
-              //             '0x0000000000000000000000000000000000000000000000000000000000000001',
-              //           ],
-              //         },
-              //       },
-              //     },
-              //   },
-              // }
-            };
+            let comments = {};
             let t = {
               blockHash:
                 '0x17eb40a79c8c88efb16594c4e1548ce9f8e1e4e7d75e7e83e1883a4432a08bb1',

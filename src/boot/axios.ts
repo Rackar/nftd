@@ -13,7 +13,8 @@ if (ishttps) {
 } else if (process.env.PROD) {
   base = 'http://filoli.io:3006/noauth/filoli/'
 } else {
-  base = 'http://localhost:3006/noauth/filoli/'
+  base = 'http://localhost:3006/noauth/filoli/' //本机调试
+  // base = 'http://192.168.3.9:3006/noauth/filoli/' //手机调试
 }
 
 

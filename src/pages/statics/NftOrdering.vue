@@ -226,7 +226,16 @@ export default defineComponent({
     });
 
     function init() {
-      const web3 = new Web3(window.ethereum);
+      const provider = new Web3.providers.WebsocketProvider(
+        'wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509',
+        {
+          clientConfig: {
+            keepalive: true,
+            keepaliveInterval: 60000, // milliseconds
+          },
+        }
+      );
+      const web3 = new Web3(window.ethereum || provider);
       const myContract = new web3.eth.Contract(ABI, address); //nft
       return myContract;
     }
@@ -366,7 +375,7 @@ export default defineComponent({
       let secs = times - days * 24 * 3600 - hours * 3600 - mins * 60;
       let string = days ? days + ' ' : '';
       string += (hours ? hours : '00') + ':';
-      string += (mins ? mins : '00') + ':';
+      string += (mins ? (mins > 9 ? mins : '0' + mins) : '00') + ':';
       string += (secs > 9 ? '' : '0') + secs;
       return string;
     }
