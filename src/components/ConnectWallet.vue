@@ -54,14 +54,8 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px;">
-      <div
-        class="money"
-      >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
-      <div class="title">Total Dividends</div>
-      <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
-        <!-- <div class="mydnft-name" :class="{selling:dnft.isSelling}">{{dnft.dNFTid}}{{dnft.name}}</div>
-        <div class="mydnft-eth" :class="{selling:dnft.isSelling}">{{dnft.price.substr(0,7)}} eth</div>
-        <q-btn @click="claim(dnft.dNFTid)" label="claim" />-->
+      <h5>My publish:</h5>
+      <div v-for="dnft in current.myOwnList" :key="dnft.dNFTid">
         <q-item>
           <q-item-section avatar top>
             <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
@@ -69,17 +63,41 @@
           </q-item-section>
 
           <q-item-section top>
-            <q-item-label>
-              <!-- {{dnft.dNFTid}}- -->
-              {{dnft.name}}
-            </q-item-label>
-            <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
+            <q-item-label>{{dnft.name}}</q-item-label>
+            <q-item-label>{{dnft.price.toString().substr(0,7)}} eth</q-item-label>
+          </q-item-section>
+          <q-item-section top side>
+            <div class="text-grey-8 q-gutter-xs">
+              <q-btn
+                class="gt-xs"
+                size="12px"
+                flat
+                dense
+                label="claim"
+                @click="claimByOwner(dnft.dNFTid)"
+                :disable="!dnft.finished"
+              />
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator spaced />
+      </div>
+      <h5>My bought:</h5>
+      <div
+        class="money"
+      >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+      <div class="title">Total Dividends</div>
+      <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
+        <q-item>
+          <q-item-section avatar top>
+            <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
+            <q-icon v-else name="account_tree" color="black" size="34px" />
           </q-item-section>
 
-          <!-- <q-item-section>
+          <q-item-section top>
+            <q-item-label>{{dnft.name}}</q-item-label>
             <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
-          </q-item-section>-->
-
+          </q-item-section>
           <q-item-section top side>
             <div class="text-grey-8 q-gutter-xs">
               <q-btn
@@ -116,7 +134,7 @@ const Web3 = require('web3');
 // This function detects most providers injected at window.ethereum
 import detectEthereumProvider from '@metamask/detect-provider';
 
-import { useQuasar, copyToClipboard } from 'quasar';
+import { useQuasar, date, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
 // import { useStorage } from '@vueuse/core';
@@ -147,8 +165,10 @@ export default defineComponent({
       inputAddWhitelist: '',
       myBoughtList: [],
       myTotalClaim: 0,
+      myOwnList: [],
       myNFTs: [],
       mydnftids: [],
+      myOwndnftids: [],
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
       ethPrice: 0,
@@ -182,14 +202,27 @@ export default defineComponent({
       () => $store.state.example.dnfts,
       () => {
         refreshAccountDetails(current.mydnftids);
+        refreshMyOwnDetails(current.myOwndnftids);
       }
     );
     async function getETHprice() {
       let res = await api.get('ethprice');
       current.ethPrice = res.data.data ? parseFloat(res.data.data) : 0;
     }
-    async function refreshAccountDetails(dNFTids) {
+
+    async function tryGetdNFTs() {
       let dNFTs = $store.state.example.dnfts;
+      // debugger;
+      // if (!dNFTs.length) {
+      //   let res = await api.get('dnfts');
+      //   dNFTs = res.data.data;
+      //   $store.commit('example/setDNFTs', dNFTs);
+      // }
+      return dNFTs;
+    }
+
+    async function refreshAccountDetails(dNFTids) {
+      let dNFTs = await tryGetdNFTs();
       if (dNFTs.length) {
         current.myBoughtList = [];
         for (let i = 0; i < dNFTids.length; i++) {
@@ -203,12 +236,51 @@ export default defineComponent({
             myAddress: current.account,
             price: weiToCount(unClaim),
           };
-          current.myBoughtList.push(result);
+          if (result.price != '0') {
+            current.myBoughtList.push(result);
+          }
         }
 
         current.myTotalClaim = current.myBoughtList
           .map((buy) => parseFloat(buy.price))
           .reduce((pre, cur) => pre + cur, 0);
+      }
+    }
+    async function refreshMyOwnDetails(dNFTids) {
+      let dNFTs = await tryGetdNFTs();
+      if (dNFTs.length) {
+        current.myOwnList = [];
+        for (let i = 0; i < dNFTids.length; i++) {
+          const dNFTid = dNFTids[i];
+          let cache = await idTodNFT(dNFTid);
+          let unClaim = weiToCount(cache.salesRevenue) * 0.7;
+          let { lastBuyTimestamp, sellFinishTime, salesRevenue } = cache;
+          current.salesRevenue = salesRevenue;
+          let finished = false;
+          if (sellFinishTime) {
+            finished = true;
+          } else if (lastBuyTimestamp) {
+            let endDate = date.addToDate(new Date(lastBuyTimestamp * 1000), {
+              days: 1,
+            });
+
+            finished = endDate < Date.now();
+          } else {
+            finished = false;
+          }
+          let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
+          let result = {
+            dNFTid,
+            name: name ? name.name : '',
+            image: name ? name.image : '',
+            myAddress: current.account,
+            price: unClaim,
+            finished,
+          };
+          if (result.price) {
+            current.myOwnList.push(result);
+          }
+        }
       }
     }
     const confirmSell = async () => {
@@ -243,6 +315,12 @@ export default defineComponent({
             current.mydnftids = dNFTids;
             refreshAccountDetails(dNFTids);
           });
+        api.get('mydnfts?uad=' + provider.selectedAddress).then(async (res) => {
+          let dNFTids = res.data.data;
+          current.myOwndnftids = dNFTids;
+          // debugger;
+          refreshMyOwnDetails(dNFTids);
+        });
       }
     };
     let WalletInit = async () => {
@@ -921,6 +999,20 @@ export default defineComponent({
           .catch((e) => console.log(e));
       });
     }
+    function claimByOwner(dNFTid) {
+      return new Promise((resolve, reject) => {
+        current.myContract.methods
+          .claimPrincipalFunds(dNFTid)
+          .send({ from: current.account })
+          .then(async function (result) {
+            console.log('dNFT claim : ' + JSON.stringify(result));
+            await api.post('ownclaim', { dnftid: dNFTid });
+            resolve(result);
+            let t = '3499999999999935';
+          })
+          .catch((e) => console.log(e));
+      });
+    }
     function claim(dNFTid) {
       $q.loading.show({
         message: 'Please wait a few seconds...',
@@ -979,6 +1071,7 @@ export default defineComponent({
       fundNFT,
       claim,
       showAccount,
+      claimByOwner,
     };
   },
 });
