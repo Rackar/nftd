@@ -2,13 +2,12 @@
   <div class="main-page">
     <div class="row wrap">
       <div class="col-xs-12 col-sm-12 col-md-6">
-        <div>
+        <div class="p-30">
           <q-carousel
             class="left-slide"
             swipeable
             animated
             arrows
-            navigation
             v-model="slide"
             v-model:fullscreen="fullscreen"
             infinite
@@ -416,6 +415,10 @@ export default defineComponent({
 });
 </script>
 <style>
+.p-30 {
+  padding: 30px;
+}
+
 .main-page {
   width: 1024px;
   display: flex;
@@ -424,11 +427,13 @@ export default defineComponent({
 }
 .left-slide {
   border-radius: 12px;
-  margin: 30px;
+  /* padding: 30px; */
+  /* margin: 30px; */
   /* width: 400px; */
 }
 .right-side {
   margin: 30px;
+  padding-left: 40px;
 }
 @media only screen and (max-width: 1440px) {
   .main-page {
@@ -450,14 +455,14 @@ export default defineComponent({
 
 .order-title {
   padding: 20px 0;
-  font-size: 18px;
+  font-size: 28px;
   line-height: 22px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .order-artist {
   font-size: 16px;
   line-height: 18px;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .order-artist-info {
   padding: 10px 0;

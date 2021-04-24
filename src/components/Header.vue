@@ -38,9 +38,9 @@ export default {
 <style>
 .top {
   align-items: center;
-  padding-top: 30px;
-  padding-bottom: 4px;
-  padding: 30px 50px 4px;
+  /* padding-top: 40px;
+  padding-bottom: 40px; */
+  padding: 40px 50px 32px;
   border-bottom: rgb(219, 219, 219) 1px solid;
   justify-content: space-between;
 }
