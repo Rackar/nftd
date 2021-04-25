@@ -209,9 +209,9 @@ export default defineComponent({
     };
     watch(
       () => $store.state.example.dnfts,
-      () => {
-        refreshAccountDetails(current.mydnftids);
-        refreshMyOwnDetails(current.myOwndnftids);
+      async () => {
+        await refreshAccountDetails(current.mydnftids);
+        await refreshMyOwnDetails(current.myOwndnftids);
       }
     );
     async function getETHprice() {
@@ -224,8 +224,9 @@ export default defineComponent({
       // debugger;
       // if (!dNFTs.length) {
       //   let res = await api.get('dnfts');
-      //   dNFTs = res.data.data;
-      //   $store.commit('example/setDNFTs', dNFTs);
+      //   // dNFTs = res.data.data;
+      //   $store.commit('example/setDNFTs', res.data.data);
+      //   return [];
       // }
       return dNFTs;
     }
