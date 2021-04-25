@@ -39,29 +39,32 @@
           <div class="order-title">{{current.name}}</div>
           <div class="order-artist">{{current.artistName}}</div>
           <div class="order-artist-info">{{current.artistInfo}}</div>
-          <!-- <div
-            class="order-info"
-          >sdfklsdf sldf ksdlf saldfj lasdkjf slfj asldflas fsadkf saldjf lasdfj lsadlfj sadf slkdjf asdlf jsdlf lskdf</div>
-          <div class="order-price">19,000 ETH ($3,300.90)</div>-->
-
-          <div class="order-countdown">
-            <span v-show="countdownLeft !== 'Sold Out.'" class="order-countdown-normal">Sale ends in</span>
-            <span class="order-countdown-bold">{{countdownLeft}}</span>
+          <div class="order-valuation">Current Valuation</div>
+          <div class="order-number">
+            <span class="order-number-eth">{{weiToCount(current.salesRevenue)}} ETH</span>
+            <span
+              class="order-number-usd"
+            >($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</span>
           </div>
-          <div class="order-buy-wrap">
-            <div class="order-valuation">Current Valuation</div>
-            <div class="order-number">
-              <span class="order-number-eth">{{weiToCount(current.salesRevenue)}} ETH</span>
-              <span
-                class="order-number-usd"
-              >($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</span>
-            </div>
+          <div class="order-countdown" v-if="countdownLeft =='' "></div>
+          <div class="order-countdown" v-else-if=" countdownLeft === 'Sold Out.'">
+            <span class="order-countdown-normal">Sold Out.</span>
+          </div>
+          <div class="order-countdown" v-else>
+            <span class="order-countdown-normal">Sale ends in</span>
+            <span class="order-countdown-time">
+              {{countdownLeft}}
+              <q-icon name="schedule" class="order-countdown-time-icon" />
+            </span>
+          </div>
 
+          <div>
             <div class="order-buy">
               <q-btn
-                color="blue"
+                color="black"
                 class="full-width"
                 @click="buyDnft"
+                no-caps
                 :disable="(current.loading || (countdownLeft == 'Sold Out.'))"
               >
                 Buy Shares
@@ -462,10 +465,12 @@ export default defineComponent({
 .order-artist {
   font-size: 16px;
   line-height: 18px;
+  border-top: 1px rgb(218, 218, 218) solid;
+  padding-top: 20px;
   /* font-weight: bold; */
 }
 .order-artist-info {
-  padding: 10px 0;
+  padding: 10px 0 20px;
   font-size: 16px;
   line-height: 18px;
   color: gray;
@@ -481,30 +486,41 @@ export default defineComponent({
   border-bottom: 1px rgb(218, 218, 218) solid;
 }
 .order-countdown {
-  padding: 10px 20px;
-  width: 240px;
+  padding: 20px 0px;
+  /* width: 375px;
   background-color: rgb(233, 127, 127);
   margin: 12px 0;
-  color: white;
+  color: white; */
   /* border-bottom: 1px rgb(218, 218, 218) solid; */
 }
 .order-countdown-normal {
   padding-right: 8px;
 }
-.order-countdown-bold {
-  font-weight: bold;
+.order-countdown-time {
+  color: white;
+  background-color: #ff6262;
+  font-size: 16px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-align: center;
+}
+.order-countdown-time-icon {
+  /* vertical-align: center; */
+  padding-bottom: 2px;
+  font-size: 18px;
 }
 .order-buy-wrap {
-  width: 240px;
+  width: 375px;
   padding: 10px;
   border: 1px solid whitesmoke;
 }
 .order-valuation {
+  padding-top: 20px;
   font-size: 15px;
 }
 .order-number {
-  margin-top: 6px;
-  margin-bottom: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px rgb(218, 218, 218) solid;
 }
 .order-number-eth {
   font-size: 18px;

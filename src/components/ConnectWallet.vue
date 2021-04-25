@@ -54,7 +54,11 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px;">
-      <h5>My publish:</h5>
+      <h5>Sold:</h5>
+      <div
+        class="money"
+      >{{current.myOwnTotalClaim.toString().substr(0,7)}} ETH (${{(current.myOwnTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+      <div class="title">Total Dividends</div>
       <div v-for="dnft in current.myOwnList" :key="dnft.dNFTid">
         <q-item>
           <q-item-section avatar top>
@@ -82,7 +86,7 @@
         </q-item>
         <q-separator spaced />
       </div>
-      <h5>My bought:</h5>
+      <h5>Bought:</h5>
       <div
         class="money"
       >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
@@ -166,6 +170,11 @@ export default defineComponent({
       myBoughtList: [],
       myTotalClaim: 0,
       myOwnList: [],
+      myOwnTotalClaim: computed(() =>
+        current.myOwnList
+          .map((buy) => parseFloat(buy.price))
+          .reduce((pre, cur) => pre + cur, 0)
+      ),
       myNFTs: [],
       mydnftids: [],
       myOwndnftids: [],
