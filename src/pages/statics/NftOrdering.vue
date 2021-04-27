@@ -7,7 +7,6 @@
             class="left-slide"
             swipeable
             animated
-            arrows
             v-model="slide"
             v-model:fullscreen="fullscreen"
             infinite
@@ -41,6 +40,7 @@
           <div class="order-artist-info">{{current.artistInfo}}</div>
           <div class="order-valuation">Current Valuation</div>
           <div class="order-number">
+            <q-icon name="menu" class="order-countdown-money-icon" />
             <span class="order-number-eth">{{weiToCount(current.salesRevenue)}} ETH</span>
             <span
               class="order-number-usd"
@@ -51,7 +51,8 @@
             <span class="order-countdown-normal">Sold Out.</span>
           </div>
           <div class="order-countdown" v-else>
-            <span class="order-countdown-normal">Sale ends in</span>
+            <div class="order-countdown-normal">Sale ends in</div>
+
             <span class="order-countdown-time">
               {{countdownLeft}}
               <q-icon name="schedule" class="order-countdown-time-icon" />
@@ -486,7 +487,7 @@ export default defineComponent({
   border-bottom: 1px rgb(218, 218, 218) solid;
 }
 .order-countdown {
-  padding: 20px 0px;
+  padding: 20px 0px 24px;
   /* width: 375px;
   background-color: rgb(233, 127, 127);
   margin: 12px 0;
@@ -495,6 +496,7 @@ export default defineComponent({
 }
 .order-countdown-normal {
   padding-right: 8px;
+  padding-bottom: 12px;
 }
 .order-countdown-time {
   color: white;
@@ -503,6 +505,10 @@ export default defineComponent({
   padding: 8px 12px;
   border-radius: 6px;
   text-align: center;
+}
+.order-countdown-money-icon {
+  padding-bottom: 4px;
+  font-size: 22px;
 }
 .order-countdown-time-icon {
   /* vertical-align: center; */
@@ -525,6 +531,8 @@ export default defineComponent({
 .order-number-eth {
   font-size: 18px;
   color: black;
+  padding-left: 4px;
+  padding-right: 12px;
 }
 .order-number-usd {
   font-size: 14px;
@@ -540,6 +548,7 @@ export default defineComponent({
 }
 .comment-content {
   line-height: 30px;
+  padding-bottom: 10px;
 }
 .btn-save {
   position: absolute;
@@ -557,6 +566,7 @@ export default defineComponent({
   /* padding-right: 20px;
   padding-bottom: 40px; */
   padding: 10px 20px 40px 10px;
+  color: #222222;
 }
 .read-more {
   color: grey;
@@ -577,7 +587,7 @@ export default defineComponent({
 }
 .sell-input-btn {
   width: 60px;
-  margin: 5px 45px;
+  margin: 5px 45px 5px 40px;
 }
 .btn-active {
   background-color: grey;

@@ -7,6 +7,14 @@
     </div>
     <div class="table-content" v-for="row in buyers" :key="row.id">
       <div class="table-title-investor">
+        <q-avatar
+          size="18px"
+          font-size="16px"
+          color="teal"
+          text-color="white"
+          icon="person"
+          class="table-title-investor-avatar"
+        ></q-avatar>
         {{
         row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5)
         }}
@@ -101,7 +109,7 @@ export default {
 @media only screen and (max-width: 1440px) {
   .table-title-investor {
     display: inline-block;
-    width: 100px;
+    width: 140px;
   }
   .table-title-bought {
     display: inline-block;
@@ -115,6 +123,9 @@ export default {
   .table-title-investor {
     display: inline-block;
     width: 100px;
+  }
+  .table-title-investor-avatar {
+    display: none;
   }
   .table-title-bought {
     display: inline-block;
