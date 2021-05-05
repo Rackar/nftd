@@ -55,67 +55,77 @@
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px;">
       <h5>Sold:</h5>
-      <div
-        class="money"
-      >{{current.myOwnTotalClaim.toString().substr(0,7)}} ETH (${{(current.myOwnTotalClaim*current.ethPrice).toFixed(2)}} )</div>
-      <div class="title">Total Dividends</div>
-      <div v-for="dnft in current.myOwnList" :key="dnft.dNFTid">
-        <q-item>
-          <q-item-section avatar top>
-            <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
-            <q-icon v-else name="account_tree" color="black" size="34px" />
-          </q-item-section>
+      <div>
+        <div
+          class="money"
+        >{{current.myOwnTotalClaim.toString().substr(0,7)}} ETH (${{(current.myOwnTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+        <div class="title">Total Dividends</div>
+        <div v-for="dnft in current.myOwnList" :key="dnft.dNFTid">
+          <q-item>
+            <q-item-section avatar top>
+              <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
+              <q-icon v-else name="account_tree" color="black" size="34px" />
+            </q-item-section>
 
-          <q-item-section top>
-            <q-item-label>{{dnft.name}}</q-item-label>
-            <q-item-label>{{dnft.price.toString().substr(0,7)}} eth</q-item-label>
-          </q-item-section>
-          <q-item-section top side>
-            <div class="text-grey-8 q-gutter-xs">
-              <q-btn
-                class="gt-xs"
-                size="12px"
-                flat
-                dense
-                label="claim"
-                @click="claimByOwner(dnft.dNFTid)"
-                :disable="!dnft.finished"
-              />
-            </div>
-          </q-item-section>
-        </q-item>
-        <q-separator spaced />
+            <q-item-section top>
+              <q-item-label>{{dnft.name}}</q-item-label>
+              <q-item-label>{{dnft.price.toString().substr(0,7)}} eth</q-item-label>
+            </q-item-section>
+            <q-item-section top side>
+              <div class="text-grey-8 q-gutter-xs">
+                <q-btn
+                  class="gt-xs"
+                  size="12px"
+                  flat
+                  dense
+                  label="claim"
+                  @click="claimByOwner(dnft.dNFTid)"
+                  :disable="!dnft.finished"
+                />
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-separator spaced />
+        </div>
+        <q-inner-loading :showing="current.loadingMyOwnList">
+          <q-spinner size="50px" color="primary" />Please wait. It may take up to 1 minute for your NFT to load...
+        </q-inner-loading>
       </div>
       <h5>Bought:</h5>
-      <div
-        class="money"
-      >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
-      <div class="title">Total Dividends</div>
-      <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
-        <q-item>
-          <q-item-section avatar top>
-            <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
-            <q-icon v-else name="account_tree" color="black" size="34px" />
-          </q-item-section>
+      <div>
+        <div
+          class="money"
+        >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+        <div class="title">Total Dividends</div>
+        <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
+          <q-item>
+            <q-item-section avatar top>
+              <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
+              <q-icon v-else name="account_tree" color="black" size="34px" />
+            </q-item-section>
 
-          <q-item-section top>
-            <q-item-label>{{dnft.name}}</q-item-label>
-            <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
-          </q-item-section>
-          <q-item-section top side>
-            <div class="text-grey-8 q-gutter-xs">
-              <q-btn
-                class="gt-xs"
-                size="12px"
-                flat
-                dense
-                label="claim"
-                @click="claim(dnft.dNFTid)"
-              />
-            </div>
-          </q-item-section>
-        </q-item>
-        <q-separator spaced />
+            <q-item-section top>
+              <q-item-label>{{dnft.name}}</q-item-label>
+              <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
+            </q-item-section>
+            <q-item-section top side>
+              <div class="text-grey-8 q-gutter-xs">
+                <q-btn
+                  class="gt-xs"
+                  size="12px"
+                  flat
+                  dense
+                  label="claim"
+                  @click="claim(dnft.dNFTid)"
+                />
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-separator spaced />
+        </div>
+        <q-inner-loading :showing="current.loadingMyBoughtList">
+          <q-spinner size="50px" color="primary" />Please wait. It may take up to 1 minute for your NFT to load...
+        </q-inner-loading>
       </div>
       <!-- <div>Field 1.02 ETH ($365.00)</div> -->
     </q-card>
@@ -178,6 +188,8 @@ export default defineComponent({
       myNFTs: [],
       mydnftids: [],
       myOwndnftids: [],
+      loadingMyOwnList: false,
+      loadingMyBoughtList: false,
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
       ethPrice: 0,
@@ -234,6 +246,7 @@ export default defineComponent({
     async function refreshAccountDetails(dNFTids) {
       let dNFTs = await tryGetdNFTs();
       if (dNFTs.length) {
+        current.loadingMyBoughtList = true;
         current.myBoughtList = [];
         for (let i = 0; i < dNFTids.length; i++) {
           const dNFTid = dNFTids[i];
@@ -250,6 +263,7 @@ export default defineComponent({
             current.myBoughtList.push(result);
           }
         }
+        current.loadingMyBoughtList = true;
 
         current.myTotalClaim = current.myBoughtList
           .map((buy) => parseFloat(buy.price))
@@ -259,6 +273,7 @@ export default defineComponent({
     async function refreshMyOwnDetails(dNFTids) {
       let dNFTs = await tryGetdNFTs();
       if (dNFTs.length) {
+        current.loadingMyOwnList = true;
         current.myOwnList = [];
         for (let i = 0; i < dNFTids.length; i++) {
           const dNFTid = dNFTids[i];
@@ -291,6 +306,7 @@ export default defineComponent({
             current.myOwnList.push(result);
           }
         }
+        current.loadingMyOwnList = false;
       }
     }
     const confirmSell = async () => {

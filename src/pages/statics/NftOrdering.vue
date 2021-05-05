@@ -2,7 +2,7 @@
   <div class="main-page">
     <div class="row wrap">
       <div class="col-xs-12 col-sm-12 col-md-6">
-        <div class="p-30">
+        <div class>
           <q-carousel
             class="left-slide"
             swipeable
@@ -432,11 +432,12 @@ export default defineComponent({
 .left-slide {
   border-radius: 12px;
   /* padding: 30px; */
-  /* margin: 30px; */
+  margin: 30px;
   /* width: 400px; */
 }
 .right-side {
-  margin: 30px;
+  /* margin: 30px; */
+  padding-top: 30px;
   padding-left: 40px;
 }
 @media only screen and (max-width: 1440px) {
@@ -446,14 +447,17 @@ export default defineComponent({
   .left-slide {
     /* margin: 0; */
     /* width: 300px; */
+    margin: 10px;
+    /* padding: 0 14px; */
   }
   .right-side {
-    /* margin: 0; */
+    margin: 0;
+    padding: 0 14px;
   }
 }
 @media only screen and (max-width: 1024px) {
   .main-page {
-    width: 400px;
+    width: 100vw;
   }
 }
 
@@ -539,8 +543,8 @@ export default defineComponent({
   color: grey;
 }
 .comment-title {
-  font-weight: bold;
-  font-size: 16px;
+  /* font-weight: bold; */
+  font-size: 22px;
 }
 .comment-name {
   width: 140px;
