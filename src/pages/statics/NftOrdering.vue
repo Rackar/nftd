@@ -111,12 +111,14 @@
       </q-tab-panel>
 
       <q-tab-panel name="Commnets">
-        <div class="about-artist">Comments</div>
+        <div
+          class="about-artist"
+        >Comments {{current.comments.length?`(${current.comments.length})`:''}}</div>
         <q-input v-model="current.commentInput" filled type="textarea">
           <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
         </q-input>
 
-        <div class="comment-title">{{current.comments.length}} Comments</div>
+        <div class="comment-title">Comments</div>
         <div v-for="comment in current.comments" :key="comment._id" class="flex">
           <div
             class="comment-name"
@@ -356,7 +358,7 @@ export default defineComponent({
     async function getComment() {
       let list = await api.get('comments?id=' + props.dnftid);
       // debugger;
-      current.comments = list.data.data;
+      current.comments = list.data.data.reverse();
     }
     async function saveComment() {
       let comment = {
@@ -366,7 +368,7 @@ export default defineComponent({
       };
       let list = await api.post('comments', { comment: comment });
       if (list.data.status === 1) {
-        current.comments.push(comment);
+        current.comments.unshift(comment);
         current.commentInput = '';
       }
       // current.comments = list.data.data;
