@@ -246,7 +246,8 @@ export default {
 
       data.value = [...list];
       // let gState = useStorage('cache', { dnfts: res.data.data });
-      current.dnfts = res.data.data;
+      if (current.dnfts.length != res.data.data.length)
+        current.dnfts = res.data.data;
       console.log(current.dnfts);
 
       // console.log(gState);

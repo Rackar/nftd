@@ -1,25 +1,17 @@
+import { DnftObject } from '../index';
 export interface ExampleStateInterface {
   prop: boolean;
   nftIdApproved: string;
-  dnfts: {
-    NFTCotract: string
-    NFTid: string
-    Principal: string
-    Selling: string
-    dNFTid: string
-    description: string
-    image: string
-    name: string
-    updatedAt: string
-  }[];
+  dnfts: DnftObject[];
 }
 
 function state(): ExampleStateInterface {
-  return {
+  const resut: ExampleStateInterface = {
     prop: false,
     nftIdApproved: '',
     dnfts: []
   }
+  return resut
 };
 
 export default state;

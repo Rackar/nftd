@@ -19,6 +19,16 @@ export interface StateInterface {
   // Declared as unknown to avoid linting issue. Best to strongly type as per the line above.
   // example: unknown;
 }
+export interface DnftObject {
+  NFTCotract: string,
+  NFTid: string,
+  Principal: string,
+  dNFTid: string,
+  description: string,
+  image: string,
+  name: string,
+  updatedAt: string,
+}
 
 export default store(function (/* { ssrContext } */) {
   const Store = createStore<StateInterface>({

@@ -222,6 +222,7 @@ export default defineComponent({
     watch(
       () => $store.state.example.dnfts,
       async () => {
+        console.log('store dnft watched change.');
         await refreshAccountDetails(current.mydnftids);
         await refreshMyOwnDetails(current.myOwndnftids);
       }
@@ -263,7 +264,7 @@ export default defineComponent({
             current.myBoughtList.push(result);
           }
         }
-        current.loadingMyBoughtList = true;
+        current.loadingMyBoughtList = false;
 
         current.myTotalClaim = current.myBoughtList
           .map((buy) => parseFloat(buy.price))
@@ -279,7 +280,12 @@ export default defineComponent({
           const dNFTid = dNFTids[i];
           let cache = await idTodNFT(dNFTid);
           let unClaim = weiToCount(cache.salesRevenue) * 0.7;
-          let { lastBuyTimestamp, sellFinishTime, salesRevenue } = cache;
+          let {
+            lastBuyTimestamp,
+            sellFinishTime,
+            salesRevenue,
+            principalCanClaim,
+          } = cache;
           current.salesRevenue = salesRevenue;
           let finished = false;
           if (sellFinishTime) {
@@ -302,7 +308,7 @@ export default defineComponent({
             price: unClaim,
             finished,
           };
-          if (result.price) {
+          if (result.price && principalCanClaim) {
             current.myOwnList.push(result);
           }
         }

@@ -2,7 +2,7 @@
   <div class="main-page">
     <div class="row wrap">
       <div class="col-xs-12 col-sm-12 col-md-6">
-        <div class>
+        <div class="left-side">
           <q-carousel
             class="left-slide"
             swipeable
@@ -118,7 +118,6 @@
           <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
         </q-input>
 
-        <div class="comment-title">Comments</div>
         <div v-for="comment in current.comments" :key="comment._id" class="flex">
           <div
             class="comment-name"
@@ -431,10 +430,13 @@ export default defineComponent({
   flex-direction: column;
   margin: 0 auto;
 }
+.left-side {
+  padding: 30px;
+}
 .left-slide {
   border-radius: 12px;
   /* padding: 30px; */
-  margin: 30px;
+  /* margin: 30px; */
   /* width: 400px; */
 }
 .right-side {
@@ -446,11 +448,11 @@ export default defineComponent({
   .main-page {
     width: 800px;
   }
-  .left-slide {
+  .left-side {
     /* margin: 0; */
     /* width: 300px; */
-    margin: 10px;
-    /* padding: 0 14px; */
+    /* margin: 10px; */
+    padding: 0;
   }
   .right-side {
     margin: 0;
