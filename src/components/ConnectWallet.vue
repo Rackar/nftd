@@ -1033,16 +1033,24 @@ export default defineComponent({
     }
     function claimByOwner(dNFTid) {
       return new Promise((resolve, reject) => {
+        current.loadingMyOwnList = true;
         current.myContract.methods
           .claimPrincipalFunds(dNFTid)
           .send({ from: current.account })
           .then(async function (result) {
             console.log('dNFT claim : ' + JSON.stringify(result));
             await api.post('ownclaim', { dnftid: dNFTid });
+            current.myOwnList = current.myOwnList.filter(
+              (element) => element.dNFTid !== dNFTid
+            );
+            current.loadingMyOwnList = false;
             resolve(result);
             let t = '3499999999999935';
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            current.loadingMyOwnList = false;
+            console.log(e);
+          });
       });
     }
     function claim(dNFTid) {

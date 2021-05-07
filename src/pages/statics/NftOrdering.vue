@@ -3,6 +3,17 @@
     <div class="row wrap">
       <div class="col-xs-12 col-sm-12 col-md-6">
         <div class="left-side">
+          <!-- <q-img :src="current.images[0]" style="max-width: 400px; height: 360px;" contain>
+            <q-btn
+              push
+              round
+              dense
+              color="white"
+              text-color="primary"
+              :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="fullscreen = !fullscreen"
+            />
+          </q-img>-->
           <q-carousel
             class="left-slide"
             swipeable
@@ -16,6 +27,7 @@
               v-for="(img,i) in current.images"
               :key="img"
               :img-src="img"
+              class="left-slide-img"
             />
             <template v-slot:control>
               <q-carousel-control position="bottom-right" :offset="[18, 18]">
@@ -438,6 +450,11 @@ export default defineComponent({
   /* padding: 30px; */
   /* margin: 30px; */
   /* width: 400px; */
+}
+.left-slide-img {
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 12px;
 }
 .right-side {
   /* margin: 30px; */
