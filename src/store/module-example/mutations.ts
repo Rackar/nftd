@@ -6,6 +6,7 @@ const mutation: MutationTree<ExampleStateInterface> = {
     state.nftIdApproved = id;
   },
   setDNFTs(state: ExampleStateInterface, dnfts: []) {
+    // debugger;
     state.dnfts = dnfts;
   }
 };

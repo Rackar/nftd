@@ -336,6 +336,7 @@ export default defineComponent({
 
         // let gState = useStorage('cache');
         // let dNFTs = JSON.parse(gState.value).dnfts;
+        $store.dispatch('example/getAllDNFTs');
 
         checkIsOwner();
 

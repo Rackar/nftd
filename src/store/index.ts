@@ -24,9 +24,9 @@ export interface DnftObject {
   NFTid: string,
   Principal: string,
   dNFTid: string,
-  description: string,
-  image: string,
-  name: string,
+  description?: string,
+  image?: string,
+  name?: string,
   updatedAt: string,
 }
 
