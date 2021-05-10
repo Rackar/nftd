@@ -85,6 +85,7 @@
                   <q-spinner color="primary" size="3em" :thickness="2" />
                 </q-inner-loading>
               </q-btn>
+              <div @click="current.showBuyTips=true" class="tips-btn">*How NFT splitting works</div>
             </div>
           </div>
         </div>
@@ -185,6 +186,47 @@
         <div>* Only Metamask wallet is support at this moment.</div>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="current.showBuyTips">
+      <q-card class="tips-card">
+        <h5>How NFT splitting works?</h5>
+        <div>
+          <div class="tips">
+            <div class="tips-title">1. What am I buying into?</div>
+            <div
+              class="tips-content"
+            >You are buying shares of the NFT. Each share is prices at a fixed price of 0.001 ETH.</div>
+          </div>
+          <div class="tips">
+            <div class="tips-title">2. When will the sale of a NFT end?</div>
+            <div
+              class="tips-content"
+            >The sale of a NFT ends 24 hours after the previous purchase of at least a share.</div>
+          </div>
+          <div class="tips">
+            <div class="tips-title">3. Who will hold the NFT after sale ended?</div>
+            <div
+              class="tips-content"
+            >The Filoli secretary will temporary hold the NFT for all of its shareholders. The secretary, at the guidance of all the shareholders of the NFT, can take further action toward the NFT following their instructions.</div>
+          </div>
+          <div class="tips">
+            <div class="tips-title">4. How are the sales proceed distributed?</div>
+            <div class="tips-content">
+              Artist or the owner of the NFT: 70%
+              <br />Early investors: 25%
+              <br />Filoli Platform: 5%
+            </div>
+          </div>
+          <div class="tips">
+            <div class="tips-title">5. How is money earned by Filoli platform distributted?</div>
+            <div
+              class="tips-content"
+            >Filoli is a community platform owned by all of the LOLI token holders. Therefore, the secretary is responsible for distributing all of the earnings to Filoli shareholders according their LOLI holdings.</div>
+          </div>
+          <div class="tips-end">Revised 5/10/2021 by Filoli secretary (filoli2021@gmail.com)</div>
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -239,6 +281,7 @@ export default defineComponent({
       artistInfo: '',
       salesRevenue: '',
       ethPrice: 0,
+      showBuyTips: false,
     });
 
     function init() {
@@ -604,6 +647,23 @@ export default defineComponent({
 .sell-card {
   padding: 50px;
   text-align: center;
+}
+.tips-btn {
+  cursor: pointer;
+  padding-top: 10px;
+  color: rgb(87, 87, 87);
+}
+.tips-card {
+  padding: 40px;
+  text-align: left;
+}
+.tips-title {
+  padding: 4px 0;
+  font-weight: 600;
+}
+.tips-end {
+  padding-top: 5px;
+  color: gray;
 }
 .sell-title {
   font-size: 26px;
