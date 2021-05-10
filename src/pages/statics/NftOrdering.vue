@@ -324,7 +324,7 @@ export default defineComponent({
           .then(function (result) {
             current.loading = false;
             console.log('dNFT buy status: ' + JSON.stringify(result));
-            $q.notify('success');
+            $q.notify('Success');
             getCountdown();
             current.boughters.push({
               Buyer: window.ethereum.selectedAddress,

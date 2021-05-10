@@ -1065,7 +1065,7 @@ export default defineComponent({
           .then(function (result) {
             console.log('dNFT claim status: ' + JSON.stringify(result));
             $q.loading.hide();
-            $q.notify('claim success');
+            $q.notify('Claim success');
             current.showAccount = false;
             resolve(result);
             let t = {};
