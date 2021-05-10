@@ -78,7 +78,7 @@
                 class="full-width"
                 @click="buyDnft"
                 no-caps
-                :disable="(current.loading || (countdownLeft == 'Sold Out.'))"
+                :disable="(current.loading || (countdownLeft == 'Sold Out.')|| (countdownLeft == ''))"
               >
                 Buy Shares
                 <q-inner-loading :showing="current.loading">
@@ -126,7 +126,7 @@
         <div
           class="about-artist"
         >Comments {{current.comments.length?`(${current.comments.length})`:''}}</div>
-        <q-input v-model="current.commentInput" filled type="textarea">
+        <q-input v-model="current.commentInput" class="comment-input" filled type="textarea">
           <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
         </q-input>
 
@@ -469,7 +469,7 @@ export default defineComponent({
     /* margin: 0; */
     /* width: 300px; */
     /* margin: 10px; */
-    padding: 0;
+    padding: 20px;
   }
   .right-side {
     margin: 0;
@@ -537,8 +537,9 @@ export default defineComponent({
 }
 .order-countdown-time-icon {
   /* vertical-align: center; */
-  padding-bottom: 2px;
+  /* padding-bottom: 2px; */
   font-size: 18px;
+  top: -4px;
 }
 .order-buy-wrap {
   width: 375px;
@@ -574,6 +575,9 @@ export default defineComponent({
 .comment-content {
   line-height: 30px;
   padding-bottom: 10px;
+}
+.comment-input .q-field__control {
+  border-radius: 6px !important;
 }
 .btn-save {
   position: absolute;
