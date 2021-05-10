@@ -26,6 +26,18 @@
     <div class="about-content">
       <div>#0001 Announcement by the Secretary：</div>Public sale of up to 1 million (10%) LOLI tokens through filoli.io. The sale will end immediately when $100,000 equivalent of ETH is raised.
     </div>
+    <div>
+      <a
+        class="paper-link"
+        href="https://docs.google.com/document/d/12pBB5ptFt8HL8LeWuAnIYjrCrmAW3zz7FrhR3MgMcVM/edit?usp=sharing"
+      >English Whitepaper</a>
+    </div>
+    <div>
+      <a
+        class="paper-link"
+        href="https://docs.google.com/document/d/166RepLEx26eoI9WwQ6w_FbWRCerYQLCaaMkr_uJj3KI/edit?usp=sharing"
+      >Chinese Whitepaper</a>
+    </div>
 
     <!-- <p
       class="about-info"
@@ -103,5 +115,9 @@ export default {
 }
 .left-image {
   margin-right: 10px;
+}
+
+a:hover.paper-link {
+  color: #5353c6;
 }
 </style>
