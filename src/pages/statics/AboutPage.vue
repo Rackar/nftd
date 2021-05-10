@@ -27,13 +27,14 @@
       <div>#0001 Announcement by the Secretary：</div>Public sale of up to 1 million (10%) LOLI tokens through filoli.io. The sale will end immediately when $100,000 equivalent of ETH is raised.
     </div>
 
-    <p
+    <!-- <p
       class="about-info"
     >Filoli.io is in beta development. It is intended for internal usage only. Terms and Privacy policy will be avaiable soon.</p>
     <p class="about-info">
       Contact: filoli2021@gmail.com
       <br />All rights reserved 2021
-    </p>
+    </p>-->
+    <p></p>
     <a href="https://discord.gg/evT2jawc" target="_blank">
       <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
     </a>
