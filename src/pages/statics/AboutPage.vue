@@ -2,16 +2,38 @@
   <!-- <h1 class="about-title">About</h1> -->
   <!-- <div class="about-bg"></div> -->
   <div class="about-main">
-    <p
+    <div
       class="about-content"
-    >Filoli is an online NFT showcase and sales platform that features the ability to split NFTs and sell them to multiple investors, each of whom owns a portion of the NFT corresponding to the artwork.</p>
-    <p
+    >Filoli is a NFT marketplace that features the ability to split NFTs and sell them to multiple investors, each of whom owns a portion of the NFT corresponding to the artwork.</div>
+    <div
       class="about-content"
-    >Filoli is developed by a team of California-based artists and coders. All contents and tokens are stored on a public blockchain. Filoli is a decentralized project governed by LOLI token, which will be issued and distributed to stakeholders at a later date.</p>
+    >Filoli is a decentralized project developed by volunteers and governed through the principles of separation of powers:</div>
+    <div class="about-content">
+      <div>1. Filoli Board</div>Members of the Filoli board are anyone who hold at least 1000 LOLI. Board members makes all decisions.
+    </div>
+    <div class="about-content">
+      <div>2. Secretary</div>Secretary is hired by the board to perform various miscellaneous tasks, including holding unsold LOLI.
+    </div>
+    <div class="about-content">
+      <div>3. Developers</div>Developers are hired by the board to develop and maintain filoli.io.
+    </div>
+    <div
+      class="about-content"
+    >A total of 10 million LOLI tokens has been issued for Filoli project. Initially, the only way to obtain LOLI is through purchasing them on Filoli.io.</div>
+    <div
+      class="about-content"
+    >* Neither the developers nor the secretary are allocated a single LOLI token. There is no pre mining.</div>
+    <div class="about-content">
+      <div>#0001 Announcement by the Secretary：</div>Public sale of up to 1 million (10%) LOLI tokens through filoli.io. The sale will end immediately when $100,000 equivalent of ETH is raised.
+    </div>
+
     <p
       class="about-info"
     >Filoli.io is in beta development. It is intended for internal usage only. Terms and Privacy policy will be avaiable soon.</p>
-    <p class="about-info">All rights reserved 2021</p>
+    <p class="about-info">
+      Contact: filoli2021@gmail.com
+      <br />All rights reserved 2021
+    </p>
     <a href="https://discord.gg/evT2jawc" target="_blank">
       <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
     </a>
@@ -70,6 +92,9 @@ export default {
     background-color: aliceblue;
     color: #222222;
   }
+}
+.about-content {
+  padding: 8px 0;
 }
 .about-info {
   font-size: 20px;
