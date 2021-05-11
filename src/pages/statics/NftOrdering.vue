@@ -85,14 +85,14 @@
                   <q-spinner color="primary" size="3em" :thickness="2" />
                 </q-inner-loading>
               </q-btn>
-              <div @click="current.showBuyTips=true" class="tips-btn">*How NFT splitting works</div>
+              <div @click="current.showBuyTips=true" class="tips-btn">· How NFT crowdunding works</div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- <q-card> -->
-    <div>
+    <div style="padding-left:4px;padding-right:4px;">
       <!-- <q-tabs
         v-model="tab"
         dense
@@ -106,39 +106,49 @@
         <q-tab name="Commnets" label="Commnets" />
       </q-tabs>-->
 
-      <q-separator />
-
-      <q-tab-panel name="Details">
-        <div class="row">
-          <div class="col-xs-12 col-md-12">
-            <div class="about-artist">Details</div>
-            <div class="about-des">{{current.description}}</div>
-            <!-- <div class="read-more">Read more</div> -->
-          </div>
-          <div class="col-xs-12 col-md-12">
-            <div class="about-artist">Transactions</div>
+      <!-- <q-tab-panel name="Details"> -->
+      <div class="row">
+        <div class="col-xs-12 col-md-12">
+          <div class="about-artist-top">Details</div>
+          <q-separator class="about-artist-sep" />
+          <div class="about-des">{{current.description}}</div>
+          <!-- <div class="read-more">Read more</div> -->
+        </div>
+        <div class="col-xs-12 col-md-12">
+          <div class="about-artist">Transactions</div>
+          <div style="padding-bottom:30px;">
             <TransactionRecords :buyers="current.boughters" />
-            <!-- <div>address:0xdfsodfsjdflkjlj</div> -->
           </div>
-        </div>
-      </q-tab-panel>
 
-      <q-tab-panel name="Commnets">
+          <!-- <div>address:0xdfsodfsjdflkjlj</div> -->
+        </div>
+      </div>
+      <!-- </q-tab-panel> -->
+
+      <!-- <q-tab-panel name="Commnets"> -->
+      <div
+        class="about-artist"
+      >Comments {{current.comments.length?`(${current.comments.length})`:''}}</div>
+      <q-input v-model="current.commentInput" class="comment-input" filled type="textarea">
+        <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
+      </q-input>
+
+      <div v-for="comment in current.comments" :key="comment._id" class="comment-wrap">
+        <q-avatar
+          size="18px"
+          font-size="16px"
+          color="teal"
+          text-color="white"
+          icon="person"
+          class="comment-avatar"
+        ></q-avatar>
         <div
-          class="about-artist"
-        >Comments {{current.comments.length?`(${current.comments.length})`:''}}</div>
-        <q-input v-model="current.commentInput" class="comment-input" filled type="textarea">
-          <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
-        </q-input>
+          class="comment-name"
+        >{{comment.userAddress.substr(0, 5) + '...' + comment.userAddress.substr(-3, 5)}}</div>
 
-        <div v-for="comment in current.comments" :key="comment._id" class="flex">
-          <div
-            class="comment-name"
-          >{{comment.userAddress.substr(0, 5) + '...' + comment.userAddress.substr(-3, 5)}}</div>
-
-          <div class="comment-content">{{comment.content}}</div>
-        </div>
-      </q-tab-panel>
+        <div class="comment-content">{{comment.content}}</div>
+      </div>
+      <!-- </q-tab-panel> -->
     </div>
 
     <!-- </q-card> -->
@@ -611,13 +621,27 @@ export default defineComponent({
   /* font-weight: bold; */
   font-size: 22px;
 }
+.comment-wrap {
+  padding: 20px 40px;
+  position: relative;
+}
+.comment-avatar {
+  position: absolute;
+  left: 5px;
+  top: 18px;
+}
 .comment-name {
   width: 140px;
-  line-height: 30px;
+  line-height: 16px;
+  font-size: 14px;
+  color: #4b4b4b;
+  padding-bottom: 6px;
 }
 .comment-content {
-  line-height: 30px;
-  padding-bottom: 10px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #222222;
+  /* padding-bottom: 10px; */
 }
 .comment-input .q-field__control {
   border-radius: 6px !important;
@@ -630,15 +654,25 @@ export default defineComponent({
 .p-30 {
   /* padding: 30px 30px; */
 }
-.about-artist {
+.about-artist-top {
   padding-top: 30px;
-  font-size: 22px;
+  padding-bottom: 10px;
+  font-size: 30px;
+}
+.about-artist {
+  /* padding-top: 30px; */
+  padding-bottom: 10px;
+  font-size: 30px;
+}
+.about-artist-sep {
+  color: #e4e4e4;
 }
 .about-des {
   /* padding-right: 20px;
   padding-bottom: 40px; */
   padding: 10px 20px 40px 10px;
   color: #222222;
+  font-size: 16px;
 }
 .read-more {
   color: grey;
@@ -650,8 +684,10 @@ export default defineComponent({
 }
 .tips-btn {
   cursor: pointer;
-  padding-top: 10px;
-  color: rgb(87, 87, 87);
+  margin-top: 10px;
+  margin-left: 4px;
+  color: #898989;
+  font-size: 12px;
 }
 .tips-card {
   padding: 40px;

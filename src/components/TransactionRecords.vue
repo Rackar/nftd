@@ -15,9 +15,11 @@
           icon="person"
           class="table-title-investor-avatar"
         ></q-avatar>
-        {{
-        row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5)
-        }}
+        <span class="table-title-investor-id">
+          {{
+          row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5)
+          }}
+        </span>
       </div>
       <div class="table-title-bought">{{row.count}}</div>
       <div class="table-title-time">{{new Date(row.updatedAt).toLocaleString()}}</div>
@@ -87,9 +89,11 @@ export default {
   color: #4b4b4b;
   /* justify-content: space-between; */
   border-bottom: 1px gainsboro solid;
+  padding: 14px 0;
 }
 .table-content {
-  font-size: 16px;
+  font-size: 14px;
+  padding: 20px 0;
   color: #4b4b4b;
   line-height: 30px;
   border-bottom: 1px gainsboro solid;
@@ -106,6 +110,12 @@ export default {
   display: inline-block;
   width: 200px;
 }
+.table-title-investor-avatar {
+  top: -4px;
+}
+.table-title-investor-id {
+  padding-left: 12px;
+}
 @media only screen and (max-width: 1440px) {
   .table-title-investor {
     display: inline-block;
@@ -117,6 +127,9 @@ export default {
   }
   .table-title-time {
     display: inline-block;
+  }
+  .table-title-investor-id {
+    padding-left: 8px;
   }
 }
 @media only screen and (max-width: 1024px) {
@@ -133,6 +146,9 @@ export default {
   }
   .table-title-time {
     display: inline-block;
+  }
+  .table-title-investor-id {
+    padding-left: 0;
   }
 }
 </style>
