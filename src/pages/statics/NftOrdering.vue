@@ -205,7 +205,7 @@
             <div class="tips-title">1. What am I buying into?</div>
             <div
               class="tips-content"
-            >You are buying shares of the NFT. Each share is prices at a fixed price of 0.001 ETH.</div>
+            >You are buying shares of the NFT. Each share is priced at a fixed price of 0.001 ETH.</div>
           </div>
           <div class="tips">
             <div class="tips-title">2. When will the sale of a NFT end?</div>
@@ -217,7 +217,7 @@
             <div class="tips-title">3. Who will hold the NFT after sale ended?</div>
             <div
               class="tips-content"
-            >The Filoli secretary will temporary hold the NFT for all of its shareholders. The secretary, at the guidance of all the shareholders of the NFT, can take further action toward the NFT following their instructions.</div>
+            >The Filoli secretary will temporarily hold the NFT for all of its shareholders. The secretary, at the guidance of all the shareholders of the NFT, can take further action toward the NFT following their instructions.</div>
           </div>
           <div class="tips">
             <div class="tips-title">4. How are the sales proceed distributed?</div>
@@ -228,7 +228,7 @@
             </div>
           </div>
           <div class="tips">
-            <div class="tips-title">5. How is money earned by Filoli platform distributted?</div>
+            <div class="tips-title">5. How is money earned by Filoli platform distributed?</div>
             <div
               class="tips-content"
             >Filoli is a community platform owned by all of the LOLI token holders. Therefore, the secretary is responsible for distributing all of the earnings to Filoli shareholders according their LOLI holdings.</div>
