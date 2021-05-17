@@ -85,7 +85,7 @@
                   <q-spinner color="primary" size="3em" :thickness="2" />
                 </q-inner-loading>
               </q-btn>
-              <div @click="current.showBuyTips=true" class="tips-btn">· How NFT crowdunding works</div>
+              <div @click="current.showBuyTips=true" class="tips-btn">· How NFT Crowdfunding works</div>
             </div>
           </div>
         </div>
