@@ -92,7 +92,7 @@
       </div>
     </div>
     <!-- <q-card> -->
-    <div style="padding-left:4px;padding-right:4px;">
+    <div style="padding-left:4px;padding-right:4px;padding-bottom:40px;">
       <!-- <q-tabs
         v-model="tab"
         dense
@@ -133,7 +133,7 @@
       <div
         class="about-artist"
       >Comments {{current.comments.length?`(${current.comments.length})`:''}}</div>
-      <q-input v-model="current.commentInput" class="comment-input" filled type="textarea">
+      <q-input v-model="current.commentInput" rows="4" class="comment-input" filled type="textarea">
         <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
       </q-input>
 
