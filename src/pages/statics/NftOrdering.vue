@@ -111,8 +111,10 @@
         <div class="col-xs-12 col-md-12">
           <div class="about-artist-top">Details</div>
           <q-separator class="about-artist-sep" />
-          <div class="about-des">{{current.description}}</div>
-          <div class="about-des">{{descSplit}}</div>
+          <!-- <div class="about-des">{{current.description}}</div> -->
+          <div class="about-des">
+            <div v-for="desc in descSplit" :key="desc.id">{{desc||'&nbsp;'}}</div>
+          </div>
 
           <!-- <div class="read-more">Read more</div> -->
         </div>
