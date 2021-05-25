@@ -112,6 +112,8 @@
           <div class="about-artist-top">Details</div>
           <q-separator class="about-artist-sep" />
           <div class="about-des">{{current.description}}</div>
+          <div class="about-des">{{descSplit}}</div>
+
           <!-- <div class="read-more">Read more</div> -->
         </div>
         <div class="col-xs-12 col-md-12">
@@ -241,7 +243,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, reactive } from 'vue';
+import { defineComponent, ref, onMounted, reactive, computed } from 'vue';
 import { date, useQuasar } from 'quasar';
 import TransactionRecords from '../../components/TransactionRecords.vue';
 import {
@@ -287,13 +289,14 @@ export default defineComponent({
       images: [],
       name: '',
       description: '',
+
       artistName: '',
       artistInfo: '',
       salesRevenue: '',
       ethPrice: 0,
       showBuyTips: false,
     });
-
+    let descSplit = computed(() => current.description.split('\n'));
     function init() {
       const provider = new Web3.providers.WebsocketProvider(
         'wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509',
@@ -480,6 +483,7 @@ export default defineComponent({
       confirmBuy,
       saveComment,
       weiToCount,
+      descSplit,
     };
   },
 });

@@ -251,7 +251,13 @@ export default defineComponent({
         current.myBoughtList = [];
         for (let i = 0; i < dNFTids.length; i++) {
           const dNFTid = dNFTids[i];
-          let unClaim = await unClaimOf(dNFTid, current.account);
+          let unClaim;
+          try {
+            unClaim = await unClaimOf(dNFTid, current.account);
+          } catch (error) {
+            current.loadingMyBoughtList = false;
+            return;
+          }
           let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
           let result = {
             dNFTid,
@@ -278,7 +284,13 @@ export default defineComponent({
         current.myOwnList = [];
         for (let i = 0; i < dNFTids.length; i++) {
           const dNFTid = dNFTids[i];
-          let cache = await idTodNFT(dNFTid);
+          let cache;
+          try {
+            cache = await idTodNFT(dNFTid);
+          } catch (error) {
+            current.loadingMyOwnList = false;
+            return;
+          }
           let unClaim = weiToCount(cache.salesRevenue) * 0.7;
           let {
             lastBuyTimestamp,
@@ -1029,7 +1041,10 @@ export default defineComponent({
             resolve(result);
             let t = '3499999999999935';
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            console.log(e);
+            reject(e);
+          });
       });
     }
     function claimByOwner(dNFTid) {
@@ -1051,6 +1066,7 @@ export default defineComponent({
           .catch((e) => {
             current.loadingMyOwnList = false;
             console.log(e);
+            reject(e);
           });
       });
     }

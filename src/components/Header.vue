@@ -3,7 +3,7 @@
     <section class="row top">
       <div class="left-toolbar">
         <router-link to="/">
-          <img class="left-image" height="40" src="icons/logo@2x.png" alt srcset />
+          <img class="left-image" height="40" src="assets/logos/logo3.png" alt srcset />
         </router-link>
         <!-- <span class="header-title">Filoli</span> -->
       </div>
