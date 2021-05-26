@@ -72,6 +72,6 @@ export default {
   position: absolute; */
 }
 .right-title {
-  margin-right: 30px;
+  margin-right: 20px;
 }
 </style>
