@@ -766,10 +766,12 @@ export default defineComponent({
       $q.loading.show({
         message: 'Please wait a few seconds...',
       });
+      let testTime = 72000;
+      let testPrice = Web3.utils.toWei((0.001).toString());
       return new Promise((resolve, reject) => {
         console.log(current);
         current.myContract.methods
-          .wrap(contractAd, parseInt(NFTid))
+          .wrap(contractAd, parseInt(NFTid), testTime, testPrice)
           .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT: ' + JSON.stringify(result));
@@ -783,111 +785,148 @@ export default defineComponent({
 
             resolve(result);
             let dNFT = {
-              // blockHash:
-              //   '0x0b4047b7ff0774219a56b8d507b7568991794bf185bd702b5ec663df738242c5',
-              // blockNumber: 23848436,
-              // contractAddress: null,
-              // cumulativeGasUsed: 2525872,
-              // from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              // gasUsed: 223069,
-              // logsBloom:
-              //   '0x00000000000000000000000000000000000002000000000000000000080000000000001000000000000000000000000000000000000000000000000000242000000000000000000000000008000000000000001400040000000000000000000000000000020000000000000000000800000080000200000000000010000000000000000000000000800000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000001000000002000000000000000000000000000000000008000000800000000068000010000000000000000000000000000000000000000000000001080000000000',
-              // status: true,
-              // to: '0x4f403512972058ac424a05d2460d03b54e70c0e8',
-              // transactionHash:
-              //   '0x47f0f67ff313147a53e6c188f0f87c17a48b20a44b37e28f82be75a052002a27',
-              // transactionIndex: 23,
-              // events: {
-              //   0: {
-              //     address: '0x227897e07508229AA6F794D39681428351447201',
-              //     blockHash:
-              //       '0x0b4047b7ff0774219a56b8d507b7568991794bf185bd702b5ec663df738242c5',
-              //     blockNumber: 23848436,
-              //     logIndex: 38,
-              //     removed: false,
-              //     transactionHash:
-              //       '0x47f0f67ff313147a53e6c188f0f87c17a48b20a44b37e28f82be75a052002a27',
-              //     transactionIndex: 23,
-              //     transactionLogIndex: '0x0',
-              //     type: 'mined',
-              //     id: 'log_0dd42fed',
-              //     returnValues: {},
-              //     signature: null,
-              //     raw: {
-              //       data: '0x',
-              //       topics: [
-              //         '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-              //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //         '0x0000000000000000000000000000000000000000000000000000000000000000',
-              //         '0x0000000000000000000000000000000000000000000000000000000000000001',
-              //       ],
-              //     },
-              //   },
-              //   1: {
-              //     address: '0x227897e07508229AA6F794D39681428351447201',
-              //     blockHash:
-              //       '0x0b4047b7ff0774219a56b8d507b7568991794bf185bd702b5ec663df738242c5',
-              //     blockNumber: 23848436,
-              //     logIndex: 39,
-              //     removed: false,
-              //     transactionHash:
-              //       '0x47f0f67ff313147a53e6c188f0f87c17a48b20a44b37e28f82be75a052002a27',
-              //     transactionIndex: 23,
-              //     transactionLogIndex: '0x1',
-              //     type: 'mined',
-              //     id: 'log_a312d323',
-              //     returnValues: {},
-              //     signature: null,
-              //     raw: {
-              //       data: '0x',
-              //       topics: [
-              //         '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-              //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //         '0x0000000000000000000000004f403512972058ac424a05d2460d03b54e70c0e8',
-              //         '0x0000000000000000000000000000000000000000000000000000000000000001',
-              //       ],
-              //     },
-              //   },
-              //   TransferSingle: {
-              //     address: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
-              //     blockHash:
-              //       '0x0b4047b7ff0774219a56b8d507b7568991794bf185bd702b5ec663df738242c5',
-              //     blockNumber: 23848436,
-              //     logIndex: 40,
-              //     removed: false,
-              //     transactionHash:
-              //       '0x47f0f67ff313147a53e6c188f0f87c17a48b20a44b37e28f82be75a052002a27',
-              //     transactionIndex: 23,
-              //     transactionLogIndex: '0x2',
-              //     type: 'mined',
-              //     id: 'log_43d3103b',
-              //     returnValues: {
-              //       0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       1: '0x0000000000000000000000000000000000000000',
-              //       2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       3: '2',
-              //       4: '1000000000000000000',
-              //       operator: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       from: '0x0000000000000000000000000000000000000000',
-              //       to: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //       id: '2',
-              //       value: '1000000000000000000',
-              //     },
-              //     event: 'TransferSingle',
-              //     signature:
-              //       '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
-              //     raw: {
-              //       data:
-              //         '0x00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000de0b6b3a7640000',
-              //       topics: [
-              //         '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
-              //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //         '0x0000000000000000000000000000000000000000000000000000000000000000',
-              //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //       ],
-              //     },
-              //   },
-              // },
+              blockHash:
+                '0x25144c877dc3a0321a3c44b9d7753b4cec66a3cd297833d9b309f457c5a66c44',
+              blockNumber: 25099643,
+              contractAddress: null,
+              cumulativeGasUsed: 3958461,
+              from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+              gasUsed: 276225,
+              logsBloom:
+                '0x00000000000000000000000000000000000002000080000000000000000000000000000000000000000000000000000000000000000000000000000000206000000000000000000000000008000000000000000000000800004000000000000004000000020800000013000000000800000080000200000000000018000000000000000000000000000400000000000000000000000000000000000002000000020000001000000000000000000000000000000000000000000000000000001000008002000000000000000000000000000000000008000000800000000028000010000000000000000000000000000000000000000000080000080000000000',
+              status: true,
+              to: '0xf9dec3ecd5bf552ce736a856c1b22d8bb93ccd94',
+              transactionHash:
+                '0x9c7e1cfc88db9ecf3e269c8d7c3bd16a7fa0ac0ff20f5c7f9172c0474852ed8f',
+              transactionIndex: 3,
+              events: {
+                0: {
+                  address: '0x227897e07508229AA6F794D39681428351447201',
+                  blockHash:
+                    '0x25144c877dc3a0321a3c44b9d7753b4cec66a3cd297833d9b309f457c5a66c44',
+                  blockNumber: 25099643,
+                  logIndex: 4,
+                  removed: false,
+                  transactionHash:
+                    '0x9c7e1cfc88db9ecf3e269c8d7c3bd16a7fa0ac0ff20f5c7f9172c0474852ed8f',
+                  transactionIndex: 3,
+                  transactionLogIndex: '0x0',
+                  type: 'mined',
+                  id: 'log_99281d39',
+                  returnValues: {},
+                  signature: null,
+                  raw: {
+                    data: '0x',
+                    topics: [
+                      '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                      '0x0000000000000000000000000000000000000000000000000000000000000000',
+                      '0x000000000000000000000000000000000000000000000000000000000000005e',
+                    ],
+                  },
+                },
+                1: {
+                  address: '0x227897e07508229AA6F794D39681428351447201',
+                  blockHash:
+                    '0x25144c877dc3a0321a3c44b9d7753b4cec66a3cd297833d9b309f457c5a66c44',
+                  blockNumber: 25099643,
+                  logIndex: 5,
+                  removed: false,
+                  transactionHash:
+                    '0x9c7e1cfc88db9ecf3e269c8d7c3bd16a7fa0ac0ff20f5c7f9172c0474852ed8f',
+                  transactionIndex: 3,
+                  transactionLogIndex: '0x1',
+                  type: 'mined',
+                  id: 'log_0a06da6f',
+                  returnValues: {},
+                  signature: null,
+                  raw: {
+                    data: '0x',
+                    topics: [
+                      '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                      '0x000000000000000000000000f9dec3ecd5bf552ce736a856c1b22d8bb93ccd94',
+                      '0x000000000000000000000000000000000000000000000000000000000000005e',
+                    ],
+                  },
+                },
+                TransferSingle: {
+                  address: '0xF9deC3ecD5Bf552CE736A856C1B22D8Bb93cCD94',
+                  blockHash:
+                    '0x25144c877dc3a0321a3c44b9d7753b4cec66a3cd297833d9b309f457c5a66c44',
+                  blockNumber: 25099643,
+                  logIndex: 6,
+                  removed: false,
+                  transactionHash:
+                    '0x9c7e1cfc88db9ecf3e269c8d7c3bd16a7fa0ac0ff20f5c7f9172c0474852ed8f',
+                  transactionIndex: 3,
+                  transactionLogIndex: '0x2',
+                  type: 'mined',
+                  id: 'log_ec5f885e',
+                  returnValues: {
+                    0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    1: '0x0000000000000000000000000000000000000000',
+                    2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    3: '1',
+                    4: '1000000000000000000',
+                    operator: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    from: '0x0000000000000000000000000000000000000000',
+                    to: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    id: '1',
+                    value: '1000000000000000000',
+                  },
+                  event: 'TransferSingle',
+                  signature:
+                    '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
+                  raw: {
+                    data:
+                      '0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000de0b6b3a7640000',
+                    topics: [
+                      '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                      '0x0000000000000000000000000000000000000000000000000000000000000000',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                    ],
+                  },
+                },
+                NewNFTwraped: {
+                  address: '0xF9deC3ecD5Bf552CE736A856C1B22D8Bb93cCD94',
+                  blockHash:
+                    '0x25144c877dc3a0321a3c44b9d7753b4cec66a3cd297833d9b309f457c5a66c44',
+                  blockNumber: 25099643,
+                  logIndex: 7,
+                  removed: false,
+                  transactionHash:
+                    '0x9c7e1cfc88db9ecf3e269c8d7c3bd16a7fa0ac0ff20f5c7f9172c0474852ed8f',
+                  transactionIndex: 3,
+                  transactionLogIndex: '0x3',
+                  type: 'mined',
+                  id: 'log_a7bdf0ff',
+                  returnValues: {
+                    0: '0x227897e07508229AA6F794D39681428351447201',
+                    1: '94',
+                    2: '1',
+                    3: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                    NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
+                    NFTid: '94',
+                    dNFTid: '1',
+                    Principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+                  },
+                  event: 'NewNFTwraped',
+                  signature:
+                    '0x85dd6be155d21f160e710871c5d36a10b17e31ee618b2851ec49548ad3681374',
+                  raw: {
+                    data:
+                      '0x0000000000000000000000000000000000000000000000000000000000000001',
+                    topics: [
+                      '0x85dd6be155d21f160e710871c5d36a10b17e31ee618b2851ec49548ad3681374',
+                      '0x000000000000000000000000227897e07508229aa6f794d39681428351447201',
+                      '0x000000000000000000000000000000000000000000000000000000000000005e',
+                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
+                    ],
+                  },
+                },
+              },
             };
           })
           .catch((e) => {
