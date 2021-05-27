@@ -1178,6 +1178,11 @@ export default defineComponent({
   color: red;
   padding-right: 30px;
 }
+@media only screen and (max-width: 600px) {
+  .connect {
+    padding-right: 5px;
+  }
+}
 .btn-sell {
   margin-right: 15px;
 }
