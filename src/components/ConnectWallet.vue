@@ -154,6 +154,10 @@ import { api } from '../boot/axios';
 // import { useStorage } from '@vueuse/core';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+const config={
+  defaultSellLastingSecends:86400,
+  defaultUnitPrice:Web3.utils.toWei((0.001).toString())
+}
 
 export default defineComponent({
   name: 'ConnectWallet',
@@ -766,12 +770,11 @@ export default defineComponent({
       $q.loading.show({
         message: 'Please wait a few seconds...',
       });
-      let testTime = 72000;
-      let testPrice = Web3.utils.toWei((0.001).toString());
+
       return new Promise((resolve, reject) => {
         console.log(current);
         current.myContract.methods
-          .wrap(contractAd, parseInt(NFTid), testTime, testPrice)
+          .wrap(contractAd, parseInt(NFTid), config.defaultSellLastingSecends, config.defaultUnitPrice)
           .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT: ' + JSON.stringify(result));
