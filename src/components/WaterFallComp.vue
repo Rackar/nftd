@@ -3,7 +3,7 @@
     <water-fall :data="list" gap="30px" width="260px" class="container" :delay="true">
       <template #default="item">
         <router-link :to="'/nft/'+item.NFTCotract+'/'+item.NFTid+'/'+item.dNFTid">
-          <div class="card" :class="{sellout:item.Selling==='false'}">
+          <div class="card" :class="{sellout:item.Selling==='false-fixme'}">
             <div>
               <img class="img" :src="item.image" />
               <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>

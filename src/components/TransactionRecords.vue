@@ -89,11 +89,11 @@ export default {
   color: #4b4b4b;
   /* justify-content: space-between; */
   border-bottom: 1px gainsboro solid;
-  padding: 14px 0;
+  padding: 14px 10px;
 }
 .table-content {
   font-size: 14px;
-  padding: 20px 0;
+  padding: 20px 10px;
   color: #4b4b4b;
   line-height: 30px;
   border-bottom: 1px gainsboro solid;
