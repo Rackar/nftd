@@ -21,16 +21,17 @@
           }}
         </span>
       </div>
-      <div class="table-title-bought">{{row.count}}</div>
-      <div class="table-title-time">{{new Date(row.updatedAt).toLocaleString()}}</div>
+      <div class="table-title-bought">{{row.count}} ($ {{Math.floor(row.count*0.001* current.ethPrice*100)/100}}) </div>
+      <div class="table-title-time">{{formatTime(row.updatedAt)}}</div>
     </div>
     <!-- <div>1 2 3 11</div> -->
   </div>
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue';
-
+import { ref, reactive, onMounted, } from 'vue';
+import { date } from 'quasar'
+import { api } from '../boot/axios';
 export default {
   name: 'TransactionRecords',
   props: {
@@ -38,6 +39,9 @@ export default {
   },
 
   setup() {
+    let current = reactive({
+      ethPrice: 0,
+    });
     let list = ref([
       {
         key: '11',
@@ -70,10 +74,20 @@ export default {
         time: '01.12.2020 / 09:00 am',
       },
     ]);
-
-    // onMounted(() => {});
+    function formatTime(str){
+     let timeStamp = new Date(str)
+     let formattedString = date.formatDate(timeStamp, 'MM/DD/YY HH:mm')
+     return formattedString
+    }
+    async function getETHprice() {
+      let res = await api.get('ethprice');
+      current.ethPrice = res.data.data ? parseFloat(res.data.data) : 0;
+    }
+    onMounted(() => {
+      getETHprice();
+    });
     return {
-      list,
+      list,formatTime,current
     };
   },
 };
@@ -123,7 +137,7 @@ export default {
   }
   .table-title-bought {
     display: inline-block;
-    width: 80px;
+    width: 180px;
   }
   .table-title-time {
     display: inline-block;
@@ -142,7 +156,7 @@ export default {
   }
   .table-title-bought {
     display: inline-block;
-    width: 60px;
+    width: 120px;
   }
   .table-title-time {
     display: inline-block;
