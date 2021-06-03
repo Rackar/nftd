@@ -1,5 +1,5 @@
-const address_LOLI = "0x9F8F240C3b85870B1447FaC3a554d9391979D267"
-const ABI_LOLI=[
+const address_DLOLI = "0x9F8F240C3b85870B1447FaC3a554d9391979D267"
+const ABI_DLOLI=[
 	{
 		"inputs": [
 			{
@@ -120,4 +120,4 @@ const ABI_LOLI=[
 	}
 ]
 
-export {address_LOLI,ABI_LOLI}
+export {address_DLOLI,ABI_DLOLI}
