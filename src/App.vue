@@ -3,13 +3,13 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
-// import { init,requestLoginMetaMask ,web3instance} from "./web3/getWeb3";
+import { init,requestLoginMetaMask ,web3instance} from "./web3/getWeb3";
 // import { getLOLICanClaimOf } from "./web3/dloliMethods";
 
 export default defineComponent({
   name: 'App',
- async setup(){
-  //  init()
+  setup(){
+   init()
   //   console.log(web3instance)
     // getLOLICanClaimOf('0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490')
   }

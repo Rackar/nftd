@@ -1153,6 +1153,7 @@ export default defineComponent({
 
     async function newconnect() {
      await requestLoginMetaMask()
+     console.log(web3instance)
     }
     onMounted(() => {
       // WalletInit();
