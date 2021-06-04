@@ -16,21 +16,23 @@
           class="table-title-investor-avatar"
         ></q-avatar>
         <span class="table-title-investor-id">
-          {{
-          row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5)
-          }}
+          {{ row.Buyer.substr(0, 5) + '...' + row.Buyer.substr(-3, 5) }}
         </span>
       </div>
-      <div class="table-title-bought">{{row.count}} ($ {{Math.floor(row.count*0.001* current.ethPrice*100)/100}}) </div>
-      <div class="table-title-time">{{formatTime(row.updatedAt)}}</div>
+      <div class="table-title-bought">
+        {{ row.count }} (${{
+          Math.floor(row.count * 0.001 * current.ethPrice * 100) / 100
+        }})
+      </div>
+      <div class="table-title-time">{{ formatTime(row.updatedAt) }}</div>
     </div>
     <!-- <div>1 2 3 11</div> -->
   </div>
 </template>
 
 <script>
-import { ref, reactive, onMounted, } from 'vue';
-import { date } from 'quasar'
+import { ref, reactive, onMounted } from 'vue';
+import { date } from 'quasar';
 import { api } from '../boot/axios';
 export default {
   name: 'TransactionRecords',
@@ -74,10 +76,10 @@ export default {
         time: '01.12.2020 / 09:00 am',
       },
     ]);
-    function formatTime(str){
-     let timeStamp = new Date(str)
-     let formattedString = date.formatDate(timeStamp, 'MM/DD/YY HH:mm')
-     return formattedString
+    function formatTime(str) {
+      let timeStamp = new Date(str);
+      let formattedString = date.formatDate(timeStamp, 'MM/DD/YY HH:mm');
+      return formattedString;
     }
     async function getETHprice() {
       let res = await api.get('ethprice');
@@ -87,7 +89,9 @@ export default {
       getETHprice();
     });
     return {
-      list,formatTime,current
+      list,
+      formatTime,
+      current,
     };
   },
 };
@@ -96,6 +100,7 @@ export default {
 <style>
 .table {
   /* width: 400px; */
+  border-bottom: 1px gainsboro solid;
 }
 .table-title {
   font-size: 16px;
@@ -110,7 +115,6 @@ export default {
   padding: 20px 10px;
   color: #4b4b4b;
   line-height: 30px;
-  border-bottom: 1px gainsboro solid;
 }
 .table-title-investor {
   display: inline-block;
