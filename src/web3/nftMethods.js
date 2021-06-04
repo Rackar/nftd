@@ -6,6 +6,7 @@ function awardItem(userAdress) {
   return new Promise(async (resolve, reject) => {
     let index = await web3instance.nftContract.methods.totalSupply().call();
     index = parseInt(index) + 1;
+    console.log(web3instance)
     web3instance.nftContract.methods
       .awardItem(userAdress, base + 'nfts?id=' + index)
       .send({
