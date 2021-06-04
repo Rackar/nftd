@@ -2,41 +2,56 @@
   <!-- <h1 class="about-title">About</h1> -->
   <!-- <div class="about-bg"></div> -->
   <div class="about-main">
-    <div
-      class="about-content"
-    >Filoli is a NFT marketplace that features the ability to split NFTs and sell them to multiple investors, each of whom owns a portion of the NFT corresponding to the artwork.</div>
-    <div
-      class="about-content"
-    >Filoli is a decentralized project developed by volunteers and governed through the principles of separation of powers:</div>
     <div class="about-content">
-      <div>1. Filoli Board</div>Members of the Filoli board are anyone who hold at least 1000 LOLI. Board members makes all decisions.
+      Filoli is a NFT marketplace that features the ability to split NFTs and
+      sell them to multiple investors, each of whom owns a portion of the NFT
+      corresponding to the artwork.
     </div>
     <div class="about-content">
-      <div>2. Secretary</div>Secretary is hired by the board to perform various miscellaneous tasks, including holding unsold LOLI.
+      Filoli is a decentralized project developed by volunteers and governed
+      through the principles of separation of powers:
     </div>
     <div class="about-content">
-      <div>3. Developers</div>Developers are hired by the board to develop and maintain filoli.io.
+      <div class="about-content-title">Filoli Board</div>
+      Members of the Filoli board are anyone who hold at least 10 Million LOLI.
+      Board members makes all decisions.
     </div>
-    <div
-      class="about-content"
-    >A total of 10 million LOLI tokens has been issued for Filoli project. Initially, the only way to obtain LOLI is through purchasing them on Filoli.io.</div>
-    <div
-      class="about-content"
-    >* Neither the developers nor the secretary are allocated a single LOLI token. There is no pre mining.</div>
     <div class="about-content">
-      <div>#0001 Announcement by the Secretary：</div>Public sale of up to 1 million (10%) LOLI tokens through filoli.io. The sale will end immediately when $100,000 equivalent of ETH is raised.
+      <div class="about-content-title">Secretary</div>
+      Secretary is hired by the board to perform various miscellaneous tasks,
+      including holding unsold LOLI.
     </div>
+    <div class="about-content">
+      <div class="about-content-title">Developers</div>
+      Developers are hired by the board to develop and maintain filoli.io.
+    </div>
+    <div class="about-content">
+      A total of 10 billion LOLI tokens has been issued for Filoli project.
+      Initially, the only way to obtain LOLI is through purchasing NFTs on
+      Filoli.io and getting LOLI rewards.
+    </div>
+    <!-- <div class="about-content">
+      * Neither the developers nor the secretary are allocated a single LOLI
+      token. There is no pre mining.
+    </div>
+    <div class="about-content">
+      <div>#0001 Announcement by the Secretary：</div>
+      Public sale of up to 1 million (10%) LOLI tokens through filoli.io. The
+      sale will end immediately when $100,000 equivalent of ETH is raised.
+    </div> -->
     <div>
       <a
         class="paper-link"
         href="https://docs.google.com/document/d/12pBB5ptFt8HL8LeWuAnIYjrCrmAW3zz7FrhR3MgMcVM/edit?usp=sharing"
-      >English Whitepaper</a>
+        >English Whitepaper</a
+      >
     </div>
     <div>
       <a
         class="paper-link"
         href="https://docs.google.com/document/d/166RepLEx26eoI9WwQ6w_FbWRCerYQLCaaMkr_uJj3KI/edit?usp=sharing"
-      >Chinese Whitepaper</a>
+        >Chinese Whitepaper</a
+      >
     </div>
 
     <!-- <p
@@ -48,10 +63,24 @@
     </p>-->
     <p></p>
     <a href="https://discord.gg/evT2jawc" target="_blank">
-      <img class="left-image" width="40" height="40" src="icons/discord@2x.png" alt srcset />
+      <img
+        class="left-image"
+        width="40"
+        height="40"
+        src="icons/discord@2x.png"
+        alt
+        srcset
+      />
     </a>
     <a href="https://twitter.com/filo_li" target="_blank">
-      <img class="left-image" width="40" height="40" src="icons/twitter@2x.png" alt srcset />
+      <img
+        class="left-image"
+        width="40"
+        height="40"
+        src="icons/twitter@2x.png"
+        alt
+        srcset
+      />
     </a>
   </div>
 </template>
@@ -108,6 +137,10 @@ export default {
 }
 .about-content {
   padding: 8px 0;
+}
+.about-content-title {
+  font-size: 22px;
+  font-weight: bold;
 }
 .about-info {
   font-size: 20px;
