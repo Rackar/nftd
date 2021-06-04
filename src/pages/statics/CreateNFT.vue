@@ -3,19 +3,32 @@
     <h1 class="row myh1">test NFT publish</h1>
     <div class="row"></div>
 
-    <div class="q-pa-md" style="max-width: 500px;min-width: 400px;">
-      <q-form @submit="onSubmit" class="q-gutter-md">
+    <div class="q-pa-md" style="max-width: 500px; min-width: 400px">
+      <q-form @submit="onSubmit2" class="q-gutter-md">
         <q-input outlined v-model="current.name" label="NFT Name" />
-        <q-input outlined type="textarea" v-model="current.description" label="NFT description" />
+        <q-input
+          outlined
+          type="textarea"
+          v-model="current.description"
+          label="NFT description"
+        />
         <q-input
           outlined
           v-model="current.image"
           label="NFT image path"
-          :rules="[ val => val && val.substr(0,4) ==='http' || 'Image path start with http/https']"
+          :rules="[
+            (val) =>
+              (val && val.substr(0, 4) === 'http') ||
+              'Image path start with http/https',
+          ]"
         />
         <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
         <q-input outlined v-model="current.artistName" label="Artist Name" />
-        <q-input outlined v-model="current.artistInfo" label="Artist Information" />
+        <q-input
+          outlined
+          v-model="current.artistInfo"
+          label="Artist Information"
+        />
         <div>
           <q-btn label="publish" type="submit" color="primary">
             <q-inner-loading :showing="current.loading">
@@ -26,7 +39,7 @@
         </div>
         <div v-if="current.nftid">
           Approved NFT id:
-          <span style="color:red;">{{current.nftid}}</span>
+          <span style="color: red">{{ current.nftid }}</span>
         </div>
       </q-form>
     </div>
@@ -37,6 +50,15 @@
 const Web3 = require('web3');
 import { useQuasar } from 'quasar';
 import { useStore } from 'vuex';
+import { awardItem, approve2 } from '../../web3/nftMethods';
+import {
+  address_DNFT,
+  ABI_DNFT,
+  address_NFT,
+  ABI_NFT,
+  ABI_DLOLI,
+  address_DLOLI,
+} from '../../web3/contract';
 import { defineComponent, ref, reactive, computed } from 'vue';
 import {
   ABI_721_standard,
@@ -70,6 +92,29 @@ export default {
       return myContract;
     }
 
+    async function onSubmit2() {
+      let myAddress = await getMyAddress();
+      let nftDetail = {
+        name: current.name,
+        description: current.description,
+        image: current.image,
+        artistName: current.artistName,
+        artistInfo: current.artistInfo,
+      };
+      current.loading = true;
+      const index = await awardItem(myAddress, nftDetail);
+      nftDetail.nftid = index;
+      nftDetail.contractAd = address_NFT;
+      let s = await api.post('nfts', { nft: nftDetail });
+      if (s) {
+        $q.notify('Creating successes. Now approving.');
+        // debugger;
+        console.log(s);
+        let res2 = await approve2(index, myAddress);
+      }
+
+      current.loading = false;
+    }
     async function onSubmit() {
       let myContract = init();
       let myAddress = await getMyAddress();
@@ -168,12 +213,6 @@ export default {
             current.loading = false;
           });
       });
-      $q.notify({
-        color: 'red-5',
-        textColor: 'white',
-        icon: 'warning',
-        message: 'You need to accept the license and terms first',
-      });
     }
 
     function approve(myContract, address, tokenId, myAddress) {
@@ -188,115 +227,6 @@ export default {
             current.loading = false;
             // $store.commit('example/setNftIdApproved', tokenId);
             // current.nftid = '';
-            let comments = {
-              //  调用approve('0x4F403512972058aC424A05d2460D03b54E70c0e8', 1);
-              // result = {
-              //   approve: {
-              //     blockHash:
-              //       '0xd5553e50a289a08038555ba628374e61dd17cbdcb5d9b8b0e3110000d8cac311',
-              //     blockNumber: 23847212,
-              //     contractAddress: null,
-              //     cumulativeGasUsed: 4434492,
-              //     from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //     gasUsed: 50500,
-              //     logsBloom:
-              //       '0x00000000000000000000000000000000000002000000000000000000000000000000001000000000000000000000000000000000000000000000000000240000000000000000000000000000000000000000001400040000000000000000000000000000000000000000000000000000000080000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000800000000048000010000000000000000000000000000000000000000000000000000000000000',
-              //     status: true,
-              //     to: '0x227897e07508229aa6f794d39681428351447201',
-              //     transactionHash:
-              //       '0x7ac55ea6ad2ab256c9c4184affd48149469cf3ef2c7d12bbcf1c8c9aa6181850',
-              //     transactionIndex: 12,
-              //     events: {
-              //       Approval: {
-              //         address: '0x227897e07508229AA6F794D39681428351447201',
-              //         blockHash:
-              //           '0xd5553e50a289a08038555ba628374e61dd17cbdcb5d9b8b0e3110000d8cac311',
-              //         blockNumber: 23847212,
-              //         logIndex: 20,
-              //         removed: false,
-              //         transactionHash:
-              //           '0x7ac55ea6ad2ab256c9c4184affd48149469cf3ef2c7d12bbcf1c8c9aa6181850',
-              //         transactionIndex: 12,
-              //         transactionLogIndex: '0x0',
-              //         type: 'mined',
-              //         id: 'log_aa354b07',
-              //         returnValues: {
-              //           0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //           1: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
-              //           2: '1',
-              //           owner: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              //           approved: '0x4F403512972058aC424A05d2460D03b54E70c0e8',
-              //           tokenId: '1',
-              //         },
-              //         event: 'Approval',
-              //         signature:
-              //           '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-              //         raw: {
-              //           data: '0x',
-              //           topics: [
-              //             '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-              //             '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              //             '0x0000000000000000000000004f403512972058ac424a05d2460d03b54e70c0e8',
-              //             '0x0000000000000000000000000000000000000000000000000000000000000001',
-              //           ],
-              //         },
-              //       },
-              //     },
-              //   },
-              // }
-            };
-            let t = {
-              blockHash:
-                '0x17eb40a79c8c88efb16594c4e1548ce9f8e1e4e7d75e7e83e1883a4432a08bb1',
-              blockNumber: 23878109,
-              contractAddress: null,
-              cumulativeGasUsed: 124860,
-              from: '0x65d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-              gasUsed: 50500,
-              logsBloom:
-                '0x00000000000000000080000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000010200000000000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000080000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000002000000000000000000000000002000000000001000000000000000000000000000000000000000008000000000800000000008000010000000000000000000000000000000000000000000000000000000000000',
-              status: true,
-              to: '0x227897e07508229aa6f794d39681428351447201',
-              transactionHash:
-                '0xf64c04af10e22e4c4a0dc0e4e2d48b3124d0e9d9e45f5a38abf78b38249a76ae',
-              transactionIndex: 1,
-              events: {
-                Approval: {
-                  address: '0x227897e07508229AA6F794D39681428351447201',
-                  blockHash:
-                    '0x17eb40a79c8c88efb16594c4e1548ce9f8e1e4e7d75e7e83e1883a4432a08bb1',
-                  blockNumber: 23878109,
-                  logIndex: 4,
-                  removed: false,
-                  transactionHash:
-                    '0xf64c04af10e22e4c4a0dc0e4e2d48b3124d0e9d9e45f5a38abf78b38249a76ae',
-                  transactionIndex: 1,
-                  transactionLogIndex: '0x0',
-                  type: 'mined',
-                  id: 'log_de8790e1',
-                  returnValues: {
-                    0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-                    1: '0xD49091863732A03901e46074127Fd04e15080572',
-                    2: '4',
-                    owner: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-                    approved: '0xD49091863732A03901e46074127Fd04e15080572',
-                    tokenId: '4',
-                  },
-                  event: 'Approval',
-                  signature:
-                    '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-                  raw: {
-                    data: '0x',
-                    topics: [
-                      '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925',
-                      '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-                      '0x000000000000000000000000d49091863732a03901e46074127fd04e15080572',
-                      '0x0000000000000000000000000000000000000000000000000000000000000004',
-                    ],
-                  },
-                },
-              },
-            };
 
             resolve(result);
           })
@@ -309,6 +239,7 @@ export default {
     return {
       current,
       onSubmit,
+      onSubmit2,
     };
   },
 };

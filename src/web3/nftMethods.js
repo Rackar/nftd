@@ -2,7 +2,7 @@ import {web3instance } from "./getWeb3";
 import { address_DNFT,ABI_DNFT,address_NFT,ABI_NFT, ABI_DLOLI, address_DLOLI } from "./contract";
 import { api, base } from '../boot/axios';
 
-function awardItem(userAdress,current) {
+function awardItem(userAdress) {
   return new Promise(async (resolve, reject) => {
     let index = await web3instance.nftContract.methods.totalSupply().call();
     index = parseInt(index) + 1;
@@ -17,33 +17,16 @@ function awardItem(userAdress,current) {
           console.log('NFT入库tokenURI id矛盾');
           return;
         }
-        let nft = {
-          name: current.name,
-          description: current.description,
-          image: current.image,
-          artistName: current.artistName,
-          artistInfo: current.artistInfo,
-          nftid: index,
-          contractAd: address_NFT,
-        };
         console.log('NFT status: ' + JSON.stringify(result));
-        let s = await api.post('nfts', { nft });
-        if (s) {
-          // debugger;
-          console.log(s);
-          approve( index, userAdress);
-        }
-        resolve(result);
+        resolve(index);
       })
       .catch((e) => {
         console.log(e);
-        current.loading = false;
       });
   });
-  
 }
 
-function approve( tokenId, userAdress) {
+function approve2( tokenId, userAdress) {
   return new Promise((resolve, reject) => {
     web3instance.nftContract.methods
       .approve(address_DNFT, tokenId)
@@ -58,5 +41,4 @@ function approve( tokenId, userAdress) {
   });
 }
 
-
-export {awardItem,approve}
+export {awardItem,approve2}
