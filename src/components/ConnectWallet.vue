@@ -1,13 +1,17 @@
 <template>
-  <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
-   <span v-if="!current.account" @click="newconnect" class="connect"> newConnect</span>
+  <span v-if="!current.account" @click="connect" class="connect"
+    >Connect Wallet</span
+  >
+  <span v-if="!current.account" @click="newconnect" class="connect">
+    newConnect</span
+  >
   <span v-else>
     <!-- <button @click="test">test</button> -->
     <q-btn
       label="add whitelist"
       class="btn-sell"
       v-if="current.isOwner"
-      @click="current.showAddWhitelist=true"
+      @click="current.showAddWhitelist = true"
     ></q-btn>
     <router-link to="/createnft">
       <q-btn label="Create NFT" class="btn-sell"></q-btn>
@@ -23,7 +27,7 @@
       class="account-avatar"
       @click="showAccount()"
     ></q-avatar>
-    <span @click="showAccount()" class="cursor-pointer">{{acc}}</span>
+    <span @click="showAccount()" class="cursor-pointer">{{ acc }}</span>
 
     <!-- <span class="cursor-pointer" @click="copyAddress(current.account)">
       {{acc}}
@@ -33,33 +37,42 @@
     </span>-->
   </span>
   <q-dialog v-model="current.sellShow">
-    <q-card class="nft-sell-card" style="border-radius: 15px;">
-      <div>NFT contract address (default: {{address_721}})</div>
+    <q-card class="nft-sell-card" style="border-radius: 15px">
+      <div>NFT contract address (default: {{ address_721 }})</div>
       <q-input outlined v-model="current.sellNFTaddress" />
       <div>
         NFT ID
         <!-- (available: {{current.myNFTs}}) -->
       </div>
       <q-input outlined v-model="current.sellNFTid" />
-      <div>You need to approve this NFT to Filoli Contract Address first: {{current.address}}</div>
+      <div>
+        You need to approve this NFT to Filoli Contract Address first:
+        {{ current.address }}
+      </div>
       <q-btn @click="confirmSell" label="Confirm"></q-btn>
     </q-card>
   </q-dialog>
   <q-dialog v-model="current.showAddWhitelist">
-    <q-card class="nft-sell-card" style="border-radius: 15px;">
+    <q-card class="nft-sell-card" style="border-radius: 15px">
       <div>User address to add whitelist</div>
       <q-input outlined v-model="current.inputAddWhitelist" />
 
-      <q-btn @click="addWhitelist(current.inputAddWhitelist)" label="Confirm"></q-btn>
+      <q-btn
+        @click="addWhitelist(current.inputAddWhitelist)"
+        label="Confirm"
+      ></q-btn>
     </q-card>
   </q-dialog>
   <q-dialog v-model="current.showAccount">
-    <q-card class="mydnft-card" style="border-radius: 15px;">
+    <q-card class="mydnft-card" style="border-radius: 15px">
       <h5>Sold:</h5>
       <div>
-        <div
-          class="money"
-        >{{current.myOwnTotalClaim.toString().substr(0,7)}} ETH (${{(current.myOwnTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+        <div class="money">
+          {{ current.myOwnTotalClaim.toString().substr(0, 7) }} ETH (${{
+            (current.myOwnTotalClaim * current.ethPrice).toFixed(2)
+          }}
+          )
+        </div>
         <div class="title">Total Dividends</div>
         <div v-for="dnft in current.myOwnList" :key="dnft.dNFTid">
           <q-item>
@@ -69,8 +82,10 @@
             </q-item-section>
 
             <q-item-section top>
-              <q-item-label>{{dnft.name}}</q-item-label>
-              <q-item-label>{{dnft.price.toString().substr(0,7)}} eth</q-item-label>
+              <q-item-label>{{ dnft.name }}</q-item-label>
+              <q-item-label
+                >{{ dnft.price.toString().substr(0, 7) }} eth</q-item-label
+              >
             </q-item-section>
             <q-item-section top side>
               <div class="text-grey-8 q-gutter-xs">
@@ -89,14 +104,18 @@
           <q-separator spaced />
         </div>
         <q-inner-loading :showing="current.loadingMyOwnList">
-          <q-spinner size="50px" color="primary" />Please wait. It may take up to 1 minute for your NFT to load...
+          <q-spinner size="50px" color="primary" />Please wait. It may take up
+          to 1 minute for your NFT to load...
         </q-inner-loading>
       </div>
       <h5>Bought:</h5>
       <div>
-        <div
-          class="money"
-        >{{current.myTotalClaim.toString().substr(0,7)}} ETH (${{(current.myTotalClaim*current.ethPrice).toFixed(2)}} )</div>
+        <div class="money">
+          {{ current.myTotalClaim.toString().substr(0, 7) }} ETH (${{
+            (current.myTotalClaim * current.ethPrice).toFixed(2)
+          }}
+          )
+        </div>
         <div class="title">Total Dividends</div>
         <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
           <q-item>
@@ -106,8 +125,8 @@
             </q-item-section>
 
             <q-item-section top>
-              <q-item-label>{{dnft.name}}</q-item-label>
-              <q-item-label>{{dnft.price.substr(0,7)}} eth</q-item-label>
+              <q-item-label>{{ dnft.name }}</q-item-label>
+              <q-item-label>{{ dnft.price.substr(0, 7) }} eth</q-item-label>
             </q-item-section>
             <q-item-section top side>
               <div class="text-grey-8 q-gutter-xs">
@@ -125,7 +144,8 @@
           <q-separator spaced />
         </div>
         <q-inner-loading :showing="current.loadingMyBoughtList">
-          <q-spinner size="50px" color="primary" />Please wait. It may take up to 1 minute for your NFT to load...
+          <q-spinner size="50px" color="primary" />Please wait. It may take up
+          to 1 minute for your NFT to load...
         </q-inner-loading>
       </div>
       <!-- <div>Field 1.02 ETH ($365.00)</div> -->
@@ -134,31 +154,22 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  PropType,
-  computed,
-  ref,
-  toRef,
-  Ref,
-  onMounted,
-  reactive,
-  watch,
-} from 'vue';
+import { defineComponent, computed, onMounted, reactive, watch } from 'vue';
 const Web3 = require('web3');
 // This function detects most providers injected at window.ethereum
 import detectEthereumProvider from '@metamask/detect-provider';
-import { init,requestLoginMetaMask ,web3instance} from "../web3/getWeb3";
+import { init, requestLoginMetaMask, web3instance } from '../web3/getWeb3';
+
 import { useQuasar, date, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
 // import { useStorage } from '@vueuse/core';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-const config={
-  defaultSellLastingSecends:86400,
-  defaultUnitPrice:Web3.utils.toWei((0.001).toString())
-}
+const config = {
+  defaultSellLastingSecends: 86400,
+  defaultUnitPrice: Web3.utils.toWei((0.001).toString()),
+};
 
 export default defineComponent({
   name: 'ConnectWallet',
@@ -211,17 +222,11 @@ export default defineComponent({
         });
     };
     let wrapToSell = async () => {
-      // await api.get('dnfts?uad=' + current.account).then((res) => {
-      //   let list = res.data.data;
-      //   current.myNFTs = list.map((data) => data.NFTid).join(',');
-      // });
-
       current.sellNFTid = $store.state.example.nftIdApproved;
       current.sellShow = true;
     };
 
     let showAccount = async () => {
-      // refreshAccountDetails(current.mydnftids);
       current.showAccount = true;
     };
     watch(
@@ -239,13 +244,6 @@ export default defineComponent({
 
     async function tryGetdNFTs() {
       let dNFTs = $store.state.example.dnfts;
-      // debugger;
-      // if (!dNFTs.length) {
-      //   let res = await api.get('dnfts');
-      //   // dNFTs = res.data.data;
-      //   $store.commit('example/setDNFTs', res.data.data);
-      //   return [];
-      // }
       return dNFTs;
     }
 
@@ -775,7 +773,12 @@ export default defineComponent({
       return new Promise((resolve, reject) => {
         console.log(current);
         current.myContract.methods
-          .wrap(contractAd, parseInt(NFTid), config.defaultSellLastingSecends, config.defaultUnitPrice)
+          .wrap(
+            contractAd,
+            parseInt(NFTid),
+            config.defaultSellLastingSecends,
+            config.defaultUnitPrice
+          )
           .send({ from: current.account })
           .then(function (result) {
             console.log('dNFT: ' + JSON.stringify(result));
@@ -883,8 +886,7 @@ export default defineComponent({
                   signature:
                     '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
                   raw: {
-                    data:
-                      '0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000de0b6b3a7640000',
+                    data: '0x00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000de0b6b3a7640000',
                     topics: [
                       '0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62',
                       '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
@@ -920,8 +922,7 @@ export default defineComponent({
                   signature:
                     '0x85dd6be155d21f160e710871c5d36a10b17e31ee618b2851ec49548ad3681374',
                   raw: {
-                    data:
-                      '0x0000000000000000000000000000000000000000000000000000000000000001',
+                    data: '0x0000000000000000000000000000000000000000000000000000000000000001',
                     topics: [
                       '0x85dd6be155d21f160e710871c5d36a10b17e31ee618b2851ec49548ad3681374',
                       '0x000000000000000000000000227897e07508229aa6f794d39681428351447201',
@@ -1152,8 +1153,8 @@ export default defineComponent({
     }
 
     async function newconnect() {
-     await requestLoginMetaMask()
-     console.log(web3instance)
+      await requestLoginMetaMask();
+      console.log(web3instance);
     }
     onMounted(() => {
       // WalletInit();
@@ -1177,7 +1178,7 @@ export default defineComponent({
       claim,
       showAccount,
       claimByOwner,
-      newconnect
+      newconnect,
     };
   },
 });

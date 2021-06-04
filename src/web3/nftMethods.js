@@ -1,12 +1,12 @@
-import {web3instance } from "./getWeb3";
-import { address_DNFT,ABI_DNFT,address_NFT,ABI_NFT, ABI_DLOLI, address_DLOLI } from "./contract";
+import { web3instance } from './getWeb3';
+import { address_DNFT } from './contract';
 import { api, base } from '../boot/axios';
 
 function awardItem(userAdress) {
   return new Promise(async (resolve, reject) => {
     let index = await web3instance.nftContract.methods.totalSupply().call();
     index = parseInt(index) + 1;
-    console.log(web3instance)
+    console.log(web3instance);
     web3instance.nftContract.methods
       .awardItem(userAdress, base + 'nfts?id=' + index)
       .send({
@@ -27,7 +27,7 @@ function awardItem(userAdress) {
   });
 }
 
-function approve2( tokenId, userAdress) {
+function approve2(tokenId, userAdress) {
   return new Promise((resolve, reject) => {
     web3instance.nftContract.methods
       .approve(address_DNFT, tokenId)
@@ -37,9 +37,9 @@ function approve2( tokenId, userAdress) {
       })
       .catch((e) => {
         console.log(e);
-        reject(e)
+        reject(e);
       });
   });
 }
 
-export {awardItem,approve2}
+export { awardItem, approve2 };
