@@ -3,7 +3,6 @@ import {web3instance } from "./getWeb3";
 //该用户地址是否有币可以提取
  function getLOLICanClaimOf(address_User) {
     return new Promise((resolve, reject) => {
-        console.log(web3instance.dloliContract)
         web3instance.dloliContract.methods.getLOLICanClaimOf(address_User).call().then(function (result) {
             console.log("you have LOLI: " + JSON.stringify(result));
             resolve(result)

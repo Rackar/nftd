@@ -7,7 +7,7 @@ declare module '@vue/runtime-core' {
   }
 }
 const ishttps = 'https:' === document.location.protocol;
-let base = '' //18.176.191.82
+let base = 'http://localhost:3006/noauth/filoli/' //18.176.191.82
 if (ishttps) {
   base = 'https://filoli.io:3007/noauth/filoli/'
 } else if (process.env.PROD) {
