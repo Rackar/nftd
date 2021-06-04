@@ -8,9 +8,12 @@ let web3instance ={
 
 const init = (provider) => {
     if (!provider){
-        if(window.ethereum){
+      
+        if(window.ethereum&&window.ethereum.selectedAddress){
+          // 已登录
             provider = window.ethereum;
         }else{
+          // 未登录
             provider = new Web3.providers.WebsocketProvider(
                 'wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509',
                 {

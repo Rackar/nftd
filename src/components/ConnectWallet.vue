@@ -1,5 +1,6 @@
 <template>
   <span v-if="!current.account" @click="connect" class="connect">Connect Wallet</span>
+   <span v-if="!current.account" @click="newconnect" class="connect"> newConnect</span>
   <span v-else>
     <!-- <button @click="test">test</button> -->
     <q-btn
@@ -147,7 +148,7 @@ import {
 const Web3 = require('web3');
 // This function detects most providers injected at window.ethereum
 import detectEthereumProvider from '@metamask/detect-provider';
-
+import { init,requestLoginMetaMask ,web3instance} from "../web3/getWeb3";
 import { useQuasar, date, copyToClipboard } from 'quasar';
 import { ABI, address, ABI_N, address_N, address_721 } from '../web3/config';
 import { api } from '../boot/axios';
@@ -1149,6 +1150,10 @@ export default defineComponent({
           .catch((e) => console.log(e));
       });
     }
+
+    async function newconnect() {
+     await requestLoginMetaMask()
+    }
     onMounted(() => {
       // WalletInit();
       init();
@@ -1171,6 +1176,7 @@ export default defineComponent({
       claim,
       showAccount,
       claimByOwner,
+      newconnect
     };
   },
 });
