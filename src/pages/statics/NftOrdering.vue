@@ -324,7 +324,7 @@ import TransactionRecords from '../../components/TransactionRecords.vue';
 import { idTodNFT, dNFTbuyer } from '../../web3/dnftMethods';
 import { init, requestLoginMetaMask, web3instance } from '../../web3/getWeb3';
 import { weiToCount, countToWei } from '../../web3/Utils';
-import { getMyAddress } from 'src/web3/config';
+// import { getMyAddress } from 'src/web3/config';
 import { api } from '../../boot/axios';
 import { useStore } from 'vuex';
 const Web3 = require('web3');

@@ -9,9 +9,9 @@
     </div>
     <div class="about-content">
       Filoli is a decentralized project developed by volunteers and governed
-      through the principles of separation of powers:
+      through the principles of separation of powers.
     </div>
-    <div class="about-content">
+    <!-- <div class="about-content">
       <div class="about-content-title">Filoli Board</div>
       Members of the Filoli board are anyone who hold at least 10 Million LOLI.
       Board members makes all decisions.
@@ -29,7 +29,7 @@
       A total of 10 billion LOLI tokens has been issued for Filoli project.
       Initially, the only way to obtain LOLI is through purchasing NFTs on
       Filoli.io and getting LOLI rewards.
-    </div>
+    </div> -->
     <!-- <div class="about-content">
       * Neither the developers nor the secretary are allocated a single LOLI
       token. There is no pre mining.
