@@ -153,6 +153,24 @@ function fundNFT(dNFTid, number) {
       .catch((e) => console.log(e));
   });
 }
+function dNFTbuyer(dNFTid, number = 1) {
+  return new Promise((resolve, reject) => {
+    web3instance.dnftContract.methods
+      .dNFTbuyer(dNFTid)
+      .send({
+        from: web3instance.account,
+        value: countToWei(number),
+      })
+      .then(function (result) {
+        console.log('dNFT buy status: ' + JSON.stringify(result));
+        resolve(result);
+      })
+      .catch((e) => {
+        current.loading = false;
+        console.log(e);
+      });
+  });
+}
 
 function takeNFT(dNFTid) {
   return new Promise((resolve, reject) => {
@@ -176,4 +194,5 @@ export {
   setArtist,
   artistWhiteList,
   idTodNFT,
+  dNFTbuyer,
 };

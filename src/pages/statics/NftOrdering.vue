@@ -24,7 +24,7 @@
           >
             <q-carousel-slide
               :name="i"
-              v-for="(img,i) in current.images"
+              v-for="(img, i) in current.images"
               :key="img"
               :img-src="img"
               class="left-slide-img"
@@ -47,26 +47,36 @@
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6">
         <div class="right-side">
-          <div class="order-title">{{current.name}}</div>
-          <div class="order-artist">{{current.artistName}}</div>
-          <div class="order-artist-info">{{current.artistInfo}}</div>
+          <div class="order-title">{{ current.name }}</div>
+          <div class="order-artist">{{ current.artistName }}</div>
+          <div class="order-artist-info">{{ current.artistInfo }}</div>
           <div class="order-valuation">Current Valuation</div>
           <div class="order-number">
             <q-icon name="menu" class="order-countdown-money-icon" />
-            <span class="order-number-eth">{{weiToCount(current.salesRevenue)}} ETH</span>
-            <span
-              class="order-number-usd"
-            >($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</span>
+            <span class="order-number-eth"
+              >{{ weiToCount(current.salesRevenue) }} ETH</span
+            >
+            <span class="order-number-usd"
+              >($
+              {{
+                (weiToCount(current.salesRevenue) * current.ethPrice).toFixed(
+                  2
+                )
+              }})</span
+            >
           </div>
-          <div class="order-countdown" v-if="countdownLeft =='' "></div>
-          <div class="order-countdown" v-else-if=" countdownLeft === 'Sold Out.'">
+          <div class="order-countdown" v-if="countdownLeft == ''"></div>
+          <div
+            class="order-countdown"
+            v-else-if="countdownLeft === 'Sold Out.'"
+          >
             <span class="order-countdown-normal">Sold Out.</span>
           </div>
           <div class="order-countdown" v-else>
             <div class="order-countdown-normal">Sale ends in</div>
 
             <span class="order-countdown-time">
-              {{countdownLeft}}
+              {{ countdownLeft }}
               <q-icon name="schedule" class="order-countdown-time-icon" />
             </span>
           </div>
@@ -78,21 +88,27 @@
                 class="full-width"
                 @click="buyDnft"
                 no-caps
-                :disable="(current.loading || (countdownLeft == 'Sold Out.')|| (countdownLeft == ''))"
+                :disable="
+                  current.loading ||
+                  countdownLeft == 'Sold Out.' ||
+                  countdownLeft == ''
+                "
               >
                 Buy Shares
                 <q-inner-loading :showing="current.loading">
                   <q-spinner color="primary" size="3em" :thickness="2" />
                 </q-inner-loading>
               </q-btn>
-              <div @click="current.showBuyTips=true" class="tips-btn">· How NFT Crowdfunding works</div>
+              <div @click="current.showBuyTips = true" class="tips-btn">
+                · How NFT Crowdfunding works
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- <q-card> -->
-    <div style="padding-left:4px;padding-right:4px;padding-bottom:40px;">
+    <div style="padding-left: 4px; padding-right: 4px; padding-bottom: 40px">
       <!-- <q-tabs
         v-model="tab"
         dense
@@ -113,14 +129,16 @@
           <q-separator class="about-artist-sep" />
           <!-- <div class="about-des">{{current.description}}</div> -->
           <div class="about-des">
-            <div v-for="desc in descSplit" :key="desc.id">{{desc||'&nbsp;'}}</div>
+            <div v-for="desc in descSplit" :key="desc.id">
+              {{ desc || '&nbsp;' }}
+            </div>
           </div>
 
           <!-- <div class="read-more">Read more</div> -->
         </div>
         <div class="col-xs-12 col-md-12">
           <div class="about-artist">Transactions</div>
-          <div style="padding-bottom:30px;">
+          <div style="padding-bottom: 30px">
             <TransactionRecords :buyers="current.boughters" />
           </div>
 
@@ -130,14 +148,30 @@
       <!-- </q-tab-panel> -->
 
       <!-- <q-tab-panel name="Commnets"> -->
-      <div
-        class="about-artist"
-      >Comments {{current.comments.length?`(${current.comments.length})`:''}}</div>
-      <q-input v-model="current.commentInput" rows="4" class="comment-input" filled type="textarea">
-        <q-btn v-if="current.commentInput.length" class="btn-save" @click="saveComment">save</q-btn>
+      <div class="about-artist">
+        Comments
+        {{ current.comments.length ? `(${current.comments.length})` : '' }}
+      </div>
+      <q-input
+        v-model="current.commentInput"
+        rows="4"
+        class="comment-input"
+        filled
+        type="textarea"
+      >
+        <q-btn
+          v-if="current.commentInput.length"
+          class="btn-save"
+          @click="saveComment"
+          >save</q-btn
+        >
       </q-input>
 
-      <div v-for="comment in current.comments" :key="comment._id" class="comment-wrap">
+      <div
+        v-for="comment in current.comments"
+        :key="comment._id"
+        class="comment-wrap"
+      >
         <q-avatar
           size="18px"
           font-size="16px"
@@ -146,11 +180,15 @@
           icon="person"
           class="comment-avatar"
         ></q-avatar>
-        <div
-          class="comment-name"
-        >{{comment.userAddress.substr(0, 5) + '...' + comment.userAddress.substr(-3, 5)}}</div>
+        <div class="comment-name">
+          {{
+            comment.userAddress.substr(0, 5) +
+            '...' +
+            comment.userAddress.substr(-3, 5)
+          }}
+        </div>
 
-        <div class="comment-content">{{comment.content}}</div>
+        <div class="comment-content">{{ comment.content }}</div>
       </div>
       <!-- </q-tab-panel> -->
     </div>
@@ -159,44 +197,64 @@
     <q-dialog v-model="current.showBuytab">
       <q-card class="sell-card">
         <div>How many shares would you like to buy?</div>
-        <div class="sell-title">{{current.name}}</div>
-        <div>Current Valuation {{weiToCount(current.salesRevenue)}} ETH ($ {{(weiToCount(current.salesRevenue)*current.ethPrice).toFixed(2)}})</div>
-        <div>{{current.boughters.reduce((pre,cur)=>pre+parseInt(cur.count),0)}} shares issued</div>
+        <div class="sell-title">{{ current.name }}</div>
+        <div>
+          Current Valuation {{ weiToCount(current.salesRevenue) }} ETH ($
+          {{
+            (weiToCount(current.salesRevenue) * current.ethPrice).toFixed(2)
+          }})
+        </div>
+        <div>
+          {{
+            current.boughters.reduce((pre, cur) => pre + parseInt(cur.count), 0)
+          }}
+          shares issued
+        </div>
         <q-input outlined v-model="current.count" class="sell-input" />
 
         <div class="flex">
           <q-btn
             class="sell-input-btn"
-            :class="current.count==1?'btn-active':''"
-            @click="current.count=1"
-          >1</q-btn>
+            :class="current.count == 1 ? 'btn-active' : ''"
+            @click="current.count = 1"
+            >1</q-btn
+          >
           <q-btn
             class="sell-input-btn"
-            :class="current.count==10?'btn-active':''"
-            @click="current.count=10"
-          >10</q-btn>
+            :class="current.count == 10 ? 'btn-active' : ''"
+            @click="current.count = 10"
+            >10</q-btn
+          >
           <q-btn
             class="sell-input-btn"
-            :class="current.count==100?'btn-active':''"
-            @click="current.count=100"
-          >100</q-btn>
+            :class="current.count == 100 ? 'btn-active' : ''"
+            @click="current.count = 100"
+            >100</q-btn
+          >
           <q-btn
             class="sell-input-btn"
-            :class="current.count==200?'btn-active':''"
-            @click="current.count=200"
-          >200</q-btn>
+            :class="current.count == 200 ? 'btn-active' : ''"
+            @click="current.count = 200"
+            >200</q-btn
+          >
           <q-btn
             class="sell-input-btn"
-            :class="current.count==500?'btn-active':''"
-            @click="current.count=500"
-          >500</q-btn>
+            :class="current.count == 500 ? 'btn-active' : ''"
+            @click="current.count = 500"
+            >500</q-btn
+          >
           <q-btn
             class="sell-input-btn"
-            :class="current.count==1000?'btn-active':''"
-            @click="current.count=1000"
-          >1000</q-btn>
+            :class="current.count == 1000 ? 'btn-active' : ''"
+            @click="current.count = 1000"
+            >1000</q-btn
+          >
         </div>
-        <q-btn @click="confirmBuy" label="Pay with Metamask" class="btn-confirm"></q-btn>
+        <q-btn
+          @click="confirmBuy"
+          label="Pay with Metamask"
+          class="btn-confirm"
+        ></q-btn>
         <div>* Only Metamask wallet is support at this moment.</div>
       </q-card>
     </q-dialog>
@@ -207,37 +265,52 @@
         <div>
           <div class="tips">
             <div class="tips-title">1. What am I buying into?</div>
-            <div
-              class="tips-content"
-            >You are buying shares of the NFT. Each share is priced at a fixed price of 0.001 ETH.</div>
-          </div>
-          <div class="tips">
-            <div class="tips-title">2. When will the sale of a NFT end?</div>
-            <div
-              class="tips-content"
-            >The sale of a NFT ends 24 hours after the previous purchase of at least a share.</div>
-          </div>
-          <div class="tips">
-            <div class="tips-title">3. Who will hold the NFT after sale ended?</div>
-            <div
-              class="tips-content"
-            >The Filoli secretary will temporarily hold the NFT for all of its shareholders. The secretary, at the guidance of all the shareholders of the NFT, can take further action toward the NFT following their instructions.</div>
-          </div>
-          <div class="tips">
-            <div class="tips-title">4. How are the sales proceed distributed?</div>
             <div class="tips-content">
-              Artist or the owner of the NFT: 70%
-              <br />Early investors: 25%
-              <br />Filoli Platform: 5%
+              You are buying shares of the NFT. Each share is priced at a fixed
+              price of 0.001 ETH.
             </div>
           </div>
           <div class="tips">
-            <div class="tips-title">5. How is money earned by Filoli platform distributed?</div>
-            <div
-              class="tips-content"
-            >Filoli is a community platform owned by all of the LOLI token holders. Therefore, the secretary is responsible for distributing all of the earnings to Filoli shareholders according their LOLI holdings.</div>
+            <div class="tips-title">2. When will the sale of a NFT end?</div>
+            <div class="tips-content">
+              The sale of a NFT ends 24 hours after the previous purchase of at
+              least a share.
+            </div>
           </div>
-          <div class="tips-end">Revised 5/10/2021 by Filoli secretary (filoli2021@gmail.com)</div>
+          <div class="tips">
+            <div class="tips-title">
+              3. Who will hold the NFT after sale ended?
+            </div>
+            <div class="tips-content">
+              The Filoli secretary will temporarily hold the NFT for all of its
+              shareholders. The secretary, at the guidance of all the
+              shareholders of the NFT, can take further action toward the NFT
+              following their instructions.
+            </div>
+          </div>
+          <div class="tips">
+            <div class="tips-title">
+              4. How are the sales proceed distributed?
+            </div>
+            <div class="tips-content">
+              Artist or the owner of the NFT: 70%
+              <br />Early investors: 25% <br />Filoli Platform: 5%
+            </div>
+          </div>
+          <div class="tips">
+            <div class="tips-title">
+              5. How is money earned by Filoli platform distributed?
+            </div>
+            <div class="tips-content">
+              Filoli is a community platform owned by all of the LOLI token
+              holders. Therefore, the secretary is responsible for distributing
+              all of the earnings to Filoli shareholders according their LOLI
+              holdings.
+            </div>
+          </div>
+          <div class="tips-end">
+            Revised 5/10/2021 by Filoli secretary (filoli2021@gmail.com)
+          </div>
         </div>
       </q-card>
     </q-dialog>
@@ -248,12 +321,10 @@
 import { defineComponent, ref, onMounted, reactive, computed } from 'vue';
 import { date, useQuasar } from 'quasar';
 import TransactionRecords from '../../components/TransactionRecords.vue';
-import {
-  ABI,
-  address,
-  getMyAddress,
-  justEnableMetamask,
-} from 'src/web3/config';
+import { idTodNFT, dNFTbuyer } from '../../web3/dnftMethods';
+import { init, requestLoginMetaMask, web3instance } from '../../web3/getWeb3';
+import { weiToCount, countToWei } from '../../web3/Utils';
+import { getMyAddress } from 'src/web3/config';
 import { api } from '../../boot/axios';
 const Web3 = require('web3');
 
@@ -299,26 +370,7 @@ export default defineComponent({
       showBuyTips: false,
     });
     let descSplit = computed(() => current.description.split('\n'));
-    function init() {
-      const provider = new Web3.providers.WebsocketProvider(
-        'wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509',
-        {
-          clientConfig: {
-            keepalive: true,
-            keepaliveInterval: 60000, // milliseconds
-          },
-        }
-      );
-      const web3 = new Web3(window.ethereum || provider);
-      const myContract = new web3.eth.Contract(ABI, address); //nft
-      return myContract;
-    }
-    function countToWei(number = 1) {
-      return Web3.utils.toWei((number * 0.001).toString());
-    }
-    function weiToCount(amount) {
-      return Web3.utils.fromWei(amount);
-    }
+
     let countdownInterval;
     function setCountDownTime(endDate) {
       clearInterval(countdownInterval);
@@ -328,73 +380,35 @@ export default defineComponent({
         countdownLeft.value = 'Sold Out.';
       }
     }
-    function getCountdown() {
-      let myContract = init();
-      return new Promise((resolve, reject) => {
-        myContract.methods
-          .idTodNFT(props.dnftid)
-          .call()
-          .then(function (result) {
-            let { lastBuyTimestamp, sellFinishTime, salesRevenue } = result;
-            current.salesRevenue = salesRevenue;
-            if (sellFinishTime) {
-              let endDate = new Date(sellFinishTime * 1000);
-              setCountDownTime(endDate);
-              // if (endDate > Date.now()) {
-              //   setInterval(() => Countdown(endDate), 1000);
-              // } else {
-              //   countdownLeft.value = 'Sold Out.';
-              // }
-            } else if (lastBuyTimestamp) {
-              // let endDate = new Date(sellFinishTime)
-              let endDate = date.addToDate(new Date(lastBuyTimestamp * 1000), {
-                days: 1,
-              });
-              setCountDownTime(endDate);
-              // .toString();
-              // if (endDate > Date.now()) {
-              //   setInterval(() => Countdown(endDate), 1000);
-              // } else {
-              //   countdownLeft.value = 'Sold Out.';
-              // }
-            } else {
-              let endDate = date.addToDate(Date.now(), { days: 1 });
-              setCountDownTime(endDate);
-            }
-            resolve(result);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      });
+    async function getCountdown() {
+      let result = await idTodNFT(props.dnftid);
+      if (!result) return;
+      let { lastBuyTimestamp, sellFinishTime, salesRevenue } = result;
+      current.salesRevenue = salesRevenue;
+      if (sellFinishTime) {
+        let endDate = new Date(sellFinishTime * 1000);
+        setCountDownTime(endDate);
+      } else if (lastBuyTimestamp) {
+        let endDate = date.addToDate(new Date(lastBuyTimestamp * 1000), {
+          days: 1,
+        });
+        setCountDownTime(endDate);
+      } else {
+        let endDate = date.addToDate(Date.now(), { days: 1 });
+        setCountDownTime(endDate);
+      }
     }
-    function dNFTbuyer(dNFTid, number = 1) {
-      let myContract = init();
+    async function compDNFTbuyer(dNFTid, number = 1) {
       current.showBuytab = false;
       current.loading = true;
-      return new Promise((resolve, reject) => {
-        myContract.methods
-          .dNFTbuyer(dNFTid)
-          .send({
-            from: window.ethereum.selectedAddress,
-            value: countToWei(number),
-          })
-          .then(function (result) {
-            current.loading = false;
-            console.log('dNFT buy status: ' + JSON.stringify(result));
-            $q.notify('Success');
-            getCountdown();
-            current.boughters.push({
-              Buyer: window.ethereum.selectedAddress,
-              count: number,
-              updatedAt: new Date(),
-            });
-            resolve(result);
-          })
-          .catch((e) => {
-            current.loading = false;
-            console.log(e);
-          });
+      await dNFTbuyer(dNFTid, number);
+      current.loading = false;
+      $q.notify('Success');
+      getCountdown();
+      current.boughters.push({
+        Buyer: web3instance.account,
+        count: number,
+        updatedAt: new Date(),
       });
     }
     async function getNFTmeta() {
@@ -431,7 +445,7 @@ export default defineComponent({
     }
     async function saveComment() {
       let comment = {
-        userAddress: await getMyAddress(),
+        userAddress: web3instance.account,
         dNFTid: props.dnftid,
         content: current.commentInput,
       };
@@ -460,11 +474,12 @@ export default defineComponent({
     }
 
     async function buyDnft() {
-      await justEnableMetamask();
+      // await justEnableMetamask();
+      await requestLoginMetaMask();
       current.showBuytab = true;
     }
     function confirmBuy() {
-      dNFTbuyer(props.dnftid, current.count);
+      compDNFTbuyer(props.dnftid, current.count);
     }
     onMounted(async () => {
       getNFTmeta();

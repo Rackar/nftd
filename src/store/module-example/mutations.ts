@@ -8,6 +8,10 @@ const mutation: MutationTree<ExampleStateInterface> = {
   setDNFTs(state: ExampleStateInterface, dnfts: []) {
     // debugger;
     state.dnfts = dnfts;
+  },
+  setUserAddress(state: ExampleStateInterface, userAddress:string) {
+    console.log(userAddress,' change')
+    state.userAddress = userAddress;
   }
 };
 

@@ -1,4 +1,5 @@
 const Web3 = require('web3');
+import store from '../store';
 import detectEthereumProvider from '@metamask/detect-provider';
 import {
   address_DNFT,
@@ -47,7 +48,10 @@ const init = (provider) => {
     console.log('new user ad ' + provider.selectedAddress);
     const account = provider.selectedAddress;
     const chainId = provider.chainId;
-
+    let $store = store();
+    console.log($store);
+    debugger;
+    $store.commit('example/setUserAddress', account);
     const dnftContract = new web3.eth.Contract(ABI_DNFT, address_DNFT); //dnft
     const nftContract = new web3.eth.Contract(ABI_NFT, address_NFT); //dnft
     const dloliContract = new web3.eth.Contract(ABI_DLOLI, address_DLOLI); //dnft

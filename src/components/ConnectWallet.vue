@@ -65,13 +65,14 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px">
+      <h5>My LOLI:</h5>
+      <div>{{ current.loliCanClaim }}</div>
       <h5>Sold:</h5>
       <div>
         <div class="money">
           {{ current.myOwnTotalClaim.toString().substr(0, 7) }} ETH (${{
             (current.myOwnTotalClaim * current.ethPrice).toFixed(2)
-          }}
-          )
+          }})
         </div>
         <div class="title">Total Dividends</div>
         <div v-for="dnft in current.myOwnList" :key="dnft.dNFTid">
@@ -113,8 +114,7 @@
         <div class="money">
           {{ current.myTotalClaim.toString().substr(0, 7) }} ETH (${{
             (current.myTotalClaim * current.ethPrice).toFixed(2)
-          }}
-          )
+          }})
         </div>
         <div class="title">Total Dividends</div>
         <div v-for="dnft in current.myBoughtList" :key="dnft.dNFTid">
@@ -180,6 +180,12 @@ import {
   artistWhiteList,
 } from '../web3/dnftMethods';
 
+import {
+  getLOLICanClaimOf,
+  accountToFetched,
+  fetchLOLI,
+} from '../web3/dloliMethods';
+
 import { countToWei, weiToCount } from '../web3/Utils';
 const config = {
   defaultSellLastingSecends: 86400,
@@ -224,6 +230,7 @@ export default defineComponent({
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
       ethPrice: 0,
+      loliCanClaim: '',
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -250,6 +257,13 @@ export default defineComponent({
         console.log('store dnft watched change.');
         await refreshAccountDetails(current.mydnftids);
         await refreshMyOwnDetails(current.myOwndnftids);
+      }
+    );
+    watch(
+      () => $store.state.example.userAddress,
+      () => {
+        debugger;
+        init();
       }
     );
     async function getETHprice() {
@@ -364,7 +378,7 @@ export default defineComponent({
           let data = res.data.data;
           let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
           current.mydnftids = dNFTids;
-          debugger;
+          // debugger;
           refreshAccountDetails(dNFTids);
         });
         api.get('mydnfts?uad=' + web3instance.account).then(async (res) => {
@@ -373,6 +387,10 @@ export default defineComponent({
           // debugger;
           refreshMyOwnDetails(dNFTids);
         });
+
+        current.loliCanClaim = parseInt(
+          weiToCount(await getLOLICanClaimOf(web3instance.account))
+        );
       }
     };
     let WalletInit = async () => {
