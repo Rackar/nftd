@@ -2,18 +2,30 @@
   <div class="waterfall">
     <div
       class="item"
-      :style="{ 'grid-row': 'auto / span '+ calcHeight(i)}"
-      v-for="(item,i) in data"
+      :style="{ 'grid-row': 'auto / span ' + calcHeight(i) }"
+      v-for="(item, i) in data"
       :key="item.id"
     >
-      <router-link :to="'/nft/'+item.NFTCotract+'/'+item.NFTid+'/'+item.dNFTid">
+      <router-link
+        :to="'/nft/' + item.NFTCotract + '/' + item.NFTid + '/' + item.dNFTid"
+      >
         <div class="card">
           <div>
-            <img class="img" :src="item.image" :ref="el => { if (el) divs[i] = el }" />
-            <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
+            <img
+              class="img"
+              :src="item.image"
+              :ref="
+                (el) => {
+                  if (el) divs[i] = el;
+                }
+              "
+            />
+            <q-tooltip anchor="center middle" self="top middle"
+              >View details</q-tooltip
+            >
           </div>
-          <div class="artist">{{item.name}}</div>
-          <div class="info">{{item.description}}</div>
+          <div class="artist">{{ item.name }}</div>
+          <div class="info">{{ item.description }}</div>
         </div>
       </router-link>
     </div>
@@ -31,9 +43,9 @@ export default {
     data: {
       type: Array,
       default: () => [],
-      validator: (d = []) => {
-        return !d.length || d[0].key;
-      },
+      // validator: (d = []) => {
+      //   return !d.length || d[0].key;
+      // },
     },
     url: {
       type: String,

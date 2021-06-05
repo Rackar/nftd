@@ -1,5 +1,6 @@
-import { web3instance } from './getWeb3';
 import Web3 from 'web3';
+import { web3instance } from './getWeb3';
+import { weiToCount, countToWei } from './Utils';
 import { address_DNFT } from './contract';
 const config = {
   defaultSellLastingSecends: 86400,
@@ -7,13 +8,13 @@ const config = {
 };
 function checkIsOwner() {
   return new Promise((resolve, reject) => {
-    console.log(current);
     web3instance.dnftContract.methods
       .owner()
       .call()
       .then(function (result) {
         console.log('owner is: ' + JSON.stringify(result));
-        let isOwner = result === Web3.utils.toChecksumAddress(current.account);
+        let isOwner =
+          result === Web3.utils.toChecksumAddress(web3instance.account);
         // debugger;
         resolve(isOwner);
       })
@@ -36,18 +37,17 @@ function artistWhiteList(artistAddress) {
 //设置地址为艺术家白名单
 function setArtist(artistAddress) {
   return new Promise((resolve, reject) => {
-    console.log(current);
     web3instance.dnftContract.methods
       .setArtist(artistAddress, true)
-      // .send({ from: current.account })
-      .send() //FIXME 测试去掉from
+      .send({ from: web3instance.account })
+      // .send() //FIXME 测试去掉from
       .then(function (result) {
         console.log('set artist: ' + JSON.stringify(result));
         resolve(result);
       });
   });
 }
-
+//改完未测
 function wrapNFT(contractAd, NFTid) {
   return new Promise((resolve, reject) => {
     web3instance.dnftContract.methods
@@ -57,8 +57,7 @@ function wrapNFT(contractAd, NFTid) {
         config.defaultSellLastingSecends,
         config.defaultUnitPrice
       )
-      .send()
-      // .send({ from: current.account })
+      .send({ from: web3instance.account })
       .then(function (result) {
         console.log('dNFT: ' + JSON.stringify(result));
         // $q.loading.hide();
@@ -94,8 +93,7 @@ function unClaimOf(dNFTid, ownerAddress) {
   return new Promise((resolve, reject) => {
     web3instance.dnftContract.methods
       .unClaimOf(dNFTid, ownerAddress)
-      .call()
-      // .call({ from: current.account })
+      .call({ from: web3instance.account })
       .then(function (result) {
         console.log('dNFT claim : ' + JSON.stringify(result));
         resolve(result);
@@ -110,8 +108,7 @@ function claimByOwner(dNFTid) {
   return new Promise((resolve, reject) => {
     web3instance.dnftContract.methods
       .claimPrincipalFunds(dNFTid)
-      // .send({ from: current.account })
-      .send()
+      .send({ from: web3instance.account })
       .then(async function (result) {
         console.log('dNFT claim : ' + JSON.stringify(result));
         // await api.post('ownclaim', { dnftid: dNFTid });
@@ -131,8 +128,7 @@ function claim(dNFTid) {
   return new Promise((resolve, reject) => {
     web3instance.dnftContract.methods
       .claim(dNFTid)
-      // .send({ from: current.account })
-      .send()
+      .send({ from: web3instance.account })
       .then(function (result) {
         console.log('dNFT claim status: ' + JSON.stringify(result));
         resolve(result);
@@ -145,13 +141,11 @@ function fundNFT(dNFTid, number) {
   return new Promise((resolve, reject) => {
     web3instance.dnftContract.methods
       .fundNFT(dNFTid)
-      // .send({
-      //   from: current.account,
-      //   value: Web3.utils.toWei(number.toString()),
-      // })
       .send({
+        from: web3instance.account,
         value: Web3.utils.toWei(number.toString()),
       })
+
       .then(function (result) {
         console.log('fundNFT status: ' + JSON.stringify(result));
         resolve(result);
@@ -169,5 +163,4 @@ export {
   wrapNFT,
   setArtist,
   artistWhiteList,
-  checkIsOwner,
 };

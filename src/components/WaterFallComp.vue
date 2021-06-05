@@ -1,15 +1,28 @@
 <template>
   <div class="water-fall" v-if="list.length">
-    <water-fall :data="list" gap="30px" width="260px" class="container" :delay="true">
+    <water-fall
+      :data="list"
+      gap="30px"
+      width="260px"
+      class="container"
+      :delay="true"
+    >
       <template #default="item">
-        <router-link :to="'/nft/'+item.NFTCotract+'/'+item.NFTid+'/'+item.dNFTid">
-          <div class="card" :class="{sellout:item.Selling==='false-fixme'}">
+        <router-link
+          :to="'/nft/' + item.NFTCotract + '/' + item.NFTid + '/' + item.dNFTid"
+        >
+          <div
+            class="card"
+            :class="{ sellout: item.Selling === 'false-fixme' }"
+          >
             <div>
               <img class="img" :src="item.image" />
-              <q-tooltip anchor="center middle" self="top middle">View details</q-tooltip>
+              <q-tooltip anchor="center middle" self="top middle"
+                >View details</q-tooltip
+              >
             </div>
-            <div class="artist">{{item.name}}</div>
-            <div class="info">{{item.description}}</div>
+            <div class="artist">{{ item.name }}</div>
+            <div class="info">{{ item.description }}</div>
           </div>
         </router-link>
       </template>
@@ -32,9 +45,9 @@ export default {
     data: {
       type: Array,
       default: () => [],
-      validator: (d = []) => {
-        return !d.length || d[0].key;
-      },
+      // validator: (d = []) => {
+      //   return !d.length || d[0].key;
+      // },
     },
     url: {
       type: String,

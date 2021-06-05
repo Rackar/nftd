@@ -42,9 +42,12 @@ const init = (provider) => {
 
   provider.on('chainChanged', setIns);
   function setIns() {
-    const web3 = new Web3(provider);
+    let web3 = new Web3(provider);
+    web3.eth.defaultAccount = provider.selectedAddress;
+    console.log('new user ad ' + provider.selectedAddress);
     const account = provider.selectedAddress;
     const chainId = provider.chainId;
+
     const dnftContract = new web3.eth.Contract(ABI_DNFT, address_DNFT); //dnft
     const nftContract = new web3.eth.Contract(ABI_NFT, address_NFT); //dnft
     const dloliContract = new web3.eth.Contract(ABI_DLOLI, address_DLOLI); //dnft
@@ -110,6 +113,7 @@ const requestLoginMetaMask = async () => {
 
     provider.on('chainChanged', handleChainChanged);
     init(provider);
+    return true;
   } else {
     return false;
   }

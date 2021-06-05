@@ -38,8 +38,7 @@ export default {
         v: 1,
         src: 'assets/images/art1.jpg',
         artist: 'Picasso',
-        info:
-          'Bull. Screenprint in colors with embossing on Arches Cover paper',
+        info: 'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
       },
       {
@@ -47,8 +46,7 @@ export default {
         v: 2,
         src: 'assets/images/art2.jpg',
         artist: 'Picasso',
-        info:
-          'Bull. Screenprint in colors with embossing on Arches Cover paper',
+        info: 'Bull. Screenprint in colors with embossing on Arches Cover paper',
         price: 12000,
       },
     ]);
@@ -60,8 +58,7 @@ export default {
           v: 1,
           src: 'assets/images/b1.png',
           artist: 'Picasso',
-          info:
-            'Bull. Screenprint in colors with embossing on Arches Cover paper',
+          info: 'Bull. Screenprint in colors with embossing on Arches Cover paper',
           price: 12000,
         },
       ];
@@ -78,5 +75,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
