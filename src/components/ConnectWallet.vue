@@ -49,7 +49,7 @@
         You need to approve this NFT to Filoli Contract Address first:
         {{ current.address }}
       </div>
-      <q-btn @click="_confirmSell" label="Confirm"></q-btn>
+      <q-btn @click="compConfirmSell" label="Confirm"></q-btn>
     </q-card>
   </q-dialog>
   <q-dialog v-model="current.showAddWhitelist">
@@ -58,7 +58,7 @@
       <q-input outlined v-model="current.inputAddWhitelist" />
 
       <q-btn
-        @click="_addWhitelist(current.inputAddWhitelist)"
+        @click="compAddWhitelist(current.inputAddWhitelist)"
         label="Confirm"
       ></q-btn>
     </q-card>
@@ -95,7 +95,7 @@
                   flat
                   dense
                   label="claim"
-                  @click="claimByOwner(dnft.dNFTid)"
+                  @click="compClaimByOwner(dnft.dNFTid)"
                   :disable="!dnft.finished"
                 />
               </div>
@@ -136,7 +136,7 @@
                   flat
                   dense
                   label="claim"
-                  @click="_claim(dnft.dNFTid)"
+                  @click="compClaim(dnft.dNFTid)"
                 />
               </div>
             </q-item-section>
@@ -176,6 +176,7 @@ import {
   unClaimOf,
   wrapNFT,
   setArtist,
+  idTodNFT,
   artistWhiteList,
 } from '../web3/dnftMethods';
 
@@ -344,7 +345,7 @@ export default defineComponent({
         current.loadingMyOwnList = false;
       }
     }
-    const _confirmSell = async () => {
+    const compConfirmSell = async () => {
       let isin = await artistWhiteList(web3instance.account);
       if (isin) {
         await _wrapNFT(current.sellNFTaddress, current.sellNFTid);
@@ -363,6 +364,7 @@ export default defineComponent({
           let data = res.data.data;
           let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
           current.mydnftids = dNFTids;
+          debugger;
           refreshAccountDetails(dNFTids);
         });
         api.get('mydnfts?uad=' + web3instance.account).then(async (res) => {
@@ -433,17 +435,11 @@ export default defineComponent({
         $q.notify('Please install MetaMask!');
       }
     };
-    // function countToWei(number = 1) {
-    //   return Web3.utils.toWei((number * 0.001).toString());
-    // }
-    // function weiToCount(amount) {
-    //   return Web3.utils.fromWei(amount);
-    // }
 
     let test = async () => {};
 
     //添加艺术家ad到白名单中
-    async function _addWhitelist(userAddress) {
+    async function compAddWhitelist(userAddress) {
       if (!userAddress) return $q.notify('Must input user address.');
       let isin = await artistWhiteList(userAddress);
       if (!isin) {
@@ -453,84 +449,6 @@ export default defineComponent({
       }
     }
 
-    function takeNFT(dNFTid) {
-      return new Promise((resolve, reject) => {
-        console.log(current);
-        current.myContract.methods
-          .takeNFT(dNFTid)
-          .send({ from: current.account })
-          .then(function (result) {
-            console.log('take out dNFT: ' + JSON.stringify(result));
-            resolve(result);
-          })
-          .catch((e) => console.log(e));
-      });
-    }
-    function getPastEvents(eventName = 'NewNFTwraped') {
-      return new Promise((resolve, reject) => {
-        console.log(current);
-        current.myContract
-          .getPastEvents(eventName, { fromBlock: 0, toBlock: 'latest' })
-          .then(function (result) {
-            console.log('events: ' + JSON.stringify(result));
-            resolve(result);
-            // let events = [
-            //   {
-            //     address: '0x4667fbC2C61fb2370F8314b356924E01Fe2e1A6e',
-            //     blockHash:
-            //       '0xa0cc7d75b7e549c8ec6ac8d81d180886fedeb42d0eca34cff9420a8559a88b51',
-            //     blockNumber: 23861142,
-            //     logIndex: 3,
-            //     removed: false,
-            //     transactionHash:
-            //       '0xd7b90e62e5585eece2113b672e3787e1bd0d2c53a024f84ea0bc79c0354f0dcf',
-            //     transactionIndex: 1,
-            //     transactionLogIndex: '0x3',
-            //     type: 'mined',
-            //     id: 'log_cdb2d4d0',
-            //     returnValues: {
-            //       0: '0x227897e07508229AA6F794D39681428351447201',
-            //       1: '2',
-            //       2: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-            //       NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
-            //       NFTid: '2',
-            //       Principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-            //     },
-            //     event: 'NewNFTwraped',
-            //     signature:
-            //       '0x4958f28e48c3d79a95eee5a92db2dd8f218fce330b02d862233214f605baadd1',
-            //     raw: {
-            //       data: '0x',
-            //       topics: [
-            //         '0x4958f28e48c3d79a95eee5a92db2dd8f218fce330b02d862233214f605baadd1',
-            //         '0x000000000000000000000000227897e07508229aa6f794d39681428351447201',
-            //         '0x0000000000000000000000000000000000000000000000000000000000000002',
-            //         '0x00000000000000000000000065d17d3dc59b5ce3d4ce010eb1719882b3f10490',
-            //       ],
-            //     },
-            //   },
-            // ];
-
-            // let NFTlist = events.map((res) => res.returnValues);
-          })
-          .catch((e) => console.log(e));
-      });
-    }
-    function approve(address, tokenId) {
-      return new Promise((resolve, reject) => {
-        console.log(current);
-        current.myContract.methods
-          .approve(address, tokenId)
-          .send({ from: current.account })
-          .then(function (result) {
-            console.log('approve: ' + JSON.stringify(result));
-            let comments = {};
-
-            resolve(result);
-          })
-          .catch((e) => console.log(e));
-      });
-    }
     async function _wrapNFT(contractAd, NFTid) {
       $q.loading.show({
         message: 'Please wait a few seconds...',
@@ -558,76 +476,19 @@ export default defineComponent({
           .catch((e) => console.log(e));
       });
     }
-    function idTodNFT(dNFTid) {
-      return new Promise((resolve, reject) => {
-        current.myContract.methods
-          .idTodNFT(dNFTid)
-          .call()
-          .then(function (result) {
-            console.log('dNFT status: ' + JSON.stringify(result));
-            resolve(result);
-            let dnft = {
-              // 0: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              // 1: '0x227897e07508229AA6F794D39681428351447201',
-              // 2: '0',
-              // 3: '1',
-              // 4: '2',
-              // 5: '1615366956',
-              // 6: '0',
-              // 7: false,
-              // principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-              // contractAd: '0x227897e07508229AA6F794D39681428351447201',
-              // accProfitsPer_dNFT1e18: '0',
-              // NFTid: '1',
-              // dNFTid: '2',
-              // lastBuyTimestamp: '1615366956',
-              // salesRevenue: '0',
-              // principalClaim: false,
-            };
-          })
-          .catch((e) => console.log(e));
-      });
-    }
-    function unClaimOf(dNFTid, ownerAddress) {
-      return new Promise((resolve, reject) => {
-        current.myContract.methods
-          .unClaimOf(dNFTid, ownerAddress)
-          .call({ from: current.account })
-          .then(function (result) {
-            console.log('dNFT claim : ' + JSON.stringify(result));
-            resolve(result);
-            let t = '3499999999999935';
-          })
-          .catch((e) => {
-            console.log(e);
-            reject(e);
-          });
-      });
-    }
-    function claimByOwner(dNFTid) {
-      return new Promise((resolve, reject) => {
+
+    function compClaimByOwner(dNFTid) {
+      return new Promise(async (resolve, reject) => {
         current.loadingMyOwnList = true;
-        current.myContract.methods
-          .claimPrincipalFunds(dNFTid)
-          .send({ from: current.account })
-          .then(async function (result) {
-            console.log('dNFT claim : ' + JSON.stringify(result));
-            await api.post('ownclaim', { dnftid: dNFTid });
-            current.myOwnList = current.myOwnList.filter(
-              (element) => element.dNFTid !== dNFTid
-            );
-            current.loadingMyOwnList = false;
-            resolve(result);
-            let t = '3499999999999935';
-          })
-          .catch((e) => {
-            current.loadingMyOwnList = false;
-            console.log(e);
-            reject(e);
-          });
+        let result = await claimByOwner(dNFTid);
+        await api.post('ownclaim', { dnftid: dNFTid });
+        current.myOwnList = current.myOwnList.filter(
+          (element) => element.dNFTid !== dNFTid
+        );
+        current.loadingMyOwnList = false;
       });
     }
-    async function _claim(dNFTid) {
+    async function compClaim(dNFTid) {
       $q.loading.show({
         message: 'Please wait a few seconds...',
       });
@@ -637,22 +498,8 @@ export default defineComponent({
       current.showAccount = false;
     }
     ///分配出售NFT的钱给各股东
-    function fundNFT(dNFTid, number) {
-      return new Promise((resolve, reject) => {
-        current.myContract.methods
-          .fundNFT(dNFTid)
-          .send({
-            from: current.account,
-            value: Web3.utils.toWei(number.toString()),
-          })
-          .then(function (result) {
-            debugger;
-            console.log('fundNFT status: ' + JSON.stringify(result));
-            resolve(result);
-            let t = {};
-          })
-          .catch((e) => console.log(e));
-      });
+    async function comFundNFT(dNFTid, number) {
+      await fundNFT(dNFTid, number);
     }
 
     async function newconnect() {
@@ -674,13 +521,13 @@ export default defineComponent({
       ),
       copyAddress,
       wrapToSell,
-      _confirmSell,
+      compConfirmSell,
       address_NFT,
-      _addWhitelist,
-      fundNFT,
-      _claim,
+      compAddWhitelist,
+      comFundNFT,
+      compClaim,
       showAccount,
-      claimByOwner,
+      compClaimByOwner,
       newconnect,
     };
   },

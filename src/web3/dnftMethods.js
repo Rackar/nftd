@@ -154,6 +154,18 @@ function fundNFT(dNFTid, number) {
   });
 }
 
+function takeNFT(dNFTid) {
+  return new Promise((resolve, reject) => {
+    web3instance.dnftContract.methods
+      .takeNFT(dNFTid)
+      .send({ from: web3instance.account })
+      .then(function (result) {
+        console.log('take out dNFT: ' + JSON.stringify(result));
+        resolve(result);
+      })
+      .catch((e) => console.log(e));
+  });
+}
 export {
   checkIsOwner,
   fundNFT,
@@ -163,4 +175,5 @@ export {
   wrapNFT,
   setArtist,
   artistWhiteList,
+  idTodNFT,
 };
