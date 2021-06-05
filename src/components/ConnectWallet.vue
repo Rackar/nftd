@@ -1,7 +1,4 @@
 <template>
-  <!-- <div>
-    {{ current.shit }}
-  </div> -->
   <span v-if="!current.account" @click="connect" class="connect"
     >Connect Wallet</span
   >
@@ -69,7 +66,21 @@
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px">
       <h5>My LOLI:</h5>
-      <div>{{ current.loliCanClaim }}</div>
+      <div>
+        {{ current.loliCanClaim }}
+        {{ current.ifLoliClaimed ? '(claimed)' : '' }}
+        <div class="text-grey-8 q-gutter-xs">
+          <q-btn
+            class="gt-xs"
+            size="12px"
+            flat
+            dense
+            label="claimLOLI"
+            :disable="current.ifLoliClaimed"
+            @click="compLoliClaim()"
+          />
+        </div>
+      </div>
       <h5>Sold:</h5>
       <div>
         <div class="money">
@@ -234,7 +245,7 @@ export default defineComponent({
       isOwner: false, //默认关闭白名单设置按钮
       ethPrice: 0,
       loliCanClaim: '',
-      shit: computed(() => $store.state.example),
+      ifLoliClaimed: true,
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -312,6 +323,10 @@ export default defineComponent({
           .map((buy) => parseFloat(buy.price))
           .reduce((pre, cur) => pre + cur, 0);
       }
+    }
+    async function compLoliClaim() {
+      current.ifLoliClaimed = true;
+      await fetchLOLI();
     }
     async function refreshMyOwnDetails(dNFTids) {
       let dNFTs = await tryGetdNFTs();
@@ -395,6 +410,7 @@ export default defineComponent({
         current.loliCanClaim = parseInt(
           weiToCount(await getLOLICanClaimOf(web3instance.account))
         );
+        current.ifLoliClaimed = await accountToFetched(web3instance.account);
       }
     };
     let WalletInit = async () => {
@@ -551,6 +567,7 @@ export default defineComponent({
       showAccount,
       compClaimByOwner,
       newconnect,
+      compLoliClaim,
     };
   },
 });

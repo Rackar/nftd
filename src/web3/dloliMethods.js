@@ -28,11 +28,12 @@ function accountToFetched(address_User) {
   });
 }
 
+//领取
 function fetchLOLI() {
   return new Promise((resolve, reject) => {
     web3instance.dloliContract.methods
       .fetchLOLI()
-      .send()
+      .send({ from: web3instance.account })
       .then(function (result) {
         console.log('you got LOLI: ' + JSON.stringify(result));
         resolve(result);
