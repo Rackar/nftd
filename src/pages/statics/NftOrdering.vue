@@ -180,7 +180,7 @@
           icon="person"
           class="comment-avatar"
         ></q-avatar>
-        <div class="comment-name">
+        <div class="comment-name" v-if="comment.userAddress">
           {{
             comment.userAddress.substr(0, 5) +
             '...' +
@@ -326,6 +326,7 @@ import { init, requestLoginMetaMask, web3instance } from '../../web3/getWeb3';
 import { weiToCount, countToWei } from '../../web3/Utils';
 import { getMyAddress } from 'src/web3/config';
 import { api } from '../../boot/axios';
+import { useStore } from 'vuex';
 const Web3 = require('web3');
 
 export default defineComponent({
@@ -351,6 +352,7 @@ export default defineComponent({
   },
   setup(props) {
     let $q = useQuasar();
+    let $store = useStore();
     let countdownLeft = ref('');
     let current = reactive({
       showBuytab: false,
@@ -440,7 +442,6 @@ export default defineComponent({
     }
     async function getComment() {
       let list = await api.get('comments?id=' + props.dnftid);
-      // debugger;
       current.comments = list.data.data.reverse();
     }
     async function saveComment() {
@@ -475,7 +476,10 @@ export default defineComponent({
 
     async function buyDnft() {
       // await justEnableMetamask();
-      await requestLoginMetaMask();
+      await requestLoginMetaMask((ad) => {
+        debugger;
+        $store.commit('example/setUserAddress', ad);
+      });
       current.showBuytab = true;
     }
     function confirmBuy() {

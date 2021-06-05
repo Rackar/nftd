@@ -1,4 +1,7 @@
 <template>
+  <!-- <div>
+    {{ current.shit }}
+  </div> -->
   <span v-if="!current.account" @click="connect" class="connect"
     >Connect Wallet</span
   >
@@ -231,6 +234,7 @@ export default defineComponent({
       isOwner: false, //默认关闭白名单设置按钮
       ethPrice: 0,
       loliCanClaim: '',
+      shit: computed(() => $store.state.example),
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -251,6 +255,7 @@ export default defineComponent({
     let showAccount = async () => {
       current.showAccount = true;
     };
+
     watch(
       () => $store.state.example.dnfts,
       async () => {
@@ -262,7 +267,6 @@ export default defineComponent({
     watch(
       () => $store.state.example.userAddress,
       () => {
-        debugger;
         init();
       }
     );
@@ -447,7 +451,7 @@ export default defineComponent({
       }
     };
     let newWalletInit = async () => {
-      const result = await requestLoginMetaMask();
+      await requestLoginMetaMask(() => {});
       if (provider) {
       } else {
         $q.notify('Please install MetaMask!');
@@ -521,7 +525,7 @@ export default defineComponent({
     }
 
     async function newconnect() {
-      await requestLoginMetaMask();
+      await requestLoginMetaMask(() => {});
       init();
     }
     onMounted(() => {

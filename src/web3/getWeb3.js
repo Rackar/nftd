@@ -1,5 +1,5 @@
 const Web3 = require('web3');
-import store from '../store';
+// import { store } from 'quasar/wrappers';
 import detectEthereumProvider from '@metamask/detect-provider';
 import {
   address_DNFT,
@@ -21,7 +21,7 @@ let web3instance = {
 
 const init = (provider) => {
   if (!provider) {
-    if (window.ethereum && window.ethereum.selectedAddress) {
+    if (window.ethereum) {
       // 已登录
       provider = window.ethereum;
     } else {
@@ -37,21 +37,22 @@ const init = (provider) => {
       );
     }
   }
-  provider.removeListener('accountsChanged', () => {});
-  provider.removeListener('chainChanged', () => {});
+
+  // provider.removeListener('accountsChanged', () => {});
+  // provider.removeListener('chainChanged', () => {});
   provider.on('accountsChanged', setIns);
 
   provider.on('chainChanged', setIns);
   function setIns() {
+    // debugger;
+    // const $store = store();
     let web3 = new Web3(provider);
     web3.eth.defaultAccount = provider.selectedAddress;
     console.log('new user ad ' + provider.selectedAddress);
     const account = provider.selectedAddress;
     const chainId = provider.chainId;
-    let $store = store();
-    console.log($store);
-    debugger;
-    $store.commit('example/setUserAddress', account);
+    // console.log($store);
+    // $store.commit('example/setUserAddress', account);
     const dnftContract = new web3.eth.Contract(ABI_DNFT, address_DNFT); //dnft
     const nftContract = new web3.eth.Contract(ABI_NFT, address_NFT); //dnft
     const dloliContract = new web3.eth.Contract(ABI_DLOLI, address_DLOLI); //dnft
@@ -64,8 +65,9 @@ const init = (provider) => {
       nftContract,
       dloliContract,
     };
+    return web3instance.account;
   }
-  setIns();
+  return setIns();
   // const web3 = new Web3(provider);
   // const account = provider.selectedAddress;
   // const chainId = provider.chainId;
@@ -75,7 +77,7 @@ const init = (provider) => {
 
   // web3instance={web3,account,chainId,dnftContract,nftContract,dloliContract}
 };
-const requestLoginMetaMask = async () => {
+const requestLoginMetaMask = async (cb) => {
   const provider = await detectEthereumProvider();
   // debugger;
   if (provider) {
@@ -88,17 +90,22 @@ const requestLoginMetaMask = async () => {
     }); //根据官方文档新的激活方式
 
     function handleChainChanged(_chainId) {
+      debugger;
       // We recommend reloading the page, unless you must do otherwise
       web3instance.chainId = _chainId;
       // window.location.reload();
     }
     function handleAccountsChanged(accounts) {
+      debugger;
       if (accounts.length === 0) {
         // MetaMask is locked or the user has not connected any accounts
         console.log('Please connect to MetaMask.');
       } else if (accounts[0] !== web3instance.account) {
         web3instance.account = accounts[0];
+        cb(accounts[0]);
         // Do any other work!
+      } else {
+        cb(accounts[0]);
       }
     }
 

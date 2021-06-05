@@ -11,6 +11,7 @@ const mutation: MutationTree<ExampleStateInterface> = {
   },
   setUserAddress(state: ExampleStateInterface, userAddress:string) {
     console.log(userAddress,' change')
+    // debugger
     state.userAddress = userAddress;
   }
 };
