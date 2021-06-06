@@ -112,7 +112,7 @@ export default {
 .about-main {
   /* margin-left: 440px;
   width: 1000px; */
-
+  height: calc(100vh - 120px);
   padding: 80px;
   font-size: 18px;
   background-color: rgb(250, 253, 255);
@@ -127,11 +127,12 @@ export default {
     display: none;
   }
   .about-main {
+    /* height: calc(100vh - 67px); */
     margin-left: 0;
     padding: 10px;
     width: auto;
     font-size: 16px;
-    background-color: aliceblue;
+    background-color: rgb(250, 253, 255);
     color: #222222;
   }
 }

@@ -112,9 +112,9 @@ export default {
 }
 .table-content {
   font-size: 14px;
-  padding: 20px 10px;
+  padding: 12px 10px;
   color: #4b4b4b;
-  line-height: 30px;
+  line-height: 18px;
 }
 .table-title-investor {
   display: inline-block;

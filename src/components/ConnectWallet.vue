@@ -3,7 +3,7 @@
     >Connect Wallet</span
   >
   <span v-if="!current.account" @click="newconnect" class="connect">
-    newConnect</span
+    new Connect</span
   >
   <span v-else>
     <!-- <button @click="test">test</button> -->
@@ -13,11 +13,16 @@
       v-if="current.isOwner"
       @click="current.showAddWhitelist = true"
     ></q-btn>
-    <router-link to="/createnft">
+    <router-link to="/createnft" v-if="current.isArtist">
       <q-btn label="Create NFT" class="btn-sell"></q-btn>
     </router-link>
 
-    <q-btn @click="wrapToSell" label="Sell" class="btn-sell"></q-btn>
+    <q-btn
+      @click="wrapToSell"
+      label="Sell"
+      class="btn-sell"
+      v-if="current.isArtist"
+    ></q-btn>
     <q-avatar
       size="24px"
       font-size="18px"
@@ -243,6 +248,7 @@ export default defineComponent({
       loadingMyBoughtList: false,
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
+      isArtist: false,
       ethPrice: 0,
       loliCanClaim: '',
       ifLoliClaimed: true,
@@ -394,6 +400,7 @@ export default defineComponent({
       if (web3instance.account) {
         current.account = web3instance.account;
         current.isOwner = await checkIsOwner();
+        current.isArtist = await artistWhiteList(web3instance.account);
         api.get('boughters?uad=' + web3instance.account).then(async (res) => {
           let data = res.data.data;
           let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
