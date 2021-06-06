@@ -259,6 +259,7 @@ export default defineComponent({
         });
     };
     let wrapToSell = async () => {
+      // debugger;
       current.sellNFTid = $store.state.example.nftIdApproved;
       current.sellShow = true;
     };

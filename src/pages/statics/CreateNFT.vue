@@ -104,15 +104,25 @@ export default {
         artistInfo: current.artistInfo,
       };
       current.loading = true;
-      const index = await awardItem(myAddress, nftDetail);
-      nftDetail.nftid = index;
-      nftDetail.contractAd = address_NFT;
-      let s = await api.post('nfts', { nft: nftDetail });
-      if (s) {
-        $q.notify('Creating successes. Now approving.');
-        // debugger;
-        console.log(s);
-        let res2 = await approve2(index, myAddress);
+      try {
+        const index = await awardItem(myAddress, nftDetail);
+        nftDetail.nftid = index;
+        nftDetail.contractAd = address_NFT;
+        let s = await api.post('nfts', { nft: nftDetail });
+        if (s) {
+          $q.notify('Creating successes. Now approving.');
+          // debugger;
+          console.log(s);
+          let res2 = await approve2(index, myAddress);
+          console.log('approve: ' + JSON.stringify(res2));
+          $q.notify('New NFT id is ' + index + ', please copy it to sell.');
+          current.nftid = index;
+          // $store.commit('example/setNftIdApproved', index + '');
+          // current.nftid = '';
+        }
+      } catch (error) {
+        $q.notify('Got error message: ' + error);
+        current.loading = false;
       }
 
       current.loading = false;

@@ -3,6 +3,7 @@ import { ExampleStateInterface } from './state';
 
 const mutation: MutationTree<ExampleStateInterface> = {
   setNftIdApproved(state: ExampleStateInterface, id: string) {
+    // debugger;
     state.nftIdApproved = id;
   },
   setDNFTs(state: ExampleStateInterface, dnfts: []) {
