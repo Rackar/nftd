@@ -21,13 +21,6 @@ let web3instance = {
   dloliContract: null,
 };
 
-const LOLIoption = {
-  address: address_LOLI, // The address that the token is at.
-  symbol: 'LOLI', // A ticker symbol or shorthand, up to 5 chars.
-  decimals: 18, // The number of decimals in the token
-  image: 'https://s3.jpg.cm/2021/06/05/ILIDjT.png', // A string url of the token logo
-};
-
 const init = (provider) => {
   if (!provider) {
     if (window.ethereum) {
@@ -135,6 +128,24 @@ const requestLoginMetaMask = async (cb) => {
     init(provider);
 
     //添加LOLI代币显示到钱包
+    addLoliToWalletInFirstTime(provider);
+
+    return true;
+  } else {
+    return false;
+  }
+};
+
+async function addLoliToWalletInFirstTime(provider) {
+  const LOLIoption = {
+    address: address_LOLI, // The address that the token is at.
+    symbol: 'LOLI', // A ticker symbol or shorthand, up to 5 chars.
+    decimals: 18, // The number of decimals in the token
+    image: 'https://s3.jpg.cm/2021/06/05/ILIDjT.png', // A string url of the token logo
+  };
+  const savedOption = localStorage.getItem('LOLIoption');
+  const optionStr = `${LOLIoption.address}${LOLIoption.symbol}${LOLIoption.decimals}${LOLIoption.image}`;
+  if (optionStr !== savedOption) {
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
       const wasAdded = await provider.request({
@@ -144,20 +155,17 @@ const requestLoginMetaMask = async (cb) => {
           options: LOLIoption,
         },
       });
-
       if (wasAdded) {
         console.log('Thanks for your interest!');
+        localStorage.setItem('LOLIoption', optionStr);
       } else {
         console.log('Your loss!');
       }
     } catch (error) {
       console.log(error);
     }
-    return true;
-  } else {
-    return false;
   }
-};
+}
 
 const loginGetAddress = async () => {
   if (window.ethereum && window.ethereum.selectedAddress) {

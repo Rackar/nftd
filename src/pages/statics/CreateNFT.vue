@@ -94,6 +94,7 @@ export default {
     // }
 
     async function onSubmit2() {
+      // debugger;
       let myAddress = await getMyAddress();
       // let myAddress = web3instance.account;
       let nftDetail = {
@@ -103,6 +104,7 @@ export default {
         artistName: current.artistName,
         artistInfo: current.artistInfo,
       };
+
       current.loading = true;
       try {
         const index = await awardItem(myAddress, nftDetail);
@@ -121,11 +123,11 @@ export default {
           // current.nftid = '';
         }
       } catch (error) {
-        $q.notify('Got error message: ' + error);
+        // $q.notify('Got error message: ' + error);
+        console.log(error);
+      } finally {
         current.loading = false;
       }
-
-      current.loading = false;
     }
     // async function onSubmit() {
     //   let myContract = init();

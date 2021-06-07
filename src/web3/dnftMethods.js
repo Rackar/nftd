@@ -18,7 +18,10 @@ function checkIsOwner() {
         // debugger;
         resolve(isOwner);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 
@@ -31,6 +34,10 @@ function artistWhiteList(artistAddress) {
       .then(function (result) {
         console.log('is in whitelist? ' + JSON.stringify(result));
         resolve(result);
+      })
+      .catch((e) => {
+        console.log(e);
+        reject(e);
       });
   });
 }
@@ -44,6 +51,10 @@ function setArtist(artistAddress) {
       .then(function (result) {
         console.log('set artist: ' + JSON.stringify(result));
         resolve(result);
+      })
+      .catch((e) => {
+        console.log(e);
+        reject(e);
       });
   });
 }
@@ -72,7 +83,7 @@ function wrapNFT(contractAd, NFTid) {
       })
       .catch((e) => {
         console.log(e);
-        // $q.loading.hide();
+        reject(e);
       });
   });
 }
@@ -86,7 +97,10 @@ function idTodNFT(dNFTid) {
         console.log('dNFT status: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 function unClaimOf(dNFTid, ownerAddress) {
@@ -133,7 +147,10 @@ function claim(dNFTid) {
         console.log('dNFT claim status: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 ///分配出售NFT的钱给各股东
@@ -150,7 +167,10 @@ function fundNFT(dNFTid, number) {
         console.log('fundNFT status: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 function dNFTbuyer(dNFTid, number = 1) {
@@ -166,8 +186,8 @@ function dNFTbuyer(dNFTid, number = 1) {
         resolve(result);
       })
       .catch((e) => {
-        current.loading = false;
         console.log(e);
+        reject(e);
       });
   });
 }
@@ -181,7 +201,10 @@ function takeNFT(dNFTid) {
         console.log('take out dNFT: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 export {

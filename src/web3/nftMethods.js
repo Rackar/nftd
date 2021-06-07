@@ -23,6 +23,7 @@ function awardItem(userAdress) {
       })
       .catch((e) => {
         console.log(e);
+        reject(e);
       });
   });
 }

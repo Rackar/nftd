@@ -10,7 +10,10 @@ function getLOLICanClaimOf(address_User) {
         console.log('you have LOLI: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 
@@ -24,7 +27,10 @@ function accountToFetched(address_User) {
         console.log('you had fetch LOLI: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 
@@ -38,7 +44,10 @@ function fetchLOLI() {
         console.log('you got LOLI: ' + JSON.stringify(result));
         resolve(result);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        reject(e);
+      });
   });
 }
 
