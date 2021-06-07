@@ -159,37 +159,12 @@ const requestLoginMetaMask = async (cb) => {
   }
 };
 
-async function getDLoliContract(params) {}
-
-async function getLoginedWeb3Instance() {
-  await requestLoginMetaMask();
-  return web3instance;
-}
-
-function getUnloginWeb3Instance() {
-  const provider = new Web3.providers.WebsocketProvider(
-    'wss://kovan.infura.io/ws/v3/bd6e30f7beaf4dc9ad34adf9792bd509',
-    {
-      clientConfig: {
-        keepalive: true,
-        keepaliveInterval: 60000, // milliseconds
-      },
-    }
-  );
-  const web3 = new Web3(provider);
-  const dnftContract = new web3.eth.Contract(ABI_DNFT, address_DNFT); //dnft
-  const nftContract = new web3.eth.Contract(ABI_NFT, address_NFT); //dnft
-  const dloliContract = new web3.eth.Contract(ABI_LOLI, address_LOLI); //dnft
-
-  return {
-    web3,
-    account: null,
-    chainId: null,
-    dnftContract,
-    nftContract,
-    dloliContract,
-  };
-}
+const loginGetAddress = async () => {
+  if (window.ethereum && window.ethereum.selectedAddress) {
+    return ethereum.selectedAddress;
+  } else {
+  }
+};
 
 export {
   requestLoginMetaMask,

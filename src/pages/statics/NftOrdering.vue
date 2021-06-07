@@ -476,11 +476,17 @@ export default defineComponent({
 
     async function buyDnft() {
       // await justEnableMetamask();
-      await requestLoginMetaMask((ad) => {
+      let res = await requestLoginMetaMask((ad) => {
         debugger;
         $store.commit('example/setUserAddress', ad);
+        current.showBuytab = true;
+      }).catch((e) => {
+        console.log(e);
+        $q.notify({
+          type: 'warning',
+          message: 'Please login with Metamask.',
+        });
       });
-      current.showBuytab = true;
     }
     function confirmBuy() {
       compDNFTbuyer(props.dnftid, current.count);
