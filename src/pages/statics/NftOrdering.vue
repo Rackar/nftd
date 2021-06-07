@@ -403,15 +403,19 @@ export default defineComponent({
     async function compDNFTbuyer(dNFTid, number = 1) {
       current.showBuytab = false;
       current.loading = true;
-      await dNFTbuyer(dNFTid, number);
-      current.loading = false;
-      $q.notify('Success');
-      getCountdown();
-      current.boughters.push({
-        Buyer: web3instance.account,
-        count: number,
-        updatedAt: new Date(),
-      });
+      try {
+        await dNFTbuyer(dNFTid, number);
+        $q.notify('Success');
+        getCountdown();
+        current.boughters.push({
+          Buyer: web3instance.account,
+          count: number,
+          updatedAt: new Date(),
+        });
+      } catch (error) {
+      } finally {
+        current.loading = false;
+      }
     }
     async function getNFTmeta() {
       let res = await api.get('nfts?id=' + props.nftid);

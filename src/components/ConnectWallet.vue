@@ -309,8 +309,9 @@ export default defineComponent({
           try {
             unClaim = await unClaimOf(dNFTid, current.account);
           } catch (error) {
-            current.loadingMyBoughtList = false;
             return;
+          } finally {
+            current.loadingMyBoughtList = false;
           }
           let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
           let result = {
@@ -333,7 +334,11 @@ export default defineComponent({
     }
     async function compLoliClaim() {
       current.ifLoliClaimed = true;
-      await fetchLOLI();
+      try {
+        await fetchLOLI();
+      } catch (error) {
+        current.ifLoliClaimed = false;
+      }
     }
     async function refreshMyOwnDetails(dNFTids) {
       let dNFTs = await tryGetdNFTs();
@@ -346,8 +351,9 @@ export default defineComponent({
           try {
             cache = await idTodNFT(dNFTid);
           } catch (error) {
-            current.loadingMyOwnList = false;
             return;
+          } finally {
+            current.loadingMyOwnList = false;
           }
           let unClaim = weiToCount(cache.salesRevenue) * 0.7;
           let {
@@ -421,59 +427,7 @@ export default defineComponent({
         current.ifLoliClaimed = await accountToFetched(web3instance.account);
       }
     };
-    let WalletInit = async () => {
-      //判断页面是否安装Metamask
-      if (typeof window.ethereum !== 'undefined') {
-        const ethereum = window.ethereum;
-        //禁止自动刷新，metamask要求写的
-        ethereum.autoRefreshOnNetworkChange = false;
 
-        try {
-          //第一次链接Metamask
-          const accounts = await ethereum.enable();
-          init();
-          // console.log(accounts);
-          // //初始化Provider
-          // const provider = window['ethereum'];
-          // console.log(provider);
-          // //获取网络ID
-          // console.log(provider.chainId);
-          // //实例化Web3
-          // const web3 = new Web3(provider);
-          // console.log(web3);
-          // // //导入abi文件
-          // // const abi = require("./contract.abi.json")
-          // // //定义合约地址
-          // // const address = "0x439b911d6423255a515d9762e966985d206cc177"
-          // //实例化合约
-          // window.myContract = new web3.eth.Contract(ABI, address);
-          // console.log(window.myContract);
-          // window.defaultAccount = accounts[0].toLowerCase();
-          // console.log(window.defaultAccount);
-          // current.myContract = window.myContract;
-          // current.account = window.defaultAccount;
-          // current.myContract = window.myContract;
-
-          ethereum.on('accountsChanged', function (accounts) {
-            console.log('accountsChanged:' + accounts);
-            current.account = accounts.length ? accounts[0] : accounts;
-            init();
-          });
-          ethereum.on('networkChanged', function (networkVersion) {
-            console.log('networkChanged:' + networkVersion);
-            current.network = networkVersion;
-            init();
-          });
-        } catch (e) {
-          console.log('link error', e);
-        }
-      } else {
-        console.log('没有metamask');
-        alert(
-          'MetaMask not found, please intall it from browser extensions store first.'
-        );
-      }
-    };
     let newWalletInit = async () => {
       await requestLoginMetaMask(() => {});
       if (provider) {
@@ -487,61 +441,60 @@ export default defineComponent({
     //添加艺术家ad到白名单中
     async function compAddWhitelist(userAddress) {
       if (!userAddress) return $q.notify('Must input user address.');
-      let isin = await artistWhiteList(userAddress);
-      if (!isin) {
-        setArtist(userAddress);
-      } else {
-        $q.notify('aleady in whitelist');
-      }
+      try {
+        let isin = await artistWhiteList(userAddress);
+        if (!isin) {
+          await setArtist(userAddress);
+          $q.notify('Add to whitelist succeed.');
+        } else {
+          $q.notify('Aleady in whitelist');
+        }
+      } catch (error) {}
     }
 
     async function _wrapNFT(contractAd, NFTid) {
       $q.loading.show({
         message: 'Please wait a few seconds...',
       });
-      const result = await wrapNFT(contractAd, NFTid);
-      $q.loading.hide();
-      $q.notify('dnft wrapped.');
-      $store.commit('example/setNftIdApproved', '');
-      let dnftUrl = `/nft/${contractAd}/${NFTid}/${result.events.TransferSingle.returnValues.id}`;
-      current.sellShow = false;
-      current.sellNFTid = '';
-      router.push(dnftUrl);
-    }
-    function dNFTbuyer(dNFTid, number = 1) {
-      let value = Web3.utils.toWei((number * 0.001).toString());
-      return new Promise((resolve, reject) => {
-        current.myContract.methods
-          .dNFTbuyer(dNFTid)
-          .send({ from: current.account, value: countToWei(number) })
-          // .send({ from: current.account })
-          .then(function (result) {
-            console.log('dNFT buy status: ' + JSON.stringify(result));
-            resolve(result);
-          })
-          .catch((e) => console.log(e));
-      });
+      try {
+        const result = await wrapNFT(contractAd, NFTid);
+        $q.notify('dnft wrapped.');
+        $store.commit('example/setNftIdApproved', '');
+        let dnftUrl = `/nft/${contractAd}/${NFTid}/${result.events.TransferSingle.returnValues.id}`;
+        current.sellShow = false;
+        current.sellNFTid = '';
+        router.push(dnftUrl);
+      } catch (error) {
+      } finally {
+        $q.loading.hide();
+      }
     }
 
-    function compClaimByOwner(dNFTid) {
-      return new Promise(async (resolve, reject) => {
-        current.loadingMyOwnList = true;
+    async function compClaimByOwner(dNFTid) {
+      current.loadingMyOwnList = true;
+      try {
         let result = await claimByOwner(dNFTid);
         await api.post('ownclaim', { dnftid: dNFTid });
         current.myOwnList = current.myOwnList.filter(
           (element) => element.dNFTid !== dNFTid
         );
+      } catch (error) {
+      } finally {
         current.loadingMyOwnList = false;
-      });
+      }
     }
     async function compClaim(dNFTid) {
       $q.loading.show({
         message: 'Please wait a few seconds...',
       });
-      await claim(dNFTid);
-      $q.loading.hide();
-      $q.notify('Claim success');
-      current.showAccount = false;
+      try {
+        await claim(dNFTid);
+        $q.notify('Claim success');
+        current.showAccount = false;
+      } catch (error) {
+      } finally {
+        $q.loading.hide();
+      }
     }
     ///分配出售NFT的钱给各股东
     async function comFundNFT(dNFTid, number) {
