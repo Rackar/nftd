@@ -577,7 +577,7 @@ export default defineComponent({
 .order-title {
   padding: 20px 0;
   font-size: 28px;
-  line-height: 22px;
+  line-height: 30px;
   /* font-weight: bold; */
 }
 .order-artist {
