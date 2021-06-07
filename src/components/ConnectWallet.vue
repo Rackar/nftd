@@ -70,7 +70,7 @@
   </q-dialog>
   <q-dialog v-model="current.showAccount">
     <q-card class="mydnft-card" style="border-radius: 15px">
-      <h5>My LOLI:</h5>
+      <!-- <h5>My LOLI:</h5>
       <div>
         {{ current.loliCanClaim }}
         {{ current.ifLoliClaimed ? '(claimed)' : '' }}
@@ -85,7 +85,7 @@
             @click="compLoliClaim()"
           />
         </div>
-      </div>
+      </div> -->
       <h5>Sold:</h5>
       <div>
         <div class="money">
@@ -104,13 +104,12 @@
             <q-item-section top>
               <q-item-label>{{ dnft.name }}</q-item-label>
               <q-item-label
-                >{{ dnft.price.toString().substr(0, 7) }} eth</q-item-label
+                >{{ Math.floor(dnft.price * 1000) / 1000 }} eth</q-item-label
               >
             </q-item-section>
             <q-item-section top side>
               <div class="text-grey-8 q-gutter-xs">
                 <q-btn
-                  class="gt-xs"
                   size="12px"
                   flat
                   dense
@@ -145,18 +144,35 @@
 
             <q-item-section top>
               <q-item-label>{{ dnft.name }}</q-item-label>
-              <q-item-label>{{ dnft.price.substr(0, 7) }} eth</q-item-label>
+              <q-item-label
+                >{{ Math.floor(dnft.price * 1000) / 1000 }} eth</q-item-label
+              >
+              <q-item-label
+                caption
+                lines="1"
+                v-if="dnftidCanGetLoli(dnft.dNFTid)"
+                >{{ dnft.loliCanClaim }}</q-item-label
+              >
             </q-item-section>
+
             <q-item-section top side>
               <div class="text-grey-8 q-gutter-xs">
                 <q-btn
-                  class="gt-xs"
                   size="12px"
                   flat
                   dense
                   label="claim"
                   @click="compClaim(dnft.dNFTid)"
                 />
+                <q-item-label caption v-if="dnftidCanGetLoli(dnft.dNFTid)"
+                  ><q-btn
+                    size="12px"
+                    flat
+                    dense
+                    label="claim LOLI"
+                    :disable="dnft.isLoliClaimed"
+                    @click="compLoliClaim(dnft)"
+                /></q-item-label>
               </div>
             </q-item-section>
           </q-item>
@@ -201,8 +217,9 @@ import {
 
 import {
   getLOLICanClaimOf,
-  accountToFetched,
+  dNFTidToAccountToFetched,
   fetchLOLI,
+  dnftidCanGetLoli,
 } from '../web3/dloliMethods';
 
 import { countToWei, weiToCount } from '../web3/Utils';
@@ -250,8 +267,6 @@ export default defineComponent({
       isOwner: false, //默认关闭白名单设置按钮
       isArtist: false,
       ethPrice: 0,
-      loliCanClaim: '',
-      ifLoliClaimed: true,
     });
     let copyAddress = (url) => {
       copyToClipboard(url)
@@ -306,8 +321,21 @@ export default defineComponent({
         for (let i = 0; i < dNFTids.length; i++) {
           const dNFTid = dNFTids[i];
           let unClaim;
+          let loliCanClaim = 0;
+          let isLoliClaimed = true;
           try {
             unClaim = await unClaimOf(dNFTid, current.account);
+            if (dnftidCanGetLoli(dNFTid)) {
+              let loliweis = await getLOLICanClaimOf(
+                dNFTid,
+                web3instance.account
+              );
+              loliCanClaim = Math.floor(weiToCount(loliweis));
+              isLoliClaimed = await dNFTidToAccountToFetched(
+                dNFTid,
+                current.account
+              );
+            }
           } catch (error) {
             return;
           } finally {
@@ -316,6 +344,8 @@ export default defineComponent({
           let name = dNFTs.find((dNFT) => dNFT.dNFTid == dNFTid);
           let result = {
             dNFTid,
+            loliCanClaim,
+            isLoliClaimed,
             name: name ? name.name : '',
             image: name ? name.image : '',
             myAddress: current.account,
@@ -332,12 +362,12 @@ export default defineComponent({
           .reduce((pre, cur) => pre + cur, 0);
       }
     }
-    async function compLoliClaim() {
-      current.ifLoliClaimed = true;
+    async function compLoliClaim(dnft) {
+      dnft.isLoliClaimed = true;
       try {
-        await fetchLOLI();
+        await fetchLOLI(dnft.dNFTid);
       } catch (error) {
-        current.ifLoliClaimed = false;
+        dnft.isLoliClaimed = false;
       }
     }
     async function refreshMyOwnDetails(dNFTids) {
@@ -421,10 +451,10 @@ export default defineComponent({
           refreshMyOwnDetails(dNFTids);
         });
 
-        current.loliCanClaim = parseInt(
-          weiToCount(await getLOLICanClaimOf(web3instance.account))
-        );
-        current.ifLoliClaimed = await accountToFetched(web3instance.account);
+        // current.loliCanClaim = parseInt(
+        //   weiToCount(await getLOLICanClaimOf(web3instance.account))
+        // );
+        // current.ifLoliClaimed = await dNFTidToAccountToFetched(dnftid,web3instance.account);
       }
     };
 
@@ -529,6 +559,7 @@ export default defineComponent({
       compClaimByOwner,
       newconnect,
       compLoliClaim,
+      dnftidCanGetLoli,
     };
   },
 });
@@ -543,6 +574,9 @@ export default defineComponent({
   .connect {
     padding-right: 5px;
   }
+  .mydnft-card {
+    width: 350px;
+  }
 }
 .btn-sell {
   margin-right: 15px;
@@ -553,6 +587,7 @@ export default defineComponent({
 .mydnft-card {
   text-align: center;
   padding: 50px;
+  width: 500px;
   min-width: 370px;
 }
 .account-avatar {

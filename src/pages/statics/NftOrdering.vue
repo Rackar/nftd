@@ -54,7 +54,10 @@
           <div class="order-number">
             <q-icon name="menu" class="order-countdown-money-icon" />
             <span class="order-number-eth"
-              >{{ weiToCount(current.salesRevenue) }} ETH</span
+              >{{
+                Math.floor(weiToCount(current.salesRevenue) * 1000) / 1000
+              }}
+              ETH</span
             >
             <span class="order-number-usd"
               >($
@@ -199,7 +202,8 @@
         <div>How many shares would you like to buy?</div>
         <div class="sell-title">{{ current.name }}</div>
         <div>
-          Current Valuation {{ weiToCount(current.salesRevenue) }} ETH ($
+          Current Valuation
+          {{ (weiToCount(current.salesRevenue) - 0).toFixed(3) }} ETH ($
           {{
             (weiToCount(current.salesRevenue) * current.ethPrice).toFixed(2)
           }})
@@ -437,7 +441,7 @@ export default defineComponent({
         current.boughters = list.data.data
           .filter((ele) => ele.amount !== '0')
           .map((ele) => {
-            ele.count = weiToCount(ele.amount);
+            ele.count = Math.floor(weiToCount(ele.amount) * 1000) / 1000;
             return ele;
           });
       } catch (error) {

@@ -1,10 +1,15 @@
 import { web3instance } from './getWeb3';
 
-//该用户地址是否有币可以提取
-function getLOLICanClaimOf(address_User) {
+function dnftidCanGetLoli(dnftid) {
+  const dnftidsHaveLoli = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]; //暂定5-14号dnft可以获取loli
+  return dnftidsHaveLoli.some((id) => id == dnftid);
+}
+
+//该用户地址有多少币可以提取
+function getLOLICanClaimOf(dnftid, address_User) {
   return new Promise((resolve, reject) => {
     web3instance.dloliContract.methods
-      .getLOLICanClaimOf(address_User)
+      .getLOLICanClaimOf(dnftid, address_User)
       .call()
       .then(function (result) {
         console.log('you have LOLI: ' + JSON.stringify(result));
@@ -18,10 +23,10 @@ function getLOLICanClaimOf(address_User) {
 }
 
 //判断是否领取过
-function accountToFetched(address_User) {
+function dNFTidToAccountToFetched(dnftid, address_User) {
   return new Promise((resolve, reject) => {
     web3instance.dloliContract.methods
-      .accountToFetched(address_User)
+      .dNFTidToAccountToFetched(dnftid, address_User)
       .call()
       .then(function (result) {
         console.log('you had fetch LOLI: ' + JSON.stringify(result));
@@ -35,10 +40,10 @@ function accountToFetched(address_User) {
 }
 
 //领取
-function fetchLOLI() {
+function fetchLOLI(dnftid) {
   return new Promise((resolve, reject) => {
     web3instance.dloliContract.methods
-      .fetchLOLI()
+      .fetchLOLI(dnftid)
       .send({ from: web3instance.account })
       .then(function (result) {
         console.log('you got LOLI: ' + JSON.stringify(result));
@@ -51,4 +56,9 @@ function fetchLOLI() {
   });
 }
 
-export { getLOLICanClaimOf, accountToFetched, fetchLOLI };
+export {
+  getLOLICanClaimOf,
+  dNFTidToAccountToFetched,
+  fetchLOLI,
+  dnftidCanGetLoli,
+};

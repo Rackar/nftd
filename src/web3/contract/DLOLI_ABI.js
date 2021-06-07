@@ -1,4 +1,4 @@
-const address_DLOLI = '0x9F8F240C3b85870B1447FaC3a554d9391979D267';
+const address_DLOLI = '0x75d212ebbC089C06Bb32021A013c34c41655179b';
 const ABI_DLOLI = [
   {
     inputs: [
@@ -14,7 +14,12 @@ const ABI_DLOLI = [
       },
       {
         internalType: 'uint256',
-        name: 'setddNid',
+        name: 'ddNidStart',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'ddNidEnd',
         type: 'uint256',
       },
     ],
@@ -24,12 +29,17 @@ const ABI_DLOLI = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+      {
         internalType: 'address',
         name: '',
         type: 'address',
       },
     ],
-    name: 'accountToFetched',
+    name: 'dNFTidToAccountToFetched',
     outputs: [
       {
         internalType: 'bool',
@@ -42,7 +52,7 @@ const ABI_DLOLI = [
   },
   {
     inputs: [],
-    name: 'ddNid',
+    name: 'ddNide',
     outputs: [
       {
         internalType: 'uint256',
@@ -55,6 +65,38 @@ const ABI_DLOLI = [
   },
   {
     inputs: [],
+    name: 'ddNids',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'eLtD',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'dNFTid',
+        type: 'uint256',
+      },
+    ],
     name: 'fetchLOLI',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -62,6 +104,11 @@ const ABI_DLOLI = [
   },
   {
     inputs: [
+      {
+        internalType: 'uint256',
+        name: 'dNFTid',
+        type: 'uint256',
+      },
       {
         internalType: 'address',
         name: 'account',
@@ -100,19 +147,6 @@ const ABI_DLOLI = [
         internalType: 'address',
         name: '',
         type: 'address',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'tLtD',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',
