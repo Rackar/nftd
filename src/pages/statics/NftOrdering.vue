@@ -199,23 +199,28 @@
     <!-- </q-card> -->
     <q-dialog v-model="current.showBuytab">
       <q-card class="sell-card">
-        <div>How many shares would you like to buy?</div>
+        <div class="sell-title-head">
+          How many shares would you like to buy?
+        </div>
         <div class="sell-title">{{ current.name }}</div>
-        <div>
+        <div class="sell-title-tip">
           Current Valuation
           {{ (weiToCount(current.salesRevenue) - 0).toFixed(3) }} ETH ($
           {{
             (weiToCount(current.salesRevenue) * current.ethPrice).toFixed(2)
           }})
         </div>
-        <div>
+        <div class="sell-title-tip">
           {{
             current.boughters.reduce((pre, cur) => pre + parseInt(cur.count), 0)
           }}
           shares issued
         </div>
         <q-input outlined v-model="current.count" class="sell-input" />
-
+        <div class="sell-input-eth">
+          {{ Math.round(current.count * 1000) / 1000000 }} ETH ($
+          {{ Math.round((current.count / 10) * current.ethPrice) / 100 }})
+        </div>
         <div class="flex">
           <q-btn
             class="sell-input-btn"
@@ -386,6 +391,22 @@ export default defineComponent({
         countdownLeft.value = 'Sold Out.';
       }
     }
+    function formatTimegap(times) {
+      let days = Math.floor(times / 3600 / 24);
+      let hours = Math.floor(times / 3600) - days * 24;
+      let mins = Math.floor(times / 60) - days * 24 * 60 - hours * 60;
+      let secs = times - days * 24 * 3600 - hours * 3600 - mins * 60;
+      let string = days ? days + ' ' : '';
+      string += (hours ? hours : '00') + ':';
+      string += (mins ? (mins > 9 ? mins : '0' + mins) : '00') + ':';
+      string += (secs > 9 ? '' : '0') + secs;
+      return string;
+    }
+    function Countdown(endDate) {
+      let now = Date.now();
+      let diffSec = date.getDateDiff(endDate, now, 'seconds');
+      countdownLeft.value = formatTimegap(diffSec);
+    }
     async function getCountdown() {
       let result = await idTodNFT(props.dnftid);
       if (!result) return;
@@ -407,12 +428,10 @@ export default defineComponent({
     async function compDNFTbuyer(dNFTid, number = 1) {
       current.showBuytab = false;
       current.loading = true;
-      let fixedNumber = Math.round(number * 1000) / 1000;
       try {
-        debugger;
         await dNFTbuyer(dNFTid, number);
         $q.notify('Success');
-        getCountdown();
+        // getCountdown();
         current.boughters.push({
           Buyer: web3instance.account,
           count: number,
@@ -467,27 +486,11 @@ export default defineComponent({
       }
       // current.comments = list.data.data;
     }
-    function formatTimegap(times) {
-      let days = Math.floor(times / 3600 / 24);
-      let hours = Math.floor(times / 3600) - days * 24;
-      let mins = Math.floor(times / 60) - days * 24 * 60 - hours * 60;
-      let secs = times - days * 24 * 3600 - hours * 3600 - mins * 60;
-      let string = days ? days + ' ' : '';
-      string += (hours ? hours : '00') + ':';
-      string += (mins ? (mins > 9 ? mins : '0' + mins) : '00') + ':';
-      string += (secs > 9 ? '' : '0') + secs;
-      return string;
-    }
-    function Countdown(endDate) {
-      let now = Date.now();
-      let diffSec = date.getDateDiff(endDate, now, 'seconds');
-      countdownLeft.value = formatTimegap(diffSec);
-    }
 
     async function buyDnft() {
       // await justEnableMetamask();
       let res = await requestLoginMetaMask((ad) => {
-        debugger;
+        // debugger;
         $store.commit('example/setUserAddress', ad);
         current.showBuytab = true;
       }).catch((e) => {
@@ -742,14 +745,29 @@ export default defineComponent({
   padding-top: 5px;
   color: gray;
 }
+.sell-title-head {
+  font-size: 22px;
+  /* font-weight: bold; */
+}
 .sell-title {
-  font-size: 26px;
+  padding: 4px 0;
+  font-size: 20px;
   font-weight: bold;
+  color: #898989;
+}
+.sell-title-tip {
+  color: #afafaf;
 }
 .sell-input {
   width: 160px;
-  margin: 10px auto;
-  font-size: 24px;
+  margin: 10px auto 0px;
+  font-size: 36px;
+}
+.sell-input-eth {
+  padding-top: 8px;
+  padding-bottom: 25px;
+  font-size: 12px;
+  color: #222222;
 }
 .sell-input-btn {
   width: 60px;

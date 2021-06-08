@@ -92,13 +92,13 @@ const requestLoginMetaMask = async (cb) => {
     }); //根据官方文档新的激活方式
 
     function handleChainChanged(_chainId) {
-      debugger;
+      // debugger;
       // We recommend reloading the page, unless you must do otherwise
       web3instance.chainId = _chainId;
       // window.location.reload();
     }
     function handleAccountsChanged(accounts) {
-      debugger;
+      // debugger;
       if (accounts.length === 0) {
         // MetaMask is locked or the user has not connected any accounts
         console.log('Please connect to MetaMask.');
