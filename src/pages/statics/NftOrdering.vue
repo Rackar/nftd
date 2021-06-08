@@ -55,7 +55,7 @@
             <q-icon name="menu" class="order-countdown-money-icon" />
             <span class="order-number-eth"
               >{{
-                Math.floor(weiToCount(current.salesRevenue) * 1000) / 1000
+                Math.round(weiToCount(current.salesRevenue) * 1000) / 1000
               }}
               ETH</span
             >
@@ -407,7 +407,9 @@ export default defineComponent({
     async function compDNFTbuyer(dNFTid, number = 1) {
       current.showBuytab = false;
       current.loading = true;
+      let fixedNumber = Math.round(number * 1000) / 1000;
       try {
+        debugger;
         await dNFTbuyer(dNFTid, number);
         $q.notify('Success');
         getCountdown();
@@ -441,7 +443,7 @@ export default defineComponent({
         current.boughters = list.data.data
           .filter((ele) => ele.amount !== '0')
           .map((ele) => {
-            ele.count = Math.floor(weiToCount(ele.amount) * 1000) / 1000;
+            ele.count = Math.round(weiToCount(ele.amount) * 1000) / 1000;
             return ele;
           });
       } catch (error) {

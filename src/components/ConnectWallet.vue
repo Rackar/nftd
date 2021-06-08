@@ -104,7 +104,7 @@
             <q-item-section top>
               <q-item-label>{{ dnft.name }}</q-item-label>
               <q-item-label
-                >{{ Math.floor(dnft.price * 1000) / 1000 }} eth</q-item-label
+                >{{ Math.round(dnft.price * 1000) / 1000 }} eth</q-item-label
               >
             </q-item-section>
             <q-item-section top side>
@@ -145,7 +145,7 @@
             <q-item-section top>
               <q-item-label>{{ dnft.name }}</q-item-label>
               <q-item-label
-                >{{ Math.floor(dnft.price * 1000) / 1000 }} eth</q-item-label
+                >{{ Math.round(dnft.price * 1000) / 1000 }} eth</q-item-label
               >
               <q-item-label
                 caption
@@ -330,7 +330,7 @@ export default defineComponent({
                 dNFTid,
                 web3instance.account
               );
-              loliCanClaim = Math.floor(weiToCount(loliweis));
+              loliCanClaim = Math.round(weiToCount(loliweis));
               isLoliClaimed = await dNFTidToAccountToFetched(
                 dNFTid,
                 current.account

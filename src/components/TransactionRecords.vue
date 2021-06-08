@@ -21,7 +21,7 @@
       </div>
       <div class="table-title-bought">
         {{ row.count }} (${{
-          Math.floor(row.count * 0.001 * current.ethPrice * 100) / 100
+          Math.round(row.count * 0.001 * current.ethPrice * 100) / 100
         }})
       </div>
       <div class="table-title-time">{{ formatTime(row.updatedAt) }}</div>
