@@ -147,12 +147,6 @@
               <q-item-label
                 >{{ Math.round(dnft.price * 1000) / 1000 }} eth</q-item-label
               >
-              <q-item-label
-                caption
-                lines="1"
-                v-if="dnftidCanGetLoli(dnft.dNFTid)"
-                >{{ dnft.loliCanClaim }}</q-item-label
-              >
             </q-item-section>
 
             <q-item-section top side>
@@ -164,6 +158,45 @@
                   label="claim"
                   @click="compClaim(dnft.dNFTid)"
                 />
+              </div>
+            </q-item-section>
+          </q-item>
+          <q-separator spaced />
+        </div>
+        <q-inner-loading :showing="current.loadingMyBoughtList">
+          <q-spinner size="50px" color="primary" />Please wait. It may take up
+          to 1 minute for your NFT to load...
+        </q-inner-loading>
+      </div>
+
+      <h5>LOLI:</h5>
+      <div>
+        <!-- <div class="money">
+          {{ current.myTotalClaim.toString().substr(0, 7) }} ETH (${{
+            (current.myTotalClaim * current.ethPrice).toFixed(2)
+          }})
+        </div>
+        <div class="title">Total Dividends</div> -->
+        <div v-for="dnft in current.myLoliList" :key="dnft.dNFTid">
+          <q-item>
+            <q-item-section avatar top>
+              <q-img v-if="dnft.image" :src="dnft.image" size="34px"></q-img>
+              <q-icon v-else name="account_tree" color="black" size="34px" />
+            </q-item-section>
+
+            <q-item-section top>
+              <q-item-label>{{ dnft.name }}</q-item-label>
+
+              <q-item-label
+                caption
+                lines="1"
+                v-if="dnftidCanGetLoli(dnft.dNFTid)"
+                >{{ dnft.loliCanClaim }}</q-item-label
+              >
+            </q-item-section>
+
+            <q-item-section top side>
+              <div class="text-grey-8 q-gutter-xs">
                 <q-item-label caption v-if="dnftidCanGetLoli(dnft.dNFTid)"
                   ><q-btn
                     size="12px"
@@ -190,10 +223,7 @@
 
 <script>
 import { defineComponent, computed, onMounted, reactive, watch } from 'vue';
-// const Web3 = require('web3');
 import Web3 from 'web3';
-// This function detects most providers injected at window.ethereum
-// import detectEthereumProvider from '@metamask/detect-provider';
 import { init, requestLoginMetaMask, web3instance } from '../web3/getWeb3';
 import { address_DNFT, address_NFT, address_DLOLI } from '../web3/contract';
 
@@ -251,6 +281,7 @@ export default defineComponent({
       showAddWhitelist: false,
       inputAddWhitelist: '',
       myBoughtList: [],
+      myLoliList: [],
       myTotalClaim: 0,
       myOwnList: [],
       myOwnTotalClaim: computed(() =>
@@ -353,6 +384,9 @@ export default defineComponent({
           };
           if (result.price != '0') {
             current.myBoughtList.push(result);
+          }
+          if (!isLoliClaimed) {
+            current.myLoliList.push(result);
           }
         }
         current.loadingMyBoughtList = false;
