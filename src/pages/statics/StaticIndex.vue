@@ -8,6 +8,18 @@
         <div class="tabs">Ongoing</div>
         <div class="tabs">Past</div>
       </div>-->
+      <div class="video-all">
+        <iframe
+          width="240"
+          height="240"
+          src="https://www.youtube.com/embed/mbxzg17sLaw"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+
       <WaterFallComp :data="data" @loadMore="fetchData" />
     </section>
   </div>
@@ -244,7 +256,19 @@ export default {
       });
       list.reverse();
 
-      data.value = [...list];
+      let staticVideo = {
+        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
+        NFTid: 'xx',
+        dNFTid: 'xx',
+        Principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+        Selling: 'false',
+        updatedAt: '2021-06-01T15:16:09.135Z',
+        name: '',
+        description: '',
+        image: 'https://s3.jpg.cm/2021/06/28/Iq9bTE.png',
+      };
+
+      data.value = [staticVideo, ...list];
       // let gState = useStorage('cache', { dnfts: res.data.data });
       if (current.dnfts.length != res.data.data.length)
         current.dnfts = res.data.data;
@@ -349,6 +373,31 @@ export default {
 }
 .container {
   /* min-height: 90vh; */
+}
+.video-all {
+  display: block;
+  position: absolute;
+  border-radius: 15px 15px 0 0;
+  margin-top: 25px;
+  margin-left: 45px;
+  z-index: 9;
+}
+@media only screen and (max-width: 1200px) {
+  .video-all {
+    float: left;
+    left: 25px;
+    margin: 25px auto;
+  }
+}
+
+@media only screen and (max-width: 596px) {
+  .video-all {
+    position: absolute;
+
+    text-align: center;
+    margin-left: 50%;
+    left: -120px;
+  }
 }
 /* .card {
   padding: 10px;
