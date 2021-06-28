@@ -1,9 +1,9 @@
 <template>
-  <span v-if="!current.account" @click="connect" class="connect"
+  <!-- <span v-if="!current.account" @click="connect" class="connect"
     >Connect Wallet</span
-  >
+  > -->
   <span v-if="!current.account" @click="newconnect" class="connect">
-    new Connect</span
+    Connect</span
   >
   <span v-else>
     <!-- <button @click="test">test</button> -->
