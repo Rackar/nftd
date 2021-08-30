@@ -457,6 +457,7 @@ export default defineComponent({
     }
     const compConfirmSell = async () => {
       let isin = await artistWhiteList(web3instance.account);
+      isin = true; //FIXME 屏蔽白名单监测
       if (isin) {
         await _wrapNFT(current.sellNFTaddress, current.sellNFTid);
       } else {
@@ -471,6 +472,7 @@ export default defineComponent({
         current.account = web3instance.account;
         current.isOwner = await checkIsOwner();
         current.isArtist = await artistWhiteList(web3instance.account);
+        current.isArtist = true; //FIXME 已屏蔽艺术家监测
         api.get('boughters?uad=' + web3instance.account).then(async (res) => {
           let data = res.data.data;
           let dNFTids = [...new Set(data.map((dnft) => dnft.dNFTid))];
@@ -525,6 +527,8 @@ export default defineComponent({
         $q.notify('dnft wrapped.');
         $store.commit('example/setNftIdApproved', '');
         let dnftUrl = `/nft/${contractAd}/${NFTid}/${result.events.TransferSingle.returnValues.id}`;
+        let res = api.get('refreshEvents?type=NewNFTwraped');
+
         current.sellShow = false;
         current.sellNFTid = '';
         router.push(dnftUrl);

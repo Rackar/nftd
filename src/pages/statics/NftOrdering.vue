@@ -430,6 +430,7 @@ export default defineComponent({
       current.loading = true;
       try {
         await dNFTbuyer(dNFTid, number);
+        let res = api.get('refreshEvents?type=dNFTbought');
         $q.notify('Success');
         // getCountdown();
         current.boughters.push({
