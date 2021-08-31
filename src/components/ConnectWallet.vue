@@ -296,7 +296,7 @@ export default defineComponent({
       loadingMyBoughtList: false,
       thelist: [],
       isOwner: false, //默认关闭白名单设置按钮
-      isArtist: false,
+      isArtist: true,
       ethPrice: 0,
     });
     let copyAddress = (url) => {
@@ -471,7 +471,7 @@ export default defineComponent({
       if (web3instance.account) {
         current.account = web3instance.account;
         current.isOwner = await checkIsOwner();
-        current.isArtist = await artistWhiteList(web3instance.account);
+        // current.isArtist = await artistWhiteList(web3instance.account);
         current.isArtist = true; //FIXME 已屏蔽艺术家监测
         api.get('boughters?uad=' + web3instance.account).then(async (res) => {
           let data = res.data.data;
