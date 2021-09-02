@@ -1161,7 +1161,6 @@ function changeWeb3Instance(ABIin, addressIn) {
     window.ethereum.selectedAddress
   ) {
     const web3 = new Web3(window.ethereum);
-    // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft 只有approve时调用
     const myContract = new web3.eth.Contract(ABI, address); //dnft
     web3Instance.myAddress = window.ethereum.selectedAddress;
     web3Instance.chainId = window.ethereum.chainId;
@@ -1202,7 +1201,6 @@ let init = () => {
     window.ethereum.selectedAddress
   ) {
     const web3 = new Web3(window.ethereum);
-    // const myContract = new web3.eth.Contract(ABI_N, address_N); //nft 只有approve时调用
     const myContract = new web3.eth.Contract(ABI, address); //dnft
 
     current.account = window.ethereum.selectedAddress;

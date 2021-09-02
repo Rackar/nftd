@@ -28,7 +28,7 @@
       </template>
     </water-fall>
   </div>
-  <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn>
+  <!-- <q-btn class="halo-btn" @click="fetchData" label="More"></q-btn> -->
 </template>
 
 <script>
