@@ -8,7 +8,7 @@
         <div class="tabs">Ongoing</div>
         <div class="tabs">Past</div>
       </div>-->
-      <div class="video-all">
+      <!-- <div class="video-all">
         <iframe
           width="240"
           height="240"
@@ -18,7 +18,7 @@
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
         ></iframe>
-      </div>
+      </div> -->
 
       <WaterFallComp :data="data" @loadMore="fetchData" />
     </section>
@@ -340,16 +340,6 @@ export default {
 </script>
 
 <style>
-/* .top {
-  align-items: baseline;
-  padding-top: 30px;
-  border-bottom: rgb(219, 219, 219) 1px solid;
-}
-.right-toolbar {
-  min-width: 140px;
-  right: 30px;
-  position: absolute;
-} */
 .banner {
   display: 'flex';
   position: 'relative';
@@ -399,39 +389,4 @@ export default {
     left: -120px;
   }
 }
-/* .card {
-  padding: 10px;
-  background-color: white;
-  border-radius: 3px;
-  color: #666;
-  line-height: 1.5;
-  word-break: break-all;
-}
-.card .img {
-  width: 100%;
-  margin-bottom: 5px;
-}
-.card .img:hover {
-  opacity: 0.5;
-}
-.card > .name {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  color: #222222;
-}
-.card > .info {
-  font-size: 14px;
-  color: rgba(34, 34, 34, 0.75);
-}
-.card > .price {
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-  color: #222222;
-} */
-/* .halo-btn {
-  margin: 30px auto;
-  display: block;
-} */
 </style>

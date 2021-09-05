@@ -1,5 +1,4 @@
 const Web3 = require('web3');
-// import { store } from 'quasar/wrappers';
 import detectEthereumProvider from '@metamask/detect-provider';
 import {
   address_DNFT,
@@ -40,21 +39,16 @@ const init = (provider) => {
     }
   }
 
-  // provider.removeListener('accountsChanged', () => {});
-  // provider.removeListener('chainChanged', () => {});
   provider.on('accountsChanged', setIns);
 
   provider.on('chainChanged', setIns);
   function setIns() {
-    // debugger;
-    // const $store = store();
     let web3 = new Web3(provider);
     web3.eth.defaultAccount = provider.selectedAddress;
     console.log('new user ad ' + provider.selectedAddress);
     const account = provider.selectedAddress;
     const chainId = provider.chainId;
-    // console.log($store);
-    // $store.commit('example/setUserAddress', account);
+
     const dnftContract = new web3.eth.Contract(ABI_DNFT, address_DNFT); //dnft
     const nftContract = new web3.eth.Contract(ABI_NFT, address_NFT); //dnft
     const dloliContract = new web3.eth.Contract(ABI_DLOLI, address_DLOLI); //dnft
@@ -70,23 +64,10 @@ const init = (provider) => {
     return web3instance.account;
   }
   return setIns();
-  // const web3 = new Web3(provider);
-  // const account = provider.selectedAddress;
-  // const chainId = provider.chainId;
-  // const dnftContract = new web3.eth.Contract(ABI_DNFT, address_DNFT); //dnft
-  // const nftContract = new web3.eth.Contract(ABI_NFT, address_NFT); //dnft
-  // const dloliContract = new web3.eth.Contract(ABI_DLOLI, address_DLOLI); //dnft
-
-  // web3instance={web3,account,chainId,dnftContract,nftContract,dloliContract}
 };
 const requestLoginMetaMask = async (cb) => {
   const provider = await detectEthereumProvider();
-  // debugger;
   if (provider) {
-    // From now on, this should always be true:
-    // provider === window.ethereum
-    // initialize your app
-    // await provider.enable();//之前的激活方式
     const accounts = await provider.request({
       method: 'eth_requestAccounts',
     }); //根据官方文档新的激活方式

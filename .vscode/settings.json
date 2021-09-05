@@ -1,5 +1,5 @@
 {
-    "window.zoomLevel": 1, // 表示窗口缩小20%.
+    "window.zoomLevel": 0, // 表示窗口缩小20%.
     "editor.wordWrap": "wordWrapColumn", // 超长代码一般出现在html中, 我不喜欢html属性换行, 但是又想看到全部, 那就只能设置编辑器视觉上的换行了.
     "editor.wordWrapColumn": 150, // 同上
     "editor.formatOnSave": true,

@@ -1,4 +1,4 @@
-const address_NFT = '0x227897e07508229AA6F794D39681428351447201';
+const address_NFT = '0x637bd777cd31DEf5EEaeEca545810cC673a32B10';
 const ABI_NFT = [
   {
     inputs: [],

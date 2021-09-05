@@ -1,6 +1,4 @@
 <template>
-  <!-- <h1 class="about-title">About</h1> -->
-  <!-- <div class="about-bg"></div> -->
   <div class="about-main">
     <div class="about-content">
       Filoli is a NFT marketplace that features the ability to split NFTs and
@@ -11,34 +9,7 @@
       Filoli is a decentralized project developed by volunteers and governed
       through the principles of separation of powers.
     </div>
-    <!-- <div class="about-content">
-      <div class="about-content-title">Filoli Board</div>
-      Members of the Filoli board are anyone who hold at least 10 Million LOLI.
-      Board members makes all decisions.
-    </div>
-    <div class="about-content">
-      <div class="about-content-title">Secretary</div>
-      Secretary is hired by the board to perform various miscellaneous tasks,
-      including holding unsold LOLI.
-    </div>
-    <div class="about-content">
-      <div class="about-content-title">Developers</div>
-      Developers are hired by the board to develop and maintain filoli.io.
-    </div>
-    <div class="about-content">
-      A total of 10 billion LOLI tokens has been issued for Filoli project.
-      Initially, the only way to obtain LOLI is through purchasing NFTs on
-      Filoli.io and getting LOLI rewards.
-    </div> -->
-    <!-- <div class="about-content">
-      * Neither the developers nor the secretary are allocated a single LOLI
-      token. There is no pre mining.
-    </div>
-    <div class="about-content">
-      <div>#0001 Announcement by the Secretary：</div>
-      Public sale of up to 1 million (10%) LOLI tokens through filoli.io. The
-      sale will end immediately when $100,000 equivalent of ETH is raised.
-    </div> -->
+
     <div>
       <a
         class="paper-link"
@@ -54,13 +25,6 @@
       >
     </div>
 
-    <!-- <p
-      class="about-info"
-    >Filoli.io is in beta development. It is intended for internal usage only. Terms and Privacy policy will be avaiable soon.</p>
-    <p class="about-info">
-      Contact: filoli2021@gmail.com
-      <br />All rights reserved 2021
-    </p>-->
     <p></p>
     <a href="https://discord.gg/evT2jawc" target="_blank">
       <img
