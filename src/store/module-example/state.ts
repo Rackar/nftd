@@ -3,7 +3,8 @@ export interface ExampleStateInterface {
   prop: boolean;
   nftIdApproved: string;
   dnfts: DnftObject[];
-  userAddress:string;
+  userAddress: string;
+  coinName: string;
 }
 
 function state(): ExampleStateInterface {
@@ -11,7 +12,8 @@ function state(): ExampleStateInterface {
     prop: false,
     nftIdApproved: '',
     dnfts: [],
-    userAddress:''
+    userAddress: '',
+    coinName: 'BNB'
   }
   return resut
 };

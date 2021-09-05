@@ -89,7 +89,8 @@
       <h5>Sold:</h5>
       <div>
         <div class="money">
-          {{ current.myOwnTotalClaim.toString().substr(0, 7) }} ETH (${{
+          {{ current.myOwnTotalClaim.toString().substr(0, 7) }}
+          {{ $store.state.example.coinName }} (${{
             (current.myOwnTotalClaim * current.ethPrice).toFixed(2)
           }})
         </div>
@@ -104,7 +105,8 @@
             <q-item-section top>
               <q-item-label>{{ dnft.name }}</q-item-label>
               <q-item-label
-                >{{ Math.round(dnft.price * 1000) / 1000 }} eth</q-item-label
+                >{{ Math.round(dnft.price * 1000) / 1000 }}
+                {{ $store.state.example.coinName }}</q-item-label
               >
             </q-item-section>
             <q-item-section top side>
@@ -130,7 +132,8 @@
       <h5>Bought:</h5>
       <div>
         <div class="money">
-          {{ current.myTotalClaim.toString().substr(0, 7) }} ETH (${{
+          {{ current.myTotalClaim.toString().substr(0, 7) }}
+          {{ $store.state.example.coinName }} (${{
             (current.myTotalClaim * current.ethPrice).toFixed(2)
           }})
         </div>
@@ -145,7 +148,8 @@
             <q-item-section top>
               <q-item-label>{{ dnft.name }}</q-item-label>
               <q-item-label
-                >{{ Math.round(dnft.price * 1000) / 1000 }} eth</q-item-label
+                >{{ Math.round(dnft.price * 1000) / 1000 }}
+                {{ $store.state.example.coinName }}</q-item-label
               >
             </q-item-section>
 

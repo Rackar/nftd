@@ -54,10 +54,8 @@
           <div class="order-number">
             <q-icon name="menu" class="order-countdown-money-icon" />
             <span class="order-number-eth"
-              >{{
-                Math.round(weiToCount(current.salesRevenue) * 1000) / 1000
-              }}
-              ETH</span
+              >{{ Math.round(weiToCount(current.salesRevenue) * 1000) / 1000 }}
+              {{ $store.state.example.coinName }}</span
             >
             <span class="order-number-usd"
               >($
@@ -205,7 +203,8 @@
         <div class="sell-title">{{ current.name }}</div>
         <div class="sell-title-tip">
           Current Valuation
-          {{ (weiToCount(current.salesRevenue) - 0).toFixed(3) }} ETH ($
+          {{ (weiToCount(current.salesRevenue) - 0).toFixed(3) }}
+          {{ $store.state.example.coinName }}($
           {{
             (weiToCount(current.salesRevenue) * current.ethPrice).toFixed(2)
           }})
@@ -218,7 +217,8 @@
         </div>
         <q-input outlined v-model="current.count" class="sell-input" />
         <div class="sell-input-eth">
-          {{ Math.round(current.count * 1000) / 1000000 }} ETH ($
+          {{ Math.round(current.count * 1000) / 1000000 }}
+          {{ $store.state.example.coinName }} ($
           {{ Math.round((current.count / 10) * current.ethPrice) / 100 }})
         </div>
         <div class="flex">
@@ -276,7 +276,7 @@
             <div class="tips-title">1. What am I buying into?</div>
             <div class="tips-content">
               You are buying shares of the NFT. Each share is priced at a fixed
-              price of 0.001 ETH.
+              price of 0.001 {{ $store.state.example.coinName }}.
             </div>
           </div>
           <div class="tips">
