@@ -256,19 +256,20 @@ export default {
       });
       list.reverse();
 
-      let staticVideo = {
-        NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
-        NFTid: 'xx',
-        dNFTid: 'xx',
-        Principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
-        Selling: 'false',
-        updatedAt: '2021-06-01T15:16:09.135Z',
-        name: '',
-        description: '',
-        image: 'https://s3.jpg.cm/2021/06/28/Iq9bTE.png',
-      };
+      // let staticVideo = {
+      //   NFTCotract: '0x227897e07508229AA6F794D39681428351447201',
+      //   NFTid: 'xx',
+      //   dNFTid: 'xx',
+      //   Principal: '0x65D17D3dC59b5ce3d4CE010eB1719882b3f10490',
+      //   Selling: 'false',
+      //   updatedAt: '2021-06-01T15:16:09.135Z',
+      //   name: '',
+      //   description: '',
+      //   image: 'https://s3.jpg.cm/2021/06/28/Iq9bTE.png',
+      // };
 
-      data.value = [staticVideo, ...list];
+      // data.value = [staticVideo, ...list];
+      data.value = [...list];
       // let gState = useStorage('cache', { dnfts: res.data.data });
       if (current.dnfts.length != res.data.data.length)
         current.dnfts = res.data.data;

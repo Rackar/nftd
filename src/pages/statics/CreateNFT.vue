@@ -1,6 +1,6 @@
 <template>
   <q-page class="column items-center">
-    <h1 class="row myh1">test NFT publish</h1>
+    <h1 class="row myh1">Publish a NFT</h1>
     <div class="row"></div>
 
     <div class="q-pa-md" style="max-width: 500px; min-width: 400px">
